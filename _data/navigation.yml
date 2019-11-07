@@ -1,9 +1,9 @@
 # main links
 main:
-  - title: "Blockchain"
+  - title: "Blockchain Projects"
     url: /Blockchain/
-  - title: "Data Wrangling Projects"
-    url: /data-wrangling/
+  - title: "Data Science Projects"
+    url: /data-science/
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
   # - title: "Sample Posts"
