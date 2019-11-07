@@ -1,7 +1,7 @@
 # main links
 main:
-  - title: "About"
-    url: /about/
+  - title: "Blockchain"
+    url: /blockchain/
   - title: "Data Wrangling Projects"
     url: /data-wrangling/
   # - title: "About"
