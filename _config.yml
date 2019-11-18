@@ -12,7 +12,7 @@ locale                   : "en-US"
 title                    : "Vitaly Sergeevich"
 title_separator          : "-"
 name                     : "Vitaly Sergeevich"
-description              : "Data Science Portfolio"
+description              : " Science Portfolio"
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -37,7 +37,7 @@ staticman:
   filename               : # comment-{@timestamp}
   format                 : # "yml"
   moderation             : # true
-  path                   : # "/_data/comments/{options.slug}" (default)
+  path                   : # "/_/comments/{options.slug}" (default)
   requiredFields         : # ['name', 'email', 'message']
   transforms:
     email                : # "md5"
