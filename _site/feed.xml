@@ -1,4 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-12-21T23:09:28+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Vitaly Sergeevich</title><subtitle> Science Portfolio</subtitle><author><name>Vitaly Sergeevich</name><email></email></author><entry><title type="html">LinkPal</title><link href="http://localhost:4000/LinkPal/" rel="alternate" type="text/html" title="LinkPal" /><published>2019-11-28T00:00:00+01:00</published><updated>2019-11-28T00:00:00+01:00</updated><id>http://localhost:4000/LinkPal</id><content type="html" xml:base="http://localhost:4000/LinkPal/">&lt;h1 id=&quot;linkpal---decentralized-eth-escrow-for-ethfiat-trading-using-paypal&quot;&gt;LinkPal - Decentralized ETH escrow for ETH/FIAT trading using PayPal.&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator>
+  <link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
+  <updated>2020-01-09T23:59:41+01:00</updated>
+  <id>http://localhost:4000/</id>
+
+  
+    <title type="html">Vitaly Volozhinov</title>
+  
+
+  
+    <subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle>
+  
+
+  
+
+  
+  
+    <entry>
+      <title type="html">Project 1</title>
+      <link href="http://localhost:4000/web%20development/2014/07/18/project-1/" rel="alternate" type="text/html" title="Project 1" />
+      <published>2014-07-18T00:00:00+02:00</published>
+      <updated>2014-07-18T00:00:00+02:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/18/project-1</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/18/project-1/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Web Development" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Project 2</title>
+      <link href="http://localhost:4000/web%20development/2014/07/17/project-2/" rel="alternate" type="text/html" title="Project 2" />
+      <published>2014-07-17T00:00:00+02:00</published>
+      <updated>2014-07-17T00:00:00+02:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/17/project-2</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/17/project-2/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Web Development" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Project 3</title>
+      <link href="http://localhost:4000/web%20development/2014/07/16/project-3/" rel="alternate" type="text/html" title="Project 3" />
+      <published>2014-07-16T00:00:00+02:00</published>
+      <updated>2014-07-16T00:00:00+02:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/16/project-3</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/16/project-3/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Web Development" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Project 4</title>
+      <link href="http://localhost:4000/web%20development/2014/07/15/project-4/" rel="alternate" type="text/html" title="Project 4" />
+      <published>2014-07-15T00:00:00+02:00</published>
+      <updated>2014-07-15T00:00:00+02:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/15/project-4</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/15/project-4/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Web Development" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">LinkPal</title>
+      <link href="http://localhost:4000/blockchain/2014/07/15/project-6/" rel="alternate" type="text/html" title="LinkPal" />
+      <published>2014-07-15T00:00:00+02:00</published>
+      <updated>2014-07-15T00:00:00+02:00</updated>
+      <id>http://localhost:4000/blockchain/2014/07/15/project-6</id>
+      <content type="html" xml:base="http://localhost:4000/blockchain/2014/07/15/project-6/">&lt;h1 id=&quot;decentralized-eth-escrow-for-ethfiat-trading-using-paypal&quot;&gt;Decentralized ETH escrow for ETH/FIAT trading using PayPal.&lt;/h1&gt;
 
 &lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides 
@@ -29,7 +192,7 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
 &lt;h1 id=&quot;smart-contract&quot;&gt;Smart Contract&lt;/h1&gt;
 &lt;p&gt;The design utilized was the Factory Method where the factory produces objects containing all the necessary functions, details and funds to make the exchange happen. A seller would need to enter the amount of ETH they are going to sell for the price specified in the invoice, the Invoice ID, the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/LinkPal/sellerFormOne.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/LinkPal/sellerFormOne.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Those parameters are what the seller needs to input but Metamask handles the input of other unseen parameters such as seller’s Ethereum address(msg.sender) and the ETH he is sending to the contract (msg.value). On creation the contract also takes note of the time it was created, this is needed for the clause that if a Buyer doesn’t pay the invoice for a certain amount of time say one day the Seller can withdraw their ETH.&lt;/p&gt;
 
@@ -52,11 +215,11 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
 
 &lt;p&gt;Once the contract is deployed the buyer can now check the contract’s details to see if there is infact ETH deposited inside it and what the deadline for seller’s withdrawal is. If everything looks fine then they could pay the PayPal invoice, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the Invoice ID and retrieve the key value pair {paid : bool} which would be True or False depending if the invoice was paid or not. If True then the funds are released from the smart contract and the buyer can withdraw them. The figure below shows how a deployed contract would look to a Seller. The amounts need to be changed to be more readable as the ETH amount is in Wei and the Created time is in block time seconds.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/LinkPal/deployedLinkPal.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/LinkPal/deployedLinkPal.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This is the contract from the Seller/Buyer’s perspective.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/LinkPal/buyerDeployedLinkPal.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../images/LinkPal/buyerDeployedLinkPal.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;These are the Buyer’s options:&lt;/p&gt;
 
@@ -69,20 +232,18 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
 
 &lt;p&gt;The code snippet below shows how requests can be built to confirm if the invoice had been paid or not. The truecount/falsecount variables are used to keep track of the {paid : bool} response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the PayPal Invoice ID.&lt;/p&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;requestConfirmations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;buyerSellerContract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//Reset them to 0 to be able to safely re-run the oracles&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;trueCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;falseCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;requestConfirmations&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buyerSellerContract&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//Reset them to 0 to be able to safely re-run the oracles&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;trueCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;falseCount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
-        &lt;span class=&quot;c1&quot;&gt;//Loop to iterate through all the responses from different nodes&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++){&lt;/span&gt;
-            &lt;span class=&quot;nc&quot;&gt;Chainlink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memory&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buildChainlinkRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringToBytes32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jobIds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fulfillNodeRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;invoice_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invoiceID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;sendChainlinkRequestTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oracles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ORACLE_PAYMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//Loop to iterate through all the responses from different nodes&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oracles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++){&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Chainlink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memory&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buildChainlinkRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stringToBytes32&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jobIds&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fulfillNodeRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;invoice_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;invoiceID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;sendChainlinkRequestTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oracles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ORACLE_PAYMENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;The fulfillNodeRequest() function expects the requestId and a boolean “paid” from each node that a request has been sent to. The boolean decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations are retrieved and increments are done after the function requestConfirmations() therefore released will not update.&lt;/p&gt;
 
@@ -125,4 +286,66 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;The demo is live on &lt;a href=&quot;http://www.linkpal.io/&quot;&gt;linkpal.io&lt;/a&gt;.&lt;/p&gt;</content><author><name>Vitaly Sergeevich</name></author><category term="blockchain" /><category term="chainlink" /><category term="ethereum" /><category term="solidity" /><category term="coinlist" /><category term="smartcontracts" /><category term="blockstack" /><summary type="html">Blockchain, Chainlink, Ethereum, Solidity, Coinlist, Smart Contracts</summary></entry></feed>
+&lt;p&gt;The demo is live on &lt;a href=&quot;http://www.linkpal.io/&quot;&gt;linkpal.io&lt;/a&gt;.&lt;/p&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Blockchain" />
+      
+
+      
+
+      
+        <summary type="html">Decentralized ETH escrow for ETH/FIAT trading using PayPal.</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Project 5</title>
+      <link href="http://localhost:4000/web%20development/2014/07/14/project-5/" rel="alternate" type="text/html" title="Project 5" />
+      <published>2014-07-14T00:00:00+02:00</published>
+      <updated>2014-07-14T00:00:00+02:00</updated>
+      <id>http://localhost:4000/web%20development/2014/07/14/project-5</id>
+      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/14/project-5/"></content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name></name>
+        
+        
+      </author>
+
+      
+        <category term="Web Development" />
+      
+
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>
