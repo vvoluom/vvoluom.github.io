@@ -4,7 +4,7 @@
   <generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator>
   <link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://localhost:4000/" rel="alternate" type="text/html" />
-  <updated>2020-01-09T23:59:41+01:00</updated>
+  <updated>2020-01-11T19:43:21+01:00</updated>
   <id>http://localhost:4000/</id>
 
   
@@ -161,9 +161,7 @@
       <published>2014-07-15T00:00:00+02:00</published>
       <updated>2014-07-15T00:00:00+02:00</updated>
       <id>http://localhost:4000/blockchain/2014/07/15/project-6</id>
-      <content type="html" xml:base="http://localhost:4000/blockchain/2014/07/15/project-6/">&lt;h1 id=&quot;decentralized-eth-escrow-for-ethfiat-trading-using-paypal&quot;&gt;Decentralized ETH escrow for ETH/FIAT trading using PayPal.&lt;/h1&gt;
-
-&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+      <content type="html" xml:base="http://localhost:4000/blockchain/2014/07/15/project-6/">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides 
 a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal verifications are done by Chainlink’s decentralised oracles.&lt;/p&gt;
 
@@ -181,6 +179,7 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
 &lt;p&gt;Chainlink facilitates the retrieval of reliable and tamper-proof information from and to smart contracts. It does this in a decentralised way by sending and retrieving information from multiple nodes. The data that is received by the majority of the nodes is what the smart contract agrees on as the correct data. Chainlink uses LINK tokens as their cryptocurrency to execute data transactions on their nodes.&lt;/p&gt;
 
 &lt;h1 id=&quot;metamask&quot;&gt;Metamask&lt;/h1&gt;
+&lt;p&gt;Metamask is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.&lt;/p&gt;
 
 &lt;h1 id=&quot;paypal&quot;&gt;PayPal&lt;/h1&gt;
 &lt;p&gt;PayPal is an e-commerce compnay that facilitates payments between parties through online funds transfers.&lt;/p&gt;
@@ -307,7 +306,7 @@ a reliable tamper-proof way to input and retrieve data from these smart contract
       
 
       
-        <summary type="html">Decentralized ETH escrow for ETH/FIAT trading using PayPal.</summary>
+        <summary type="html">Abstract Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal verifications are done by Chainlink’s decentralised oracles.</summary>
       
 
       
