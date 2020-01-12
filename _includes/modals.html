@@ -13,16 +13,22 @@
                     <div class="col-lg-8 col-lg-offset-2">
                         <div>
                             <h1>{{ post.title }}</h1>
-                            <h1>Decentralized ETH escrow for ETH/FIAT trading using PayPal.</h1>
+                            <h1>{{ post.subtitle }}</h1>
                             <hr class="star-primary">
-                            <img src="img/portfolio/{{ post.img }}" class="img-responsive img-centered" alt="{{ post.alt }}">
+                            <img src="img/portfolio/{{ post.coverimage }}" class="img-responsive img-centered" alt="{{ post.alt }}">
                             {% if post.content %}
                                 <div>{{ post.content }}</div>
                             {% endif %}
                             <ul class="list-inline item-details">
+                                {% if post.githublink %}
+                                    <li>Github :
+                                        <strong><a href="{{post.githublink}}"> Repo</a>
+                                        </strong>
+                                    </li>
+                                {% endif %}
                                 {% if post.project-date %}
                                     <li>Date:
-                                        <strong><a href="http://startbootstrap.com">{{ post.project-date }}</a>
+                                        <strong><a>{{ post.project-date }}</a>
                                         </strong>
                                     </li>
                                 {% endif %}
