@@ -48,29 +48,23 @@ Those parameters are what the seller needs to input themselves, Metamask handles
 The ETH is automatically transfered to the deployed contract on creation. Once the contract is deployed it's address is stored under two mapped arrays, one mapping to the Seller's ETH address and the other maps onto the Buyer's to make it easier for both parties to keep track of their agreements. The code below shows the deployment of the contract and the storage of it's address.
 
 ```java
-  //Creation of LinkPal Agreement
-  address LinkPalAddress = (new LinkPal).value(address(this).balance)(
-            _invoiceID,
+    //Creation of an Agreement
+     address AgreementAddress = (new Agreement).value(address(this).balance)(
         msg.sender,
-        _buyerAddress,
+        _buyerEthAddress,
         msg.value,
+        _amountTarget,
+        _sellerTargetCryptoAddress,
+        _buyerTargetCryptoAddress,
         _jobIds,
         _oracles
     );
 
-  //Storing the address of that LinkPal Agreement
-  LinkPalAddressesSeller[msg.sender].push(LinkPalAddress);
-  LinkPalAddressesBuyer[_buyerAddress].push(LinkPalAddress);
+    AgreementAddressesSeller[msg.sender].push(AgreementAddress);
+    AgreementAddressesBuyer[_buyerEthAddress].push(AgreementAddress);
 ```
 
-Once the contract is deployed the buyer can now check the contract's details to see if there is infact ETH deposited inside it and what the deadline for seller's withdrawal is. If everything looks fine then they could pay the invoice of the specified payment method, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the Invoice ID and retrieve the key value pair {paid : bool} which would be True or False depending if the invoice was paid or not. If True then the funds are released from the smart contract and the buyer can withdraw them. The figure below shows how a deployed contract would look to a Seller. The amounts need to be changed to be more readable as the ETH amount is in Wei and the Created time is in block time seconds.
-
-<img src="../images/LinkPal/deployedLinkPal.png" alt="linearly separable data">
-
-This is the contract from the Seller/Buyer's perspective.
-
-
-<img src="../images/LinkPal/buyerDeployedLinkPal.png" alt="linearly separable data">
+Once the contract is deployed the buyer can now check the contract's details to see if there is infact ETH deposited inside it and what the deadline for seller's withdrawal is. If everything looks fine then they could pay the BTC address of the Buyer, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the transaction hash and retrieve the amount of Bitcoin transacted, that amount is then matched to the amount agreed upon which would be True or False depending if the amount was matched or not. If True then the funds are released from the smart contract and the buyer can withdraw them.
 
 These are the Buyer's options:
 
@@ -79,22 +73,30 @@ These are the Buyer's options:
 * Withdraw LINK : Withdraw any unused LINK the contract may have.
 * Withdraw ETH  : Withdraw the ETH that has just been sold to you on the condition that the invoice was paid and the oracles queried it.
 
-The code snippet below shows how requests can be built to confirm if the invoice had been paid or not. The truecount/falsecount variables are used to keep track of the {paid : bool} response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the PayPal Invoice ID.
+The code snippet below shows how requests can be built to confirm if the BTC address has been paid or not. The truecount/falsecount variables are used to keep track of the response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the concatendated string built with a tx_hash and the Seller's BTC address stored in the contract.
 
 ```java
-function requestConfirmations() public buyerSellerContract{
-    //Reset them to 0 to be able to safely re-run the oracles
-    trueCount = 0;
-    falseCount = 0;
+function requestConfirmations(string memory tx_hash)
+    public
+    buyerSellerContract
+    {
+        apiAddress = strConcat("https://blockchain.info/q/txresult/", tx_hash, "/", sellerTargetCryptoAddress, "?confirmations=3");
+        //Reset them to 0 to be able to safely re-run the oracles
+        trueCount = 0;
+        falseCount = 0;
 
-    //Loop to iterate through all the responses from different nodes
-    for(uint i = 0; i < oracles.length; i++){
-        Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fulfillNodeRequest.selector);
-        req.add("invoice_id", invoiceID);
-        sendChainlinkRequestTo(oracles[i], req, ORACLE_PAYMENT);
+        //Loop to iterate through all the responses from different nodes
+        for(uint i = 0; i < oracles.length; i++){
+            Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fulfillNodeRequest.selector);
+            req.add("get",apiAddress);
+            sendChainlinkRequestTo(oracles[i], req, ORACLE_PAYMENT);
+        }
     }
-}
 ```
+
+The requestConfirmations(string memory tx_hash) function takes in the parameter of the transaction hash and adds it to the API that is going to be used together with the Seller's BTC address to create a full link which will respond with a JSON file once pinged by the Oracle. 
+### WORK FROM HERE
+
 The fullfillNodeRequest() function expects the requestId and a boolean "paid" from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() therefore released will not update. 
 
 ```java

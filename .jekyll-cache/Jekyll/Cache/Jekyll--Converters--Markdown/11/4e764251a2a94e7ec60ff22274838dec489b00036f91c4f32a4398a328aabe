@@ -1,0 +1,3 @@
+I"y<h2 id="abstract">Abstract</h2>
+<p>Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal/Revolut verifications are done by Chainlink’s decentralised oracles.</p>
+:ET
