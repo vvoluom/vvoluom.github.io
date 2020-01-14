@@ -1,0 +1,17 @@
+I"�<h2 id="abstract">Abstract</h2>
+<p>Decision trees are models whose structure allows for tracing an explanation of how the
+final decision was taken. Neural networks known as ’black box’ model, do not readily
+and explicitly offer an explanation of how the decision was reached. However since Neural
+Networks are capable of learning knowledge representation it will be very useful to develop
+methods that interpret the model’s decisions.
+In this project Activation Maximisation will be used to search for prototypical inputs
+that maximise the model’s response for a quantity of interest. A pair-wise prototype com-
+parison is then carried out under different learning conditions, such as number of classes
+the model deals with. The study is grounded in the area of object spatial relations recogni-
+tion in images and will shed light on what models are learning about objects in 2D images
+which should give insight into how the system can be improved.
+The spatial relation problem is one where given a subject and an object the cor-
+rect spatial preposition is predicted. This problem extends beyond just predicting one
+correct spatial preposition as there are mulitple possible relationships associated between
+two objects.</p>
+:ET

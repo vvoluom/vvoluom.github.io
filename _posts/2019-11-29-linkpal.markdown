@@ -108,7 +108,7 @@ function requestConfirmations() public buyerSellerContract{
     }
 }
 ```
-The fullfillNodeRequest() function expects the requestId and a boolean "paid" from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() therefore released will not update. 
+The fullfillNodeRequest() function expects the requestId and a boolean "paid" from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the Ethereum should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() is run therefore the released boolean will not update. 
 
 ```java
     function fullfillNodeRequest(bytes32 _requestId, bool paid)

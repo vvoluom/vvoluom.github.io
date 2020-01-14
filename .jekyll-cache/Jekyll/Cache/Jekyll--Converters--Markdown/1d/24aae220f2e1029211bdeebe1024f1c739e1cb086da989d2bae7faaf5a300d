@@ -1,0 +1,155 @@
+I"7*<h2 id="abstract">Abstract</h2>
+<p>Decision trees are models whose structure allows for tracing an explanation of how the final decision was taken. Neural networks known as ’black box’ model, do not readily and explicitly offer an explanation of how the decision was reached. However since Neural Networks are capable of learning knowledge representation it will be very useful to develop methods that interpret the model’s decisions.
+In this project Activation Maximisation will be used to search for prototypical inputs that maximise the model’s response for a quantity of interest. A pair-wise prototype comparison is then carried out under different learning conditions, such as number of classes the model deals with. The study is grounded in the area of object spatial relations recognition in images and will shed light on what models are learning about objects in 2D images which should give insight into how the system can be improved.
+The spatial relation problem is one where given a subject and an object the correct spatial preposition is predicted. This problem extends beyond just predicting one correct spatial preposition as there are mulitple possible relationships associated between two objects.</p>
+
+<h1 id="contents">Contents</h1>
+<ol>
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Background-and-Literature-Review">Background and Literature Review</a>
+    <ol>
+      <li><a href="#Preamable">Preamable</a></li>
+      <li><a href="#Convolutional-Neural-Networks">Convolutional Neural Networks</a>
+        <ol>
+          <li><a href="#Image-Components">Image Components</a></li>
+          <li><a href="#Convolutional-Layer">Convolutional Layer</a></li>
+          <li><a href="#ReLU-Layer">ReLU Layer</a></li>
+          <li><a href="#Pooling-Layer">Pooling Layer</a></li>
+          <li><a href="#Fully-Connected-Layer">Fully Connected Layer</a></li>
+          <li><a href="#Final-Layer">Final Layer</a></li>
+          <li><a href="#Dropout-Layer">Dropout Layer</a></li>
+          <li><a href="#Single-vs-Multi-Label-Classification">Single vs Multi Label Classification</a></li>
+          <li><a href="#Training-and-Terminology">Training and Terminology</a></li>
+          <li><a href="#Very-Deep-Convolutional-Networks-For-Large-Scale-Image-Recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</a></li>
+        </ol>
+      </li>
+      <li><a href="#Visual-Relationship-Detection">Visual Relationship Detection</a>
+        <ol>
+          <li><a href="#Recognition-Using-Visual-Phrases">Recognition Using Visual Phrases</a></li>
+          <li><a href="#Visual-Relationship-Detection-with-Language-Priors">Visual Relationship Detection with Language Priors</a></li>
+          <li><a href="#Detecting-Visual-Relationships-with-Deep-Relational-Networks">Detecting Visual Relationships with Deep Relational Networks</a></li>
+          <li><a href="#A-Study-on-the-Detection-of-Visual-Relationships">A Study on the Detection of Visual Relationships</a></li>
+        </ol>
+      </li>
+      <li><a href="#Datasets">Datasets</a>
+        <ol>
+          <li><a href="#SpatialVOC2K:-A-Multilingual-Dataset-of-Images-with-Annotations-and-Features-for-Spatial-Relations-between-Objects">SpatialVOC2K: A Multilingual Dataset of Images with Annotations and Features for Spatial Relations between Objects</a></li>
+          <li><a href="#Stanford-VRD">Stanford VRD</a></li>
+        </ol>
+      </li>
+      <li><a href="#A-Review-on-Multi-Label-Learning-Algorithms">A Review on Multi-Label Learning Algorithms</a></li>
+      <li><a href="#Activation-Maximization">Activation Maximization</a></li>
+    </ol>
+  </li>
+  <li><a href="#Methodology">Methodology</a>
+    <ol>
+      <li><a href="#Data-Preparation">Data Preparation</a>
+        <ol>
+          <li><a href="#Stanford-VRD-Dataset">Stanford VRD Dataset</a></li>
+          <li><a href="#SpatialVoc2k-Dataset">SpatialVoc2k Dataset</a></li>
+          <li><a href="#Geometric-Datasets">Geometric Datasets</a></li>
+          <li><a href="#Single-Label-Datasets">Single Label Datasets</a></li>
+        </ol>
+      </li>
+      <li><a href="#Image-Preparation">Image Preparation</a></li>
+      <li><a href="#Training">Training</a>
+        <ol>
+          <li><a href="#VGG16">VGG16</a></li>
+          <li><a href="#Feed-Forward-Neural-Network">Feed Forward Neural Network</a></li>
+          <li><a href="#Data-Generators">Data Generators</a></li>
+        </ol>
+      </li>
+      <li><a href="#Evaluation-and-Metrics">Evaluation and Metrics</a></li>
+      <li><a href="#Interpreting-the-models">Interpreting the models</a></li>
+    </ol>
+  </li>
+  <li><a href="#Findings">Findings</a>
+    <ol>
+      <li><a href="#Preamble">Preamble</a></li>
+      <li><a href="#VRD-Dataset-Evaluation-Results">VRD Dataset Evaluation Results</a>
+        <ol>
+          <li><a href="#VGG16-Evaluation-Results">VGG16 Evaluation Results</a></li>
+          <li><a href="#Feed-Forward-Evaluation-Results">Feed Forward Evaluation Results</a></li>
+          <li><a href="#Activation-Maximization-Evaluation-Results">Activation Maximization Evaluation Results</a></li>
+        </ol>
+      </li>
+      <li><a href="#SpatialVoc2k-Dataset-Evaluation-Results">SpatialVoc2k Dataset Evaluation Results</a>
+        <ol>
+          <li><a href="#VGG16-Evaluation-Results">VGG16 Evaluation Results</a></li>
+          <li><a href="#Feed-Forward-Evaluation-Results">Feed Forward Evaluation Results</a></li>
+          <li><a href="#Activation-Maximization-Evaluation-Results">Activation Maximization Evaluation Results</a></li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#Analysis-of-Results">Analysis of Results</a>
+    <ol>
+      <li><a href="#Preamble">Preamble</a></li>
+      <li><a href="#VRD-Results">VRD Results</a>
+        <ol>
+          <li><a href="#Multi-label-vs-Single-label-Classification">Multi-label vs Single-label Classification</a></li>
+          <li><a href="#VGG16-vs-Feed-Forward-Neural-Network">VGG16 vs Feed Forward Neural Network</a></li>
+          <li><a href="#Activation-Maximization">Activation Maximization</a></li>
+          <li><a href="#Conclusions">Conclusions</a></li>
+        </ol>
+      </li>
+      <li><a href="#SpatialVoc2k-Results">SpatialVoc2k Results</a>
+        <ol>
+          <li><a href="#Multi-label-vs-Single-label-Classification">Multi-label vs Single-label Classification</a></li>
+          <li><a href="#VGG16-vs-Feed-Forward-Neural-Network">VGG16 vs Feed Forward Neural Network</a></li>
+          <li><a href="#Activation-Maximization">Activation Maximization</a></li>
+          <li><a href="#Conclusions">Conclusions</a></li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#References">References</a></li>
+</ol>
+
+<h2 id="introduction">Introduction</h2>
+<p>       Research in computer vision has excelled in recent years largely due to technological
+advancements in hardware. This allowed for more computationally intensive ideas to be
+explored and implemented. Deep Learning a subset of Machine Learning is one of those
+ideas based on artificial neural networks. Deep learning in computer vision comes in the
+form of Convolutional Neural Networks (CNN’s). This form of Machine Learning is effec-
+tive as it takes the given images and through a sequence of convolutions and pooling layers
+transforms this data into that of smaller size while retaining important features. This
+reduces the training time and computational power required to classify images compared
+to a Neural Network.<br />
+       CNNs have become very precise and effective in solving the problems of object de-
+tection and localization in images. Up until recently it was thought to be impossible for a
+computer to distinguish between a cat and a dog in an image due to them having similar
+general features but nowadays anyone can implement a simple CNN to solve this clas-
+sification problem. The focus is shifting from object recognition to the study of visual
+relationships between objects in an image. This is the visual relationship detection (VRD)
+problem. In this problem given a subject and an object, the machine learning model must
+predict the best predicate that describes the visual relationship between those two objects.<br />
+       The VRD problem was first tackled by Sadeghi and Farhadis (2011) by taking triplet
+representation &lt; subject, predicate, object &gt; as a class, this has led to an exponential
+growth in classes and a long tail distribution problem. A solution to that was to divide
+the problem up into parts. The first part would be to perform object detection on the two
+objects and then pass their Union into a new network which was specialized in predicate
+prediction as done by Lu et al (2016). There have been improvements to accuracy for
+this method such as having geometric and text features accompany the CNN model for
+increased accuracy. VRD is important as it would give greater context to images which
+would provide real world solutions to problems such as giving audio descriptions to blind
+people of the environment around them.<br />
+       Since neural networks are a black box models to know if a CNN is working correctly
+it is evaluated over unseen data and its accuracy is measured over how well it predicts
+this data. This is a working method however we don’t understand how and why the final
+descion was made. It would be reassuring to understand why the decision was made. An
+example of why this is important, in the news there was a lady who fell asleep at the wheel
+of a self driving car and this car didnt stop when a pedestrian was crossing the road and hit them. When the company looked at the logs of the car to figure out what went wrong
+and why the car didnt see the pedestrian they found out that the car had seen the person
+and decided not to stop. If all the descion making process of the car had been carefully
+understood and analyzed the people creating the A.I could have seen that in one of those
+decision paths the car would see the person and not stop. As A.I systems are being integrated into our daily lives such as medical diagnosis and driverless cars, it is important to
+make sure they are understood and Activation Maximization is one of the methods that
+will be explored in this dissertation.<br />
+       The research aim is to use Activation Maximization on the VRD problem to interpret
+and understand what the CNN is looking for when classifiying relations. Since VRD con-
+tains many relationships the main focus will be on spatial relations between two objects.
+This dissertation will focus on interpreting different models and configurations to have an
+understanding of what the model is learning and whether or not Activation Maximization
+is a useful method of doing so.</p>
+:ET

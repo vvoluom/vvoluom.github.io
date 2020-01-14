@@ -87,33 +87,59 @@ function requestConfirmations(string memory tx_hash)
 
         //Loop to iterate through all the responses from different nodes
         for(uint i = 0; i < oracles.length; i++){
-            Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fulfillNodeRequest.selector);
+            Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fullfillNodeRequest.selector);
             req.add("get",apiAddress);
             sendChainlinkRequestTo(oracles[i], req, ORACLE_PAYMENT);
         }
     }
 ```
 
-The requestConfirmations(string memory tx_hash) function takes in the parameter of the transaction hash and adds it to the API that is going to be used together with the Seller's BTC address to create a full link which will respond with a JSON file once pinged by the Oracle. 
-### WORK FROM HERE
+The requestConfirmations(string memory tx_hash) function takes in the parameter of the transaction hash and adds it to the API that is going to be used together with the Seller's BTC address to create a full link which will respond with a JSON file once pinged by the Oracle. The apiAddress created is a string concatenation of the API url "https://blockchain.info/q/txresult/", the transaction hash (tx_hash) that is produced whenever transacting Bitcoin from one address to another, the sellerTargetCryptoAddress which is the Seller's Bitcoin address and "?confirmations=3" which specifies that the transaction will only be shown after at least 3 blocks have confirmed it. 
 
-The fullfillNodeRequest() function expects the requestId and a boolean "paid" from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() therefore released will not update. 
+The fullfillNodeRequest() function expects the requestId and a uint256 txid from each node that a request has been sent to. The uint256 received represents the BTC transfered in the transaction, this is matched to the agreed amount in the contract. If the amounts are equal then the true count is incremented, if not then the false count is incremented after each increment it decides if the Ethereum should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() is run therefore the released boolean will not update. 
 
 ```java
-    function fullfillNodeRequest(bytes32 _requestId, bool paid)
+    function fullfillNodeRequest(bytes32 _requestId, uint256 txid)
     public
     recordChainlinkFulfillment(_requestId){
-        if(paid == true) {
+        returnedtxid = txid;
+        if(amountTarget == txid) {
             trueCount += 1;
-        }else if (paid == false){
+        }else if (amountTarget != txid){
             falseCount += 1;
         }
         if(trueCount > falseCount){
             released = true;
         }else{
-            released = false;
-        }
+		  released = false;
+		}
         emit successNodeResponse(released);
+    }
+```
+
+The contract includes extra functionality to retrieve the current price of a cryptocurrency, the function below requestMarketPrice(string coinnumber, address _oracle, string  _jobId) needs the Oracle address, Job Id specified from where the information should be retrieved from and the coinnumber is the specified cryptocurreny which's price should be retrieved, for example BTC has a coinnumber of 1. When a request is to the Oracle a response is sent back in JSON format, it then needs to parsed to retrieve the specific key value pair, this is done by specifying the path "data.coin.price" to retrieve it. 
+
+```java
+    function requestMarketPrice(string coinnumber, address _oracle, string  _jobId)
+    public
+    {
+        //Loop to iterate through all the responses from different nodes
+        Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fullfillCoinPrice.selector);
+        req.add("coin_id", coinnumber);
+        req.add("copyPath", "data.coin.price");
+        sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
+    }
+```
+The price of the coin is then stored in the contract once received from the Oracle.
+Once received an event is emitted which will update a website that is interacting with this contract, this price will also be stored inside the contract for retrieval at any time. 
+
+```java
+    function fullfillCoinPrice(bytes32 _requestId, int256 coinPrice)
+    public
+    recordChainlinkFulfillment(_requestId)
+    {
+        marketPrice = coinPrice;
+        emit NewPriceEmiited(coinPrice);
     }
 ```
 
@@ -143,7 +169,4 @@ The withdrawLink() function allows for users to withdraw the unused LINK token i
     }
 ```
 ## Conclusion
-LinkPal successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for LinkPal is to include more payment methods and Ethereum based tokens.
-
-## Updates
-Since it's release LinkPal has been split into two, standard and secret trades. The standard trades are the normal trades as seen above but the secret trades uses BlockStack Authentication to encrypt the invoice ID's in a decentralized manner and store the ciphertexts on the smart contracts.
+HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.

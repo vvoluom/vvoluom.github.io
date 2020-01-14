@@ -114,7 +114,7 @@
                                     <i class="fa fa-search-plus fa-3x"></i>
                                 </div>
                             </div>
-                            <img src="img/portfolio/HoneyDexF.jpg" class="img-responsive" alt="image-alt">
+                            <img src="img/portfolio/activationMaximization.png" class="img-responsive" alt="image-alt">
                         </a>
                     </div>
                 
@@ -340,29 +340,23 @@ Those parameters are what the seller needs to input themselves, Metamask handles
 The ETH is automatically transfered to the deployed contract on creation. Once the contract is deployed it's address is stored under two mapped arrays, one mapping to the Seller's ETH address and the other maps onto the Buyer's to make it easier for both parties to keep track of their agreements. The code below shows the deployment of the contract and the storage of it's address.
 
 ```java
-  //Creation of LinkPal Agreement
-  address LinkPalAddress = (new LinkPal).value(address(this).balance)(
-            _invoiceID,
+    //Creation of an Agreement
+     address AgreementAddress = (new Agreement).value(address(this).balance)(
         msg.sender,
-        _buyerAddress,
+        _buyerEthAddress,
         msg.value,
+        _amountTarget,
+        _sellerTargetCryptoAddress,
+        _buyerTargetCryptoAddress,
         _jobIds,
         _oracles
     );
 
-  //Storing the address of that LinkPal Agreement
-  LinkPalAddressesSeller[msg.sender].push(LinkPalAddress);
-  LinkPalAddressesBuyer[_buyerAddress].push(LinkPalAddress);
+    AgreementAddressesSeller[msg.sender].push(AgreementAddress);
+    AgreementAddressesBuyer[_buyerEthAddress].push(AgreementAddress);
 ```
 
-Once the contract is deployed the buyer can now check the contract's details to see if there is infact ETH deposited inside it and what the deadline for seller's withdrawal is. If everything looks fine then they could pay the invoice of the specified payment method, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the Invoice ID and retrieve the key value pair {paid : bool} which would be True or False depending if the invoice was paid or not. If True then the funds are released from the smart contract and the buyer can withdraw them. The figure below shows how a deployed contract would look to a Seller. The amounts need to be changed to be more readable as the ETH amount is in Wei and the Created time is in block time seconds.
-
-<img src="../images/LinkPal/deployedLinkPal.png" alt="linearly separable data">
-
-This is the contract from the Seller/Buyer's perspective.
-
-
-<img src="../images/LinkPal/buyerDeployedLinkPal.png" alt="linearly separable data">
+Once the contract is deployed the buyer can now check the contract's details to see if there is infact ETH deposited inside it and what the deadline for seller's withdrawal is. If everything looks fine then they could pay the BTC address of the Buyer, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the transaction hash and retrieve the amount of Bitcoin transacted, that amount is then matched to the amount agreed upon which would be True or False depending if the amount was matched or not. If True then the funds are released from the smart contract and the buyer can withdraw them.
 
 These are the Buyer's options:
 
@@ -371,39 +365,73 @@ These are the Buyer's options:
 * Withdraw LINK : Withdraw any unused LINK the contract may have.
 * Withdraw ETH  : Withdraw the ETH that has just been sold to you on the condition that the invoice was paid and the oracles queried it.
 
-The code snippet below shows how requests can be built to confirm if the invoice had been paid or not. The truecount/falsecount variables are used to keep track of the {paid : bool} response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the PayPal Invoice ID.
+The code snippet below shows how requests can be built to confirm if the BTC address has been paid or not. The truecount/falsecount variables are used to keep track of the response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the concatendated string built with a tx_hash and the Seller's BTC address stored in the contract.
 
 ```java
-function requestConfirmations() public buyerSellerContract{
-    //Reset them to 0 to be able to safely re-run the oracles
-    trueCount = 0;
-    falseCount = 0;
+function requestConfirmations(string memory tx_hash)
+    public
+    buyerSellerContract
+    {
+        apiAddress = strConcat("https://blockchain.info/q/txresult/", tx_hash, "/", sellerTargetCryptoAddress, "?confirmations=3");
+        //Reset them to 0 to be able to safely re-run the oracles
+        trueCount = 0;
+        falseCount = 0;
 
-    //Loop to iterate through all the responses from different nodes
-    for(uint i = 0; i < oracles.length; i++){
-        Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fulfillNodeRequest.selector);
-        req.add("invoice_id", invoiceID);
-        sendChainlinkRequestTo(oracles[i], req, ORACLE_PAYMENT);
+        //Loop to iterate through all the responses from different nodes
+        for(uint i = 0; i < oracles.length; i++){
+            Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(jobIds[i]), this, this.fullfillNodeRequest.selector);
+            req.add("get",apiAddress);
+            sendChainlinkRequestTo(oracles[i], req, ORACLE_PAYMENT);
+        }
     }
-}
 ```
-The fullfillNodeRequest() function expects the requestId and a boolean "paid" from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() therefore released will not update. 
+
+The requestConfirmations(string memory tx_hash) function takes in the parameter of the transaction hash and adds it to the API that is going to be used together with the Seller's BTC address to create a full link which will respond with a JSON file once pinged by the Oracle. The apiAddress created is a string concatenation of the API url "https://blockchain.info/q/txresult/", the transaction hash (tx_hash) that is produced whenever transacting Bitcoin from one address to another, the sellerTargetCryptoAddress which is the Seller's Bitcoin address and "?confirmations=3" which specifies that the transaction will only be shown after at least 3 blocks have confirmed it. 
+
+The fullfillNodeRequest() function expects the requestId and a uint256 txid from each node that a request has been sent to. The uint256 received represents the BTC transfered in the transaction, this is matched to the agreed amount in the contract. If the amounts are equal then the true count is incremented, if not then the false count is incremented after each increment it decides if the Ethereum should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() is run therefore the released boolean will not update. 
 
 ```java
-    function fullfillNodeRequest(bytes32 _requestId, bool paid)
+    function fullfillNodeRequest(bytes32 _requestId, uint256 txid)
     public
     recordChainlinkFulfillment(_requestId){
-        if(paid == true) {
+        returnedtxid = txid;
+        if(amountTarget == txid) {
             trueCount += 1;
-        }else if (paid == false){
+        }else if (amountTarget != txid){
             falseCount += 1;
         }
         if(trueCount > falseCount){
             released = true;
         }else{
-            released = false;
-        }
+		  released = false;
+		}
         emit successNodeResponse(released);
+    }
+```
+
+The contract includes extra functionality to retrieve the current price of a cryptocurrency, the function below requestMarketPrice(string coinnumber, address _oracle, string  _jobId) needs the Oracle address, Job Id specified from where the information should be retrieved from and the coinnumber is the specified cryptocurreny which's price should be retrieved, for example BTC has a coinnumber of 1. When a request is to the Oracle a response is sent back in JSON format, it then needs to parsed to retrieve the specific key value pair, this is done by specifying the path "data.coin.price" to retrieve it. 
+
+```java
+    function requestMarketPrice(string coinnumber, address _oracle, string  _jobId)
+    public
+    {
+        //Loop to iterate through all the responses from different nodes
+        Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fullfillCoinPrice.selector);
+        req.add("coin_id", coinnumber);
+        req.add("copyPath", "data.coin.price");
+        sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
+    }
+```
+The price of the coin is then stored in the contract once received from the Oracle.
+Once received an event is emitted which will update a website that is interacting with this contract, this price will also be stored inside the contract for retrieval at any time. 
+
+```java
+    function fullfillCoinPrice(bytes32 _requestId, int256 coinPrice)
+    public
+    recordChainlinkFulfillment(_requestId)
+    {
+        marketPrice = coinPrice;
+        emit NewPriceEmiited(coinPrice);
     }
 ```
 
@@ -433,11 +461,7 @@ The withdrawLink() function allows for users to withdraw the unused LINK token i
     }
 ```
 ## Conclusion
-LinkPal successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for LinkPal is to include more payment methods and Ethereum based tokens.
-
-## Updates
-Since it's release LinkPal has been split into two, standard and secret trades. The standard trades are the normal trades as seen above but the secret trades uses BlockStack Authentication to encrypt the invoice ID's in a decentralized manner and store the ciphertexts on the smart contracts.
-</div>
+HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.</div>
                             
                             <ul class="list-inline item-details">
                                 
@@ -479,24 +503,454 @@ Since it's release LinkPal has been split into two, standard and secret trades. 
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div>
-                            <h1>Project 2</h1>
+                            <h1>Interpreting Neural Networks via Activation Maximization</h1>
                             <h1></h1>
                             <hr class="star-primary">
-                            <img src="img/portfolio/" class="img-responsive img-centered" alt="image-alt">
+                            <img src="img/portfolio/amCoverPhoto.jpeg" class="img-responsive img-centered" alt="image-alt">
                             
-                                <div></div>
+                                <div>## Abstract
+Decision trees are models whose structure allows for tracing an explanation of how the final decision was taken. Neural networks known as ’black box’ model, do not readily and explicitly offer an explanation of how the decision was reached. However since Neural Networks are capable of learning knowledge representation it will be very useful to develop methods that interpret the model’s decisions.
+In this project Activation Maximisation will be used to search for prototypical inputs that maximise the model’s response for a quantity of interest. A pair-wise prototype comparison is then carried out under different learning conditions, such as number of classes the model deals with. The study is grounded in the area of object spatial relations recognition in images and will shed light on what models are learning about objects in 2D images which should give insight into how the system can be improved.
+The spatial relation problem is one where given a subject and an object the correct spatial preposition is predicted. This problem extends beyond just predicting one correct spatial preposition as there are mulitple possible relationships associated between two objects.
+
+# Contents
+1. [Intro](#intro)
+2. [Background and Literature Review](#background-and-Literature-Review)
+    1. [Preamable](#preamable)
+    2. [Convolutional Neural Networks](#convolutional-Neural-Networks)
+        1. [Image Components](#image-Components)
+        2. [Convolutional Layer](#convolutional-Layer)
+        3. [ReLU Layer](#reLU-Layer)
+        4. [Pooling Layer](#pooling-Layer)
+        5. [Fully Connected Layer](#fully-Connected-Layer)
+        6. [Final Layer](#final-Layer)
+        7. [Dropout Layer](#dropout-Layer)
+        8. [Single vs Multi Label Classification](#single-vs-Multi-Label-Classification)
+        9. [Training and Terminology](#training-and-Terminology)
+        10. [Very Deep Convolutional Networks For Large-Scale Image Recognition](#very-Deep-Convolutional-Networks-For-Large-Scale-Image-Recognition)
+    3. [Visual Relationship Detection](#visual-Relationship-Detection)
+        1. [Recognition Using Visual Phrases](#recognition-Using-Visual-Phrases)
+        2. [Visual Relationship Detection with Language Priors](#visual-Relationship-Detection-with-Language-Priors)
+        3. [Detecting Visual Relationships with Deep Relational Networks](#detecting-Visual-Relationships-with-Deep-Relational-Networks)
+        4. [A Study on the Detection of Visual Relationships](#a-Study-on-the-Detection-of-Visual-Relationships)
+    4. [Datasets](#datasets)
+        1. [SpatialVOC2K: A Multilingual Dataset of Images with Annotations and Features for Spatial Relations between Objects](#spatialVOC2K:-A-Multilingual-Dataset-of-Images-with-Annotations-and-Features-for-Spatial-Relations-between-Objects)
+        2. [Stanford VRD](#stanford-VRD)
+    5. [A Review on Multi-Label Learning Algorithms](#a-Review-on-Multi-Label-Learning-Algorithms)
+    6. [Activation Maximization](#activation-Maximization)
+3. [Methodology](#methodology)
+    1. [Data Preparation](#data-Preparation)
+        1. [Stanford VRD Dataset](#stanford-VRD-Dataset)
+        2. [SpatialVoc2k Dataset](#spatialVoc2k-Dataset)
+        3. [Geometric Datasets](#geometric-Datasets)
+        4. [Single Label Datasets](#single-Label-Datasets)
+    2. [Image Preparation](#image-Preparation)
+    3. [Training](#training)
+        1. [VGG16](#vGG16)
+        2. [Feed Forward Neural Network](#feed-Forward-Neural-Network)
+        3. [Data Generators](#data-Generators)
+    4. [Evaluation and Metrics](#evaluation-and-Metrics)
+    5. [Interpreting the models](#interpreting-the-models)
+4. [Findings](#findings)
+    1. [Preamble](#preamble)
+    2. [VRD Dataset Evaluation Results](#vRD-Dataset-Evaluation-Results)
+        1. [VGG16 Evaluation Results](#vGG16-Evaluation-Results)
+        2. [Feed Forward Evaluation Results](fFeed-Forward-Evaluation-Results)
+        3. [Activation Maximization Evaluation Results](#activation-Maximization-Evaluation-Results)
+    3. [SpatialVoc2k Dataset Evaluation Results](#spatialVoc2k-Dataset-Evaluation-Results)
+        1. [VGG16 Evaluation Results](#vGG16-Evaluation-Results)
+        2. [Feed Forward Evaluation Results](#feed-Forward-Evaluation-Results)
+        3. [Activation Maximization Evaluation Results](#activation-Maximization-Evaluation-Results)
+5. [Analysis of Results](#analysis-of-Results)
+    1. [Preamble](#preamble)
+    2. [VRD Results](#vRD-Results)
+        1. [Multi-label vs Single-label Classification](#multi-label-vs-Single-label-Classification)
+        2. [VGG16 vs Feed Forward Neural Network](#vGG16-vs-Feed-Forward-Neural-Network)
+        3. [Activation Maximization](#activation-Maximization)
+        4. [Conclusions](#conclusions)
+    3. [SpatialVoc2k Results](#spatialVoc2k-Results)
+        1. [Multi-label vs Single-label Classification](#multi-label-vs-Single-label-Classification)
+        2. [VGG16 vs Feed Forward Neural Network](#vGG16-vs-Feed-Forward-Neural-Network)
+        3. [Activation Maximization](#activation-Maximization)
+        4. [Conclusions](#conclusions)
+6. [References](#references)
+
+# Intro
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Research in computer vision has excelled in recent years largely due to technological
+advancements in hardware. This allowed for more computationally intensive ideas to be
+explored and implemented. Deep Learning a subset of Machine Learning is one of those
+ideas based on artificial neural networks. Deep learning in computer vision comes in the
+form of Convolutional Neural Networks (CNN’s). This form of Machine Learning is effective as it takes the given images and through a sequence of convolutions and pooling layers
+transforms this data into that of smaller size while retaining important features. This
+reduces the training time and computational power required to classify images compared
+to a Neural Network.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CNNs have become very precise and effective in solving the problems of object detection and localization in images. Up until recently it was thought to be impossible for a
+computer to distinguish between a cat and a dog in an image due to them having similar
+general features but nowadays anyone can implement a simple CNN to solve this classification problem. The focus is shifting from object recognition to the study of visual
+relationships between objects in an image. This is the visual relationship detection (VRD)
+problem. In this problem given a subject and an object, the machine learning model must
+predict the best predicate that describes the visual relationship between those two objects.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The VRD problem was first tackled by Sadeghi and Farhadis (2011) by taking triplet
+representation < subject, predicate, object > as a class, this has led to an exponential
+growth in classes and a long tail distribution problem. A solution to that was to divide
+the problem up into parts. The first part would be to perform object detection on the two
+objects and then pass their Union into a new network which was specialized in predicate
+prediction as done by Lu et al (2016). There have been improvements to accuracy for
+this method such as having geometric and text features accompany the CNN model for
+increased accuracy. VRD is important as it would give greater context to images which
+would provide real world solutions to problems such as giving audio descriptions to blind
+people of the environment around them.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Since neural networks are a black box models to know if a CNN is working correctly
+it is evaluated over unseen data and its accuracy is measured over how well it predicts
+this data. This is a working method however we don’t understand how and why the final
+descion was made. It would be reassuring to understand why the decision was made. An
+example of why this is important, in the news there was a lady who fell asleep at the wheel
+of a self driving car and this car didnt stop when a pedestrian was crossing the road and hit them. When the company looked at the logs of the car to figure out what went wrong
+and why the car didnt see the pedestrian they found out that the car had seen the person
+and decided not to stop. If all the descion making process of the car had been carefully
+understood and analyzed the people creating the A.I could have seen that in one of those
+decision paths the car would see the person and not stop. As A.I systems are being integrated into our daily lives such as medical diagnosis and driverless cars, it is important to
+make sure they are understood and Activation Maximization is one of the methods that
+will be explored in this dissertation.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The research aim is to use Activation Maximization on the VRD problem to interpret
+and understand what the CNN is looking for when classifiying relations. Since VRD contains many relationships the main focus will be on spatial relations between two objects.
+This dissertation will focus on interpreting different models and configurations to have an
+understanding of what the model is learning and whether or not Activation Maximization
+is a useful method of doing so.
+
+# Background and Literature Review <a name="background-and-Literature-Review"></a>
+
+## Preamable
+
+In this chapter we will be going through the components that make up a CNN and the
+different architectures of CNNs. This chapter also includes literature reviews on existing works tackling the VRD problem and Activation Maximization.
+
+## Convolutional Neural Networks <a name = "convolutional-Neural-Networks"></a>
+
+### Image Components <a name = "image-Components"></a>
+
+RGB images consists of 3 channels Red, Green and Blue. These 3 channels are each
+represtented by a 2D array with each entry being a pixel value that ranges from 0 to 255. The pixel value in the array represents the colour intensity of the channel. Combining these 3 arrays together will yield the original image. The image details are represented as (Height ,Width,Channels) and this is the shape that the CNN expects as input. This input shape is kept the same for all images during training.
+
+### Convolutional Layer <a name = "convolutional-Layer"></a>
+
+The convolutional layer is composed of a kernel/filter which is a 2D matrix of a given size e.g (3x3) that performs matrix multiplication between itself and a portion of a region of the image. It does this by striding from left to right with a certain stride range e.g (Stride = 1 ) until the entire image is traversed. This extracts features from the image, for the first convolutional layer it would extract low level features such as colours and edges as the CNN gets deeper with more layers the features will increase in complexity to become high level features such as the wheels of car, ears of a cat, tail of a dog etc. The kernel performs two types of operations on the image, one where the feature dimensionality is
+reduced compared to input and another where it is increased or stays the same due to padding. Padding is when the image width and height is increased and the pixel values that have been added are filled with 0, e.g Padding = 1 would increase the image width and height by 2. This is done as there could be valuable information in the pixel values on the outskirts of the image which would otherwise be lost as the kernel would combine them with the inner pixels.
+
+### Pooling Layer <a name = "pooling-Layer"></a>
+
+The pooling layer is used to decrease the computational power required to process data by reducing the spatial size of the convoluted features. The dominant features are extracted without losing major information and keeping the training model effective. The two types of pooling are average pooling which returns the average of all the values from the region and max pooling which returns the maximum value. Max pooling performs better than average pooling as average pooling mostly reduces the dimensionality but max pooling acts as a noise suppressant by discarding low values (Noise).
+
+### Fully Connected Layer <a name = "fully-Connected-Layer"></a>
+
+After a multitude of Convolutional,ReLU and Pooling layers the final output is passed through a fully connected layer which is where the high-level reasoning and decision making is done. Here the output from the last pooling layer is Flattened meaning the image output goes from a 2D array to a 1D array by concatenating the rows from underneath each other to the right side of the rows above. Then all the values are passed into neurons in a fully connected layer which all have connections to the activations as done in a regular Neural Network.
+
+### Final Layer <a name = "final-Layer"></a>
+
+The last layer is the output layer where all the neurons from the fully connected layer connect to. They connect to a specifically set amount of neurons which is defined by the amount of classes the CNN is being trained for. This last Densly Connected layer has an activation function. The final activation function of the CNN depends on the problem being solved. In this dissertation we will be focusing on two types of problems a Single Label Classification (SLC) problem and a Multi Label Classification (MLC) problem.
+
+### Dropout Layer <a name = "dropout-Layer"></a>
+
+This layer is used to reduce overfitting of the training data on the model being trained. Overfitting is when the model doesnt generalize the parameters enough and represents the training data too much, meaning it would keep getting increasingly better accuracy during training but would have decreasing accuracy on the validation data. The dropout layer combats this by disabling neurons by setting them to 0 at each training stage which have a probability less than p = 0.5. This increases generalization as it forces the layer to learn the same concept with new neurons.
+
+### Single vs Multi Label Classification <a name = "single-vs-Multi-Label-Classification"></a>
+
+The SLC problem consists of having only one correct label associated to the input. This problem would require for the last activation function to be a Softmax function. Softmax outputs a range of probabilities per class that all add up to 100%, the highest probability is considered as the best label. The MLC problem consists of having multiple correct labels associated to the input. This
+problem would require for the last activation function to be a Sigmoid function. Sigmoid outputs a range of probabilities per class where each class ranges from 0% to 100% individually and independant of the other classes. Unlike the Softmax output the probabilities do not necessarily add up to 100% therefore a threshold is usually set to what is an accepted output or not e.g anything above 50% probability is accepted.
+
+### Training and Terminology <a name = "training-and-Terminology"></a>
+
+Once the structure of the CNN is setup it needs parameters for it to be compiled. The parameters consist of a loss function,optimizer and a metric. The loss function dictates how the model is penalized when the predicted values deviate from the true values. The optimizers job is to make sure that the loss function is minimized as much as possible. Finally the metric used is what shows the final accuracy of the current training cycle between the predicted and the true values. The dataset would be seperated into 3 parts training/testing/validation , the training data is used to train the CNN and the test data is used to evaluate the trained model on unseen data. The validation data is used during training as unseen data to show if the model is being overfitted during training, it can be
+seen that it is overfitting when the training accuracy is going up and loss is going down but the opposite is occurring for the validation accuracy and loss.
+
+### Very Deep Convolutional Networks For Large-Scale Image Recognition <a name = "very-Deep-Convolutional-Networks-For-Large-Scale-Image-Recognition"></a>
+
+In attempt to improve CNNs at the time, mainly the original architecture of Krizhevsky et al. (2012). The Visual Geometry Group focused on the depth of the convolutional network an important aspect which affects how high the level of the features could be learned. The architecture had its parameters fixed and the convolutional layers increased thus increasing the depth of the network, this was feasible as small kernels (3x3) had been utilized in all the layers. This method produced better results than previous architectures at the time. The two best performing models weights have been released to the public. The CNN was trained using fixed-size 224x224 RGB images which had been preprocessed by subtracting the mean RGB value from each pixel. The images had been then passed through a stack of convolutional and max pooling layers with a window of 2x2 pixels of stride 2. The CNN has 5 max pooling layers and not all the convolutional layers are followed by a max pooling layer. The convolutional strides are performed by a kernel of
+size (3x3) with Stride = 1 and a padding of ’Same’ to preserve the spatial resolution after the convolution. Each hidden layer is equipped with a ReLU function, the architecture of VGG16 is dhown in Figure 1. After all the convolutional and max pooling layers there are 3 fully connected layers with the first two having 4096 neurons each and the last densely connected layer having 1000 output neurons for every class. The models had been trained as a SLC problem therefore the last activation function is Softmax. The top performing models had 16 and 19 layers therefore their acquired names are Visual Geometry Group
+16 (VGG16) and Visual Geometry Group 19 (VGG19).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The model was trained using mini-batch processing with a batch size of 256. The loss function used was stochastic gradient descent(SGD) with a momentum of 0.9, drop out ratio of 0.5 and was trained for 74 epochs. The initial learning rate was 0.1 and was decreased by a factor of 10 when accuracy stagnated. It was trained using four NVIDIA
+Titan Black GPUs for two to three weeks.
+
+<img src="../images/ActivationMaximization/Vgg16Arch.png" alt="linearly separable data">
+
+## Visual Relationship Detection <a name = "visual-Relationship-Detection"></a>
+
+Visual relationships describe interactions between objects in images. Object detection models would equal images with objects of the same type but wouldn’t understand the context behind them, for example you could have two images with a dog sitting near a cat or a dog chasing a cat but for the model they would mean the same thing. The problem of classifying those relationships is the large amount of possible relationships that the same pair of objects could have between them and which best fits the description.
+
+### Recognition Using Visual Phrases <a name = "recognition-Using-Visual-Phrases"></a>
+
+Sadeghi and Farhadi (2011) approached the VRD problem by taking the visual phrase
+< subject, relationship, object > as one class. It was believed that detecting visual phrases as a whole was much easier than detecting participating objects due to the fact the objects change when participating in relations such as in < person, riding, horse > the persons leg might be obscured by the horse making it harder for the system to detect them. Since one class represents a visual phrase that makes it a SLC multi-class problem. To implement this theory the Pascal VOC2008 dataset was used to extract the 8 object classes and 17 visual phrases then Bing was used to gather images for the phrases and filtered manually to keep the relevant ones. A concern was that the number of phrases grew exponentially and
+there wouldnt be enough training data for each visual phrase but it was thought that the number of useful visual phrases is significantly smaller than all the possible combinations. The results showed that the model achieved higher accuracies than the baseline. The problem with this is only 17 visual phrases had been used meaning that it was tested on a small dataset and it wouldnt be scalable.
+
+### Visual Relationship Detection with Language Priors <a name = "visual-Relationship-Detection-with-Language-Priors"></a>
+
+Lu et al 2016 showed that there is no need to have that many unique detectors by having N objects and K predicates it would take O(N 2 K) unique detectors as used by Sadeghi and Farhadi (2011).By separating object and relationship detection it therefore reduces the amount of unique detectors to O(N + K). This solved the exponential growth of classes problem,the reason this wasn’t previously implemented by Sadeghi and Farhadi (2011) is that object detection models were lacking. Another noted problem was that relationships occur in a Long Tail Distribution meaning that < Car, On, Street > would be a very common occurance while < Elephant, Drinking, M ilk > is a rare one which makes supervised learning a problem. The proposed solution came in 2 modules the visual appearance module to solve the problem of quadratic explosion of classes and the language module to solve the long tail distribution problem. The work was done on the Visual Genome dataset which contained 33k object categories and 42k relationships categories
+making this a bigger dataset over the previously used one by Sadeghi and Farhadi (2011).  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The visual appearance module was done by first training an object detection CNN by Fine-Tuning the VGG with (Image Net weights) to classify N = 100 object categories. Then similarly another CNN was created by Fine-Tuning a new VGG with (Image Net weights) to classify K = 70 predicates by using the Union box of two objects. The language module was done by having relationships of similiar semantic relations be optimally mapped
+close together into an embedding space. The projection function (mapping) was done by firstly using word2vec (pre-trained word vectors) to have the two objects in a relationship projected into a word embedding space. Then the two vectors had been concatenated together and transformed into a relationship vector space. The relationship vector space is used to represent how all the objects interact with each other. If the language module had only seen < person, riding, horse > and was shown a person riding an elephant it would predict < person, riding, elephant > correctly as the word vectors of elephant and horse would be close to each other due to being rideable animals.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The process went as follows, firstly the image was passed through the object detection CNN which located objects in the image. Then a pair of those objectss bounding boxes was taken and their Union box was passed through the relationship detection CNN which predicted the probability of how likely a particular relationship is given the two bounding boxes. The probability and triplet output was then passed through the language module
+which then filtered out improbable relationships. The model was compared to the Visual phrases model as done by Sadeghi and Farhadi (2011) and the visual appearance model where only the visual apperances were taken into account. Due to the amount of possible combinations of objects and relationships there had been a shortage of training examples for the Visual phrase model which caused poor performance. The Visual module alone had problems discriminating against similar relationships. The full model had an 11% improvement over the visual module alone which proves that the language module from similar relationships significantly helped relationship detection.
+
+### Detecting Visual Relationships with Deep Relational Networks <a name = "detecting-Visual-Relationships-with-Deep-Relational-Networks"></a>
+
+Dai et al (2017) proposed a Deep Relational Network to statistically exploit dependencies and spatial configurations between objects and their relationships to solve the problems of having a high diversity of visual appearances for relationships and the large amount of unique visual phrases. The solution proposed by Lu et al (2016) was noted to have a problem in the visual apperance module of high diversity with different object categories sharing the same relationship predicate and even some having nothing in common. This work has contributed two main things to solve the VRD problem a DR-Net which combines stastical models with deep learning and a state-of-the-art framework for visual relationship detection.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Framework Process: Object Detection : the proposed framework works by first detecting individual objects and localizing them with a bounding box and an appearance feature each. The object detector used is the Faster RCNN.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pair filtering: For all the objects that had been detected by the Faster RCNN the next step was to produce a set of object pairs, with a total of n objects in an image there will be n(n − 1) possible pairs. Most of these pair combinations are meaningless therefore they are filtered out using a low-cost neural network which focuses on spatial configuration and
+object categories. Once the pairs are finalized they are fed into a Joint Recognition module.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Joint Recognition: A combination of the appearance module and a spatial module are used and their output is joined together in two fully connected layers. The appearance module is used on the bounding box of the image where it captures not only the object features but also its surrounding area giving more context to it. The spatial module is used by taking spatial masks from the bounding boxes and downsampling them to a size
+of 32x32 which are then passed into three convolutional layers to output a spatial vector.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Integrated Prediction: The compressed pair feature outputted from the fully connected layers are combined with the subject and object feature vectors and fed into the DR-Net through multiple inference units. The subject and object features are used to remove the ambiguities caused by visual or spatial cues by exploiting the statistical relations of the
+predicates most found between the subject and object. The DR-Net using a combination of all the data finally outputs a prediction by chosing the most probable classes for each of these components. The network was tested on the VRD and sVG datasets which produced results of 80.78% Recall@50 for VRD predicate prediction and 88.26% Recall@50 for sVG predicate prediction.
+
+### A Study on the Detection of Visual Relationships <a name = "a-Study-on-the-Detection-of-Visual-Relationships"></a>
+
+This work focused on expanding Dai et als spatial masks method of preparing images for training. Before the focus had been on the Image size and the amount of Convolutional layers a CNN has but this focuses on the way the images are prepared and fed into the CNN. Several methods had been explored and tested on two different CNN architectures which were VGG16 and VGG19. The dataset used was the Stanford VRD dataset. Training was done as a SLC problem with evaluation metric of Recall@1.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Union method takes the Union of the subject and and object bounding boxes cropping the image to those dimensions. The cropped image containing the subject and object image pixels was then resized to 224 by 224 and fed into the CNNs.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Union-WB method expands on the Union method by keep the pixels within the subject and object bounding boxes but removing all the pixels that do not fall within those bounding boxes by setting them to black [0,0,0].  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Union-WB-B method expands the Union-WB method by having the background set to black, subject bounding box set to green [0,255,0] and the object bounding box set to [0,0,255]. When there is an overlap of bounding boxes the pixel values are set to [0,255,255] a combination of green and blue.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Blur method the objective of this method was to exploit the lower layers of the CNN as they act as edge detectors. In this method the pixels within the subject and object bounding boxes are kept the same but the background was blurred. The Union of the two objects had been extracted and a Gaussian low-pass filter was used to blur the background. The background was blurred three ways by using standard deviations of 3(low), 5(medium) and 7(high) in the X and Y directions.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Segment-B method expands on the segment method by setting the original subject and object pixel values to green and blue masks. This same method was used in Union-WB-B to generalize the data to only focus on visual relationships and not the objects themselves.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The VGG16 and VGG19 models had been loaded and Fine-tuned to these datasets and evaluated using the Recall@1 metric. Together with the evaluation metrics the trained CNNs had been interpreted using Activation maximization and CAMs.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The significant results showed that on both CNN types the Union-WB-B method out-performed all other methods. The reason behind this is that using Green and Blue spatial masks for the subject and objects would generalize relationships throughout different object categories. Having Union-WB-B outperform Segment-B meant that the Segment-B method was too specific and that the CNNs prefer a more general input.
+
+## Datasets
+
+### SpatialVOC2K: A Multilingual Dataset of Images with Annotations and Features for Spatial Relations between Objects <a name = "spatialVOC2K:-A-Multilingual-Dataset-of-Images-with-Annotations-and-Features-for-Spatial-Relations-between-Objects"></a>
+
+Muscat et al 2018 came out with a dataset SpatialVOC2k which is a multilingual dataset focused on a portion of the VRD problem mainly the spatial relations. It was adapted from the PASCAL VOC2008 dataset by extracting 2026 images. These images had been chosen as they had 2 or more objects with given bounding boxes making this datasets main focus be a multilabel dataset. This dataset also proposed 18 Geometric features (Table 1) which proved to be useful for classification together with multiple models for training and evaluating this data. This dataset doesnt only focus on the VRD problem but also on the Depth prediction problem of objects. This dataset contains 17 English prepositions and
+17 French ones, the process was done by translating the english prepositions into French and then eliminating those prepositions that had fewer than 3 examples. Figure 2 shows the occurance distribution of classes in the dataset.
+
+<img src="../images/ActivationMaximization/voc2kDist.png" alt="linearly separable data">
+
+### Stanford VRD <a name = "stanford-VRD"></a>
+
+The Stanford VRD dataset was introduced by Lu et al(2016). This dataset contains 5000 images with 100 object categories and 70 predicates. In total this dataset has 78872 single labels, 4504 examples with 2 labels, 685 examples with 3 labels and 71 examples with 4 or more labels. This distribution makes it mostly a SLC problem. Figure 3 shows the occurance distribution of classes in the dataset.
+
+<img src="../images/ActivationMaximization/vrdDist.png" alt="linearly separable data">
+
+## A Review on Multi-Label Learning Algorithms <a name = "a-Review-on-Multi-Label-Learning-Algorithms"></a>
+
+A Multilabel classification(MLC) problem comes in the form of a training example containing multiple labels associated with to it. Take the VRD problem a pair of objects will have multiple correct relationships attached to them and sometimes won’t have a best descriptor for them making them all equally valid. Therefore it would be best to train it as a MLC problem where multiple correct predictions are correct. Taking the VRD problem as a single label classification (SLC) problem would lead to alienating other correct possible answers.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The main concepts taken from this paper for this dissertation are the evaluation metrics used for evaluating multi-label classifiers. The evaluation metrics can either be Example-based or Label-based. The example-based metrics work by evaluating the example instances separately and then returning the mean value across all of the test data. The label-based metrics are opposite to the one above as they evaluate the systems performance on each class label separately and then return the micro/macro-averaged values across all labels. Example-based Metrics include Subset Accuracy, Hamming Loss, One-error, Average Precision, Coverage, Ranking Loss, Accuracy, Precision, Recall, F B . The
+Label-based metrics focus on using the True Positive(TP), False Positive(FP), True Negative(TN) and False Negative(FN) for each label through out the test data. The number of examples is denoted as n, the ground truth label is Y i and h(x i ) is the predicted label output of the i th example.
+
+<img src="../images/ActivationMaximization/exampleBased.png" alt="linearly separable data">
+
+<img src="../images/ActivationMaximization/labelBased.png" alt="linearly separable data">
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall is described as the intersection of the relevant labels and retrieved labels over the total number of relevant labels. Precision is described as the intersection of the relevant labels and retrieved labels over the total number of retrieved labels. F1-Score is the harmonic average between precision and recall. These metrics are important for the evaluation of MLC models in this dissertation as standard SLC metrics aren’t viable.
+
+## Activation Maximization <a name = "activation-Maximization"></a>
+Once the spatial relations are trained and tested, Activation Maximisation will be used to maximize the outputs of all classes for all the Convolutional Neural Network models. Activation maximisation works by maximising the activation of certain class so that we can see a representation of what the CNN is looking for when classifying a class. This is an easy and useful way of visualizing the final outputs of the CNN for human understanding.
+
+# Methodology
+In this section we will be able to see the implementations needed to be done to reach the goals and objectives of this project.
+
+## Data Preparation <a name = "data-Preparation"></a>
+The Stanford VRD and SpatialVoc2k had been used to train the different network architectures and evaluate any differences between them. The dataset had been prepared for two uses, training a Convolutional Neural Network with images and training a Feed Forward Network using geometric features.
+
+### Stanford VRD Dataset <a name = "stanford-VRD-Dataset"></a>
+
+This dataset information is stored in the form of dictionaries in two JSON files containing the training and testing data. The data was loaded and the image location, object names, relationships and bounding box locations had been extracted. Firstly the relationships had been quantified and filtered to only include those that are spatial prepositions. Those with synonyms have been combined under one predicate name and those with low amounts of examples hadnt been included. Then the images had been loaded using their image location so that their height and width could been extracted to add to the existing data. Data entries where a pair of objects with same bounding boxes had multiple relationships
+to them had been concatenated to form one data entry with multiple relationships. Then the final list was randomized and stratified sampled into training/testing/validation data with percentage of 60/20/20. Stratified sampling was done by first distributing all the multi-relation entries and then distributing the single-relation entries as it is easier to fit them and would create a more specific distribution. This was repeated for 10 times to have 10 different training/testing/validation datasets so that multiple models could be trained
+and their averages taken.
+
+### SpatialVoc2k Dataset <a name = "spatialVoc2k-Dataset"></a>
+
+This dataset was easier to work with as it already had the image width and height already stored in its JSON file together with the fact that it was specialized for Spatial relations therefore no filtering of spatial relations was necessary apart from removing 3 classes with less than 3 instances each. The data had already multiple relationships grouped for a pair of objects, therefore all that was needed was to randomize it and to apply stratified sampling for training/testing/validation datasets with percentage distributions of 60/20/20, the same process was used as before by first distributing the multiple-relations and then the single-relations. This was repeated for 10 times to have 10 different training/testing/validation datasets so that multiple models could be trained and their averages taken.
+
+### Geometric Datasets <a name = "geometric-Datasets"></a>
+
+From the previously created datasets more datasets have been created. These datasets contained the geometric features derived from the pair of bounding boxes given to the objects. To preserve the distribution of classes the training/testing/validation data had not been joined together but kept separately, this would enable for the results to be compared fairly. The object labels together with the directions are encoded using One Hot encoding. Note : Let distance from image edge of left and right edges be a1,b1 for first box and a2,b2 for second box the same thing was done for top and bottom edges for c1,d1 and c2,d2.
+
+<img src="../images/ActivationMaximization/geofeats.png" alt="linearly separable data">
+
+### Single Label Datasets <a name = "single-Label-Datasets"></a>
+
+The datasets that have been created thus far all had multiple relationships between the pair of objects. These datasets would be used to train MLCs therefore for comparison they have been taken as they are and expanded to also train new networks as a SLC problem. Meaning that they were loaded in preserving their distribution and if a data entry had two or more relationships attached to it then it would separate into multiple single-relation entries. This had to be done in this order as if you had used stratified sampling to randomize and distribute the single labels first then there would be entries with same characteristics with different relationships but in different datasets and it would reduce the amount of possible Multi-Labels.
+
+## Image Preparation <a name = "image-Preparation"></a>
+
+As it has been shown in A Study on the Detection of Visual Relationships (2018) that the best performing method for the VGG16 architecture is the Union-WB-B method. This is where the Union box of the bounding boxes of the pair of objects has been taken, with the background set to Black [0, 0, 0] ,Subject Bounding Box set to Green [0, 255, 0] and the Object Bounding Box set to Blue [0, 0, 255].
+
+<img src="../images/ActivationMaximization/figfour.png" alt="linearly separable data">
+
+<img src="../images/ActivationMaximization/figfive.png" alt="linearly separable data">
+
+<img src="../images/ActivationMaximization/figsix.png" alt="linearly separable data">
+
+Since this method doesnt use any of the actual objects but only their bounding boxes, there is no need for an actual image only its meta-data. Hence the datasets had been prepared in the form of [Labels, width, height, subject bounding box, object bounding box, subject label, object label]. From this data OpenCv was used create a black image of a certain width, height together with green, blue rectangles added to it in positions of the subject/object bounding boxes. This method was much faster as it didnt require any space, processing and loading time for images. The created images are then resized to 224x224 as that is what the VGG16 network had been initially trained using. It is important that during creation the bounding boxes do not overwrite each other in the image but instead if
+there is an overlap of objects, the overlapping pixel values will be set to [0, 255, 255]. This is so that the spatial masks are fed into separate colour channels maintaining their true form.
+
+## Training 
+
+A Fine-Tuned VGG16 with ImageNet weights is trained on the datasets and evaluated. A Feed Forward Neural Network was trained on the geometric features exctracted from the bounding boxes of the datasets.
+
+### VGG16
+
+The process of Fine-Tuning the VGG16 model started by first loading the model with all its layers and weights. The last Dense layer was replaced with a new Dense layer with a specified amount of classes and activation function that is set before training according to the problem. The MLC problem would use the loss function of binary-crossentropy and an activation function of Sigmoid while the SLC problem would use the categorical-crossentropy loss function and an activation function of Softmax. All the layers had been set to non-trainable except for the last dense and fully connected layers. Using the optimizer stochastic gradient descent(SGD) with a learning of 0.001 and a Nesterov momentum of 0.9 the model was run for 5 Epochs for the VRD dataset and 15 Epochs for SpatialVoc2k dataset. Once the model finished training it was saved and a new model was created with all the layers set to non-trainable except that of the fully connected layers and the last convolutional block (Conv Block 5). The previous models weights had been loaded into the new model and again run for 5 Epochs for the VRD dataset and 15 Epochs for SpatialVoc2k dataset. Finally the last step was repeated but with a learning rate of 0.00001 for 5 Epochs for the VRD dataset and 15 Epochs for SpatialVoc2k dataset. This was done 10 times for both datasets.
+
+### Feed Forward Neural Network <a name = "feed-Forward-Neural-Network"></a>
+
+A Feed Forward Neural Network was trained on the Geometric Features created from the datasets. The network had been made up out of two Densly connected layers (256 neurons followed by 128 neurons) and a densly connected output layer containing the number of output classes with an activation function according to the problem being solved. The same parameters were applied to it with regards to MLC and SLC problems. The optimizer ADAM was used with default values and was trained for 10 Epochs. This was done 10 times for both datasets and their results recorded.
+
+### Data Generators <a name = "data-Generators"></a>
+
+Due to having a large data set custom Image generators had been used to load the image meta data and create the images. The batch size for the image generators and CNN had been set to 32. Once a batch of images had been created their pixel intensities had been rescaled to be between 0 and 1, this enables for faster and more precise training of CNNs. The Feed Forward network used custom data generators to load all the geometric features and rescale all the input features to be between 0 and 1. The language features and compass directions had been One Hot Encoded so that they could be processed by the Neural Network.
+
+## Evaluation and Metrics <a name = "evaluation-and-Metrics"></a>
+
+Once the model had been fully trained an Image Generator had been loaded in with the test data. The model used the predict functionality to predict probabilities on a given image. The predict function was used over the evaluation function as specific MLC evaluation metrics had to be implemented to evaluate the MLC models. On a given image prediction a set of probabilities had been returned corresponding to the probability of each class detected by the model. Since this is a MLC problem the Sigmoid activation function was used so each class had their own independent probability ranging from 0% to 100%. A threshold of 50% had been chosen as a probability cut off point. If a value was above 50%
+then it would be turned on (set to 1) and if it was below then it would have been turned off (set to 0). The predicted values had then been compared to the ground truth labels and documented per class. The True positive, False positive , True negative and False negative values for each class are decided with the use of the help of the contingency table in Figure.7.
+
+<img src="../images/ActivationMaximization/tpfp.png" alt="linearly separable data">
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Once predictions have been made on the testing data and values recorded, the evaluation metrics taken from ”A Review on Multi-Label Learning Algorithms” mentioned above were run and recorded. These metrics are used to evaluate MLC models. To evaluate SLC models Recall@1,Precision@1 and F1-Score@1 had been utelized. Since @1 is used it means that the highest probability value is used for the metric therefore the predictions were first ranked in descending order by probability and the highest predicted class is compared to the ground truth value. The results are recorded per class together with the Micro/Macro averages. All 10 models for each problem had been evaluated and their averages been tabulated.
+
+## Interpreting the models <a name = "interpreting-the-models"></a>
+
+To interpret the models via activation maximization the trained models are first loaded in, then the last activation function of the fully connected prediction layer was chosen and replaced by a linear activation. Activation maximization was then initialized on a random input image and run for 1024 back propagation iterations maximizing the output for each class. The resulting images were then saved and compared for each model. It was made sure that the input range was set to between 0 and 1 as that is scale the CNN’s had been trained on.
+
+# Findings 
+
+## Preamble 
+
+In this chapter the results achieved from various models trained in Chapter 3 are presented. Every dataset shows the results achieved on the test data for both the VGG16 and Feed Forward Neural Network together MLC vs SLC training methods.
+
+## VRD Dataset Evaluation Results <a name = "vRD-Dataset-Evaluation-Results"></a>
+In this section the results evaluated from all the models trained on the VRD dataset are presented.
+
+### VGG16 Evaluation Results <a name = "vGG16-Evaluation-Results"></a>
+This section shows the relevant results obtained by models for both MLC and SLC problems.The presented results are rounded to 2 decimal places.
+
+<img src="../images/ActivationMaximization/vgg16results.png" alt="linearly separable data">
+
+### Feed Forward Evaluation Results <a name = "feed-Forward-Evaluation-Results"></a>
+This section shows the relevant results obtained by the Feed Forward models for both MLC and SLC problems.The presented results are rounded to 2 decimal places.
+
+<img src="../images/ActivationMaximization/vg16ffresults.png" alt="linearly separable data">
+
+### Activation Maximization Evaluation Results <a name = "activation-Maximization-Evaluation-Results"></a>
+
+<img src="../images/ActivationMaximization/amvgg16results.png" alt="linearly separable data">
+
+<img src="../images/ActivationMaximization/figurenine.png" alt="linearly separable data">
+
+## SpatialVoc2k Dataset Evaluation Results <a name = "spatialVoc2k-Dataset-Evaluation-Results"></a>
+In this section the results evaluated from all the models trained on the SpatialVoc2k dataset are presented.
+
+### VGG16 Evaluation Results <a name = "vGG16-Evaluation-Results"></a>
+
+<img src="../images/ActivationMaximization/voc2kvgg16results.png" alt="linearly separable data">
+
+### Feed Forward Evaluation Results <a name = "feed-Forward-Evaluation-Results"></a>
+
+In this section the results for the Feed Forward Neural Networks are presented trained on the SpatialVoc2k dataset as MLC and SLC problems.
+
+<img src="../images/ActivationMaximization/ffspacialvoc2k.png" alt="linearly separable data">
+
+### Activation Maximization Evaluation Results <a name = "activation-Maximization-Evaluation-Results"></a>
+
+<img src="../images/ActivationMaximization/figureten.png" alt="linearly separable data">
+
+<img src="../images/ActivationMaximization/figureeleven.png" alt="linearly separable data">
+
+# Analysis of Results <a name = "analysis-of-Results"></a>
+## Preamble
+In this chapter the results obtained in Chapter 4 are discussed. This chapter is split into three parts, Section 5.2 analyses the VGG16 results, -Section 5.3 analyses the SpatialVoc2kresults and Section 5.4 discusses future work.
+
+## VRD Results <a name = "vRD-Results"></a>
+
+In this section the results obtained by the VRD dataset will be discussed and compared across models and training methods.
+
+### Multi-label vs Single-label Classification <a name = "multi-label-vs-Single-label-Classification"></a>
+
+The VGG16 Single-Label Classification training method outperformed the Multi-Label
+Classification training method for all per-Predicate accounts of Recall and F1. The MLC Precision metric recorded better results for labels:={ above, behind, below, in, next, on, under} compared to that of SLC. The Macro-Average, meaning the average of all the Predicates combined achieved equal results for precision and higher results in Recall/F1 for the SLC method. This means that even though the MLC training method returned less Predicate results the ones it did return had been more relevant compared to that of the SLC. SLC had higher or equal Recall for all Predicates compared to MLC meaning that most of the relevant labels had been retrieved for SLC compared to that of MLC. SLC has more Predicate results due to the difference in metrics, MLC metrics have a threshold of 50% which filter out low probability labels, while SLC uses @1 so low probability labels can be retrieved as long as they are the highest among the predicted.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Feed Forward Neural Network had a greater MLC precision score than that of the SLC for all accounts of per-Predicate labels while SLC had better results for recall. Even though SLC produced higher recall for all Predicates the results aren’t far off from MLC, the greater difference is in the precision scores. SLCs Micro-Average score shows 51% for all metrics while MLC’s Micro-Average score shows Precision: 63%, Recall: 47%, F1: 54%. The difference in Micro-Average Precision made the MLC method outperform in F1 score over the SLC method.  
+The MLC method proved to be more precise than the SLC while SLC was more sensitive
+and had recalled the most relevant labels.
+
+
+### VGG16 vs Feed Forward Neural Network <a name = "vGG16-vs-Feed-Forward-Neural-Network"></a>
+
+The Feed Forward Neural Network trained on the Geometric Features achieved better
+results than the Fine-Tuned VGG16 CNN trained on spatial masks. The geometric features didn’t only contain spatial configurations of the bounding boxes but also the subject/object categories which the spatial masks couldn’t possibly learn. These language features that have been combined with the geometric features are the main reason that the Feed Forward Network outperforms the VGG16. Language features allow for more ambiguous Predicates to be predicted as these Predicates would be indistinguishable as spatial masks or geometric features alone but would have a very distinct occurance between a pair of object categories. To show the importance of the language features in the appendix there are results of the Feed Forward Neural Network trained using only Geometric Features meaning that the
+subject/object categories have been removed. These results show a lower performance in all metrics than that of a Fine-Tuned VGG16 for both MLC and SLC. They also show that SLC has a higher F1 score than MLC which is the opposite of what was shown in the networks trained with both Language and Geometric features.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The results achieved by the Feed Forward Neural Network using Geometric and Language Features outperform VGG16 for all metrics. For real life implementation I would suggest using CNN’s for object detection and localization from there extract the Geometric and Language features from the pair of objects and train a Feed Forward Neural Network. The Feed Forward Neural Network takes less time to train and produces better results. To improve these results word2vec from Lu et al(2016) [4] should be used on the language
+features instead of One Hot Enconding, this would enable for even faster training as you won’t have a large input shape for all the possible object categories and increased results on unseen category combinations as was done by Muscat-Belz(2018) [1].
+
+### Activation Maximization <a name = "activation-Maximization"></a>
+
+The Activation Maps show what the CNN is looking for that specific output class. Knowing that the subject is Green and object is Blue we can interpret these maps. The Predicates Above,Over have similar activation maps while Top has a less clear version of those maps. These maps show that Green is Above/Over/Top the Blue colour which is a good indicator of how the network perceives these spatial relations. The below and under activation maps show the Green colour below/under the Blue colour which is a straight forward indicator. Left and Right also have quite clear activation maps that are easily understandable. The Predicate ”In” is shown to be a mix of [0, 255, 255] pixels surrounded by an outline of Blue pixels indicating that the Green subject is inside the Blue object. ”On” has multiple
+small concentrations of Green points above small concentrations of [0, 255, 255] followed by Blue points, this indicates that the Predicate ”On” has a Green subject constantly in contact with the Blue object while being in a higher position over it at the same time. While ”above/over/top” Predicates have the concentration of Green confined to the upper limits of the activation map ”On” has them more spread out. The Predicates Beside, By, Near and Next have similiar looking SLC activaion maps which is good as they are similiar Predicates, the MLC activation maps for those Predicates didn’t show anything clear and it makes sense as the MLC results had been poorer that the SLC ones. The MLC activations produced similar looking maps to that of the SLC activations but they are less clear.
+
+### Conclusions
+
+These results dictate that even though the Visual Relationship Detection problem should be taken as a Multi-Label Classification problem the label distributions in the datasets play a large role in how well the model will be able to recognise multiple relationships. Training a model which is heavily composed of single labels(VRD) as a Multi-Label model hinders the models ability to recall labels correctly. The Feed Forward Neural Network outperforms the CNN mainly due to the Language Features otherwise having only Geometric Features produce lower scores than the CNN. Language features also greatly close the gap in results between MLC and SLC for the VRD dataset. The activation maps proved to be useful in confirming the metric results between the training methods.
+
+## SpatialVoc2k Results <a name = "spatialVoc2k-Results"></a>
+### Multi-label vs Single-label Classification <a name = "multi-label-vs-Single-label-Classification"></a>
+SpatialVoc2k is multi-label dataset therefore the models trained using it achieved better results when they are trained as MLC rather than SLC problems. The VGG16 MLC
+models scores higher for all the evaluation metrics in the Macro and Micro-averages. All the non-zero per-Predicate results returned by the MLC model had higher score than that of SLC except for the Predicate ”far from” which had a higher recall for SLC method. The SLC method has noteably higher results on the Predicates ”around/into” compared to the zero results retrieved by MLC, this can be explained further by looking at the activation maps for insight to what the CNN is looking for. The Feed Forward Neural Network exhibits the same MLC vs SLC result distribution as the VGG16. This time the language features didn’t close the gap between the MLC and SLC results as previously seen for the VRD results.
+
+### VGG16 vs Feed Forward Neural Network <a name = "vGG16-vs-Feed-Forward-Neural-Network"></a>
+
+The Feed Forward Neural Network achieved better results that the VGG16 for all the
+Macro/Micro-Average metrics. The Predicates:={next to, near, front, behind} had higher results for the Spatial Features over the Geometric and Language Features. Geometric Features alone (without language features) performed worse than the Spatial Features for all metrics and per Predicate results, this can be seen in the appendix Table 17.
+
+### Activation Maximization <a name = "activation-Maximization"></a>
+MLC has clearer maps than SLC except on ”Around” and ”In” where SLC has had higher
+metric scores. The SLC activation maps show rigid square shapes while the MLC maps
+show smoother and more curvy like activation maps. The SLC activation maps of Predicates:={next to, near, behind, front, far from, near by, on} do not show anything concretely interpretable and the maps look quite similar. ”Around” is shown to have the Green subject around a Blue object, ”In” has a Blue box outline surrounding the pixel values of [0, 255, 255] which means that Green is inside the Blue object and the Blue object is bigger in size. The MLC activation map ”Front” shows a light green covering around the map which is a good indicator that Green subject is in front of the Blue object. The MLC Predicates:={Next to, Near, and Neary By} have a similar patter inside them where the middle part of the activation map contains vertical lines, this would be interpreted as that
+when objects appear with those Predicates they would be close to each other and at the same level.
+
+### Conclusions
+The MLC method is prefered over the SLC method for Multi-Label datasets and prob-
+lems. Geometric Features outperform the Spatial Features but the Geometric Features
+alone without he Language Feature perform worse than the Spatial Features. Activation Maximization proved useful to understanding which Predicates are similar to each other and why a certain training type outperforms the other.
+
+## Conclusion
+The label distribution in the dataset plays a big factor in deciding the way the model should be trained as MLC vs SLC. The more information a model is given the better it performs as was seen by adding and removing language features from the Feed Forward Neural Networks. Activation maximization is a useful way of understading and interpreting what CNN’s are learning and why some methods perform better than others. It groups same Predicates together which is useful if you would want to train a multi-label dataset as a single label by grouping Predicates under the same activation maps under a single label. The VGG16 outperfomed the SmallVGG for all Predicates and results on both datasets as can be see in the appendix results. The MLC activation maps produced by the SmallVGG trained used SpatialVoc2k had been incomprehensible and mostly random meaning that the CNN hasn’t learned anything using the MLC training method.
+
+### Future Work <a name = "future-Work"></a>
+Given that the Spatial Masks outperform the Geometric Features alone it would be wise to explore a combination of Spatial Masks and Language Features. It would be interesting to apply Activation Maximization to Feed Forward Neural Networks to be able to achieve inputs that maximize certain classes. These activation results would give more quantifiable outputs to relationships. The Language Features included with the Geometric Features can be upgraded from One Hot Encondings to word2vec to save space and increase accuracy over unseen examples as was done by Muscat-Belz(2018) [1]. More Geometric Features should be explored not including the language features, geometric models took less time to train and it would be better to get them to the same levels of accuracy as that of Spatial Masks.
+
+# References
+
+[1] Anja Belz, Adrian Muscat, Pierre Anguill, Mouhamadou Sow, Gaetan Vincent, and
+Yassine Zinessabah. SpatialVOC2K: A multilingual dataset of images with annota-
+tions and features for spatial relations between objects. In Proceedings of the 11th International Conference on Natural Language Generation, pages 140–145, Tilburg University, The Netherlands, November 2018. Association for Computational Linguistics.  
+[2] Bo Dai, Yuqi Zhang, and Dahua Lin. Detecting visual relationships with deep relational networks. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 3298–3308, 2017.  
+[3] Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. Imagenet classification with deep convolutional neural networks. In F. Pereira, C. J. C. Burges, L. Bottou, and K. Q. Weinberger, editors, Advances in Neural Information Processing Systems 25, pages 1097–1105. Curran Associates, Inc., 2012.  
+[4] Cewu Lu, Ranjay Krishna, Michael Bernstein, and Li Fei-Fei. Visual relationship
+detection with language priors. In European Conference on Computer Vision, 2016.  
+[5] Noel Mizzi. A study on the detection of visual relationships. 2018.  
+[6] Zhuwei Qin, Fuxun Yu, Chenchen Liu, and Xiang Chen. How convolutional neural network see the world - A survey of convolutional neural network visualization
+methods. CoRR, abs/1804.11191, 2018.  
+[7] Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster r-cnn: Towards realtime object detection with region proposal networks. In C. Cortes, N. D. Lawrence, D. D. Lee, M. Sugiyama, and R. Garnett, editors, Advances in Neural Information Processing Systems 28, pages 91–99. Curran Associates, Inc., 2015.  
+[8] Mohammad Amin Sadeghi and Ali Farhadi. Recognition using visual phrases. 2011.  
+[9] K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale
+image recognition. CoRR, abs/1409.1556, 2014.  
+[10] M. Zhang and Z. Zhou. A review on multi-label learning algorithms. IEEE Transactions on Knowledge and Data Engineering, 26(8):1819–1837, Aug 2014.  </div>
                             
                             <ul class="list-inline item-details">
                                 
+                                    <li>Github :
+                                        <strong><a href="https://github.com/vvoluom/Interpreting-Neural-Networks-via-Activation-Maximisation"> Repo</a>
+                                        </strong>
+                                    </li>
+                                
                                 
                                     <li>Date:
-                                        <strong><a>April 2014</a>
+                                        <strong><a>June 2019</a>
                                         </strong>
                                     </li>
                                 
                                 
                                     <li>Service:
-                                        <strong><a href="http://startbootstrap.com">Web Development</a>
+                                        <strong><a href="http://startbootstrap.com">Artificial Intelligence</a>
                                         </strong>
                                     </li>
                                 
@@ -662,7 +1116,7 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
-<p>The fullfillNodeRequest() function expects the requestId and a boolean “paid” from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the invoice should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() therefore released will not update.</p>
+<p>The fullfillNodeRequest() function expects the requestId and a boolean “paid” from each node that a request has been sent to. The boolean received decides which counter to increment and after each increment it decides if the Ethereum should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() is run therefore the released boolean will not update.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">fullfillNodeRequest</span><span class="o">(</span><span class="n">bytes32</span> <span class="n">_requestId</span><span class="o">,</span> <span class="n">bool</span> <span class="n">paid</span><span class="o">)</span>
     <span class="kd">public</span>
