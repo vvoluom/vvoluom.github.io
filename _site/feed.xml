@@ -4,7 +4,7 @@
   <generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator>
   <link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" />
   <link href="http://localhost:4000/" rel="alternate" type="text/html" />
-  <updated>2020-01-15T00:03:14+01:00</updated>
+  <updated>2020-01-15T20:10:43+01:00</updated>
   <id>http://localhost:4000/</id>
 
   
@@ -705,12 +705,12 @@ image recognition. CoRR, abs/1409.1556, 2014.&lt;br /&gt;
     </entry>
   
     <entry>
-      <title type="html">Project 3</title>
-      <link href="http://localhost:4000/web%20development/2014/07/16/project-3/" rel="alternate" type="text/html" title="Project 3" />
-      <published>2014-07-16T00:00:00+02:00</published>
-      <updated>2014-07-16T00:00:00+02:00</updated>
-      <id>http://localhost:4000/web%20development/2014/07/16/project-3</id>
-      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/16/project-3/"></content>
+      <title type="html">Trajectory Prediction</title>
+      <link href="http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction/" rel="alternate" type="text/html" title="Trajectory Prediction" />
+      <published>2019-05-01T00:00:00+02:00</published>
+      <updated>2019-05-01T00:00:00+02:00</updated>
+      <id>http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction</id>
+      <content type="html" xml:base="http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction/"></content>
 
       
       
@@ -725,7 +725,7 @@ image recognition. CoRR, abs/1409.1556, 2014.&lt;br /&gt;
       </author>
 
       
-        <category term="Web Development" />
+        <category term="Artificial Intelligence" />
       
 
       
