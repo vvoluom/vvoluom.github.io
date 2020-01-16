@@ -43,3 +43,10 @@ credits: 'This is a free to use, open source Bootstrap theme created by <a href=
 # Build settings
 markdown: kramdown
 permalink: pretty
+highlighter: rouge
+
+# Markdown Processors
+kramdown:
+  input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge

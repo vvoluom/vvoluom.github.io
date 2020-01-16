@@ -11,6 +11,8 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+@import "../../_sass/scss/friendly.scss";
+
 body {
     overflow-x: hidden;
 }
@@ -220,6 +222,7 @@ pre {
     display: block;
     word-wrap: break-word;
 }
+
 
 @media(max-width:767px) {
     section {
@@ -499,3 +502,4 @@ footer .footer-below {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
 }
+

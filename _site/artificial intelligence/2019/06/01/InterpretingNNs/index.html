@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
     <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://localhost:4000/assets/stylesheets/custom.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -1017,11 +1018,266 @@ image recognition. CoRR, abs/1409.1556, 2014.<br />
                     <div class="col-lg-8 col-lg-offset-2">
                         <div>
                             <h1>Trajectory Prediction</h1>
-                            <h1></h1>
+                            <h1>EY Nextwave Data Science Challenge 2019</h1>
                             <hr class="star-primary">
-                            <img src="img/portfolio/" class="img-responsive img-centered" alt="image-alt">
+                            <img src="img/portfolio/eycover.jpg" class="img-responsive img-centered" alt="image-alt">
                             
-                                <div>
+                                <div><h1 id="abstract">Abstract</h1>
+<p>This is my solution for the EY Nextwave Data Science Challenge 2019 where it was rewarded 1st Place in Malta and 67t Place Globally. This is a trajectory prediction problem with regards to cars in the densly populated city of Atlanta, Georgia US. Given a car journey containing multiple trajectories the objective is to predict the final exit point of that journey. A trajectory is defined as a route taken by a person, with an entry point (x , y) at a time entry and an exit point (x , y) at a time exit.</p>
+
+<h1 id="context-of-the-challenge">Context of The Challenge</h1>
+
+<p>The EY NextWave Data Science Challenge 2019 focuses on how data can help the next smart city thrive, and boost the mobility of the future. Global urbanization is on the rise, with more than 50% of the world’s population living in cities; according to the UN, that number will reach 60% by 2030 – that’s nearly 1.5 billion more than in 2010.<br />
+       While this trend creates great opportunities for cities, it also presents challenges to governments on how to upgrade infrastructure, alleviate congestion and address pollution.<br />
+Electric and autonomous vehicles, along with the explosion of the ride sharing economy, are helping to address these challenges which also disrupt mobility and demand innovative solutions.<br />
+       In parallel, public authorities have more information than ever on how citizens move around in the city. However, a gap exists between having this data and using it to improve the user travel experience for citizens. Forward-looking authorities have a chance to innovate infrastructure to make their city a better place to live in a better working world.<br />
+       Here’s your chance to narrow that gap. As a challenge participant, you will be able to download a dataset with a vast number of anonymous geolocation records from the US city of Atlanta (Georgia), during October 2018. Your task is to produce a model that helps authorities to understand the journeys of citizens while they move in the city throughout the day. If you dig deep enough, your work could inspire solutions that help city authorities anticipate disruptions, make real-time decisions, design new services, and reshape infrastructures in order that cities as smart as their citizens.</p>
+
+<h2 id="data-description">Data Description</h2>
+
+<p>The data contains the anonymized geolocation data of multiple mobile devices in the City of Atlanta (US) for 11 working days in October 2018. The devices’ ID resets every 24 hours; therefore, you will not be able to trace the same device across different days. Therefore, every device ID represents a 1-day journey.<br />
+       Each journey is formed by several trajectories. A trajectory is defined as the route of a moving person in a straight line with an entry and an exit point. See an example below of one trajectory from one of the devices:</p>
+
+<p><img src="../images/eynextwave/trajectory.png" alt="linearly separable data" /></p>
+
+<p>As you can see, trajectories are a simplification of the real path of a person.
+A trajectory ends when a person stops moving and stays in the same place for a while and when the device stops recording for some time.<br />
+        For each device you will get multiple trajectories. The set of all trajectories of a device represents a simplification of the journey of one person for 24 hours. The graphic below shows a full journey of a device.</p>
+
+<p><img src="../images/eynextwave/trajectories.png" alt="linearly separable data" /></p>
+
+<p>Trajectories are separated. In the graph, this separation is shown as a dotted line between the exit point of a trajectory and the entry point of the next one. These dotted lines represent blind parts of the journey where the device did not record the location.</p>
+
+<h2 id="dataset-details">Dataset Details</h2>
+
+<p>There are approximately 210,000 devices and 11 columns in the database. The dataset was provided in two files a training set (data_train.csv) and testing set (data_test.csv). The train dataset contains 80% of the records, while the test dataset contains 20%. The variables in the dataset are as follows:</p>
+
+<p><img src="../images/eynextwave/datavariables.png" alt="linearly separable data" /></p>
+
+<h2 id="the-goal">The Goal</h2>
+<p>The Goal is to predict how many people are in the city center between 15:00 and 16:00. The test dataset contains a number of devices where the trajectories after 15:00 have been removed. All but one: After 15:00, you will find one last trajectory, with (1) entry location, (2) entry time and an exit time that is between 15:00 and 16:00. But the exit point has been removed. The task is to predict the location of this last exit point and whether this device is within the city center or not.</p>
+
+<p><img src="../images/eynextwave/atlantaTraj.png" alt="linearly separable data" /></p>
+
+<p>After an estimation is made with regards to the position of each target those estimated coordinates will have to be classified whether they are located inside the city center or not. The city center is located within the coordinates below:</p>
+
+<p><img src="../images/eynextwave/centerCoordinates.png" alt="linearly separable data" /></p>
+
+<p>If the coordinates land within the center they are marked as (1) and if they land outside they are marked as (0). The submission file is a 2 column file with trajectory_id as the first column and whether it ends in the city center (1) or not (0). Submissions were evaluated using the F1-score between the predicted and the observed target.</p>
+
+<h1 id="methodoloy">Methodoloy</h1>
+
+<h2 id="data-preparation">Data Preparation</h2>
+<p>The data entries are grouped by hash values which correspond to mobile device
+ID’s. One hash value will have multiple trajectories which make up a full journey.<br />
+       Given trajectories T1, T2, T3, T4 in on journey one could make multiple smaller journeys from this group of trajectories.
+For Example :</p>
+<ul>
+  <li>Journey One  : T1-&gt;T2</li>
+  <li>Journey Two  : T1-&gt;T2-&gt;T3</li>
+  <li>Journey Four : T1-&gt;T2-&gt;T3-&gt;T4</li>
+</ul>
+
+<h3 id="data-transformation">Data Transformation</h3>
+
+<p>Using the Python Pandas library the Training and Testing CSV files had been loaded as can be seen in the code snippet below:</p>
+
+<pre><code class="language-friendly">    #Load the training and testing data
+    df_train =pd.read_csv('data_train.csv')
+    df_test =pd.read_csv('data_test.csv')
+</code></pre>
+
+<p>The dataset had variables that contain time, the time_entry (When the device started recording gps movement) and the time_exit (When the device stopped recording gps movement). This time has been saved in the format HH:MM:SS (Hours:Miniutes:Seconds) which needed to be converted into an integer number. This was done by using the function to_timedelta() from the Pandas library as can be seen in the code below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#Changing the TIME to Hours
+</span>    <span class="n">df_train</span><span class="p">[</span><span class="s">'time_entry'</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s">'time_entry'</span><span class="p">])</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Hour</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df_train</span><span class="p">[</span><span class="s">'time_exit'</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s">'time_exit'</span><span class="p">])</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Hour</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">df_test</span><span class="p">[</span><span class="s">'time_entry'</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s">'time_entry'</span><span class="p">])</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Hour</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df_test</span><span class="p">[</span><span class="s">'time_exit'</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s">'time_exit'</span><span class="p">])</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">offsets</span><span class="o">.</span><span class="n">Hour</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="feature-engineering">Feature Engineering</h3>
+
+<p>The single trajectories were then grouped by hash making them full length journeys. From the grouped trajectories, clusters had been extracted for the x_entry and the y_entry coordinates using <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html">MeanShift Clustering</a>.</p>
+
+<p>       Consider data points on a 2D plane, those data points would be concentrated in certain areas more than others (High Density). You can think of this as a hill, the denser the certain area is the higher the hill.</p>
+
+<p>        Mean shift clustering aims to discover hills in this 2D plane. This centroid-based algorithm will update the center of a hill by choosing the mean of all the points inside the given region. The code described in the above proceedure can be seen below:</p>
+
+<p>MeanShift Clustering function used below from the library sklearn.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_clusters</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s">'approx_latitudes'</span><span class="p">:</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nb">round</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="s">'approx_longitudes'</span><span class="p">:</span> <span class="n">coords</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="nb">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="c1">#Removing duplicate coordinates
+</span>        <span class="n">clusters</span> <span class="o">=</span> <span class="n">clusters</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s">'approx_latitudes'</span><span class="p">,</span> <span class="s">'approx_longitudes'</span><span class="p">])</span>
+        <span class="n">clusters</span> <span class="o">=</span> <span class="n">clusters</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+        <span class="c1">#Setting the bandwidth of clusters
+</span>        <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">estimate_bandwidth</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">quantile</span><span class="o">=</span><span class="mf">0.00002</span><span class="p">)</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">MeanShift</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="n">bandwidth</span><span class="p">,</span> <span class="n">bin_seeding</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span>
+        <span class="c1">#return Meanshift object
+</span>        <span class="k">return</span> <span class="n">ms</span>
+</code></pre></div></div>
+<p>Function to create a journey from trajectories</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">create_polyline_x</span><span class="p">(</span><span class="n">x_entry</span><span class="p">):</span>
+        <span class="n">t_x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">t_x</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Putting it all together to create a MeanShift Clustering Object which will be able to predict under which cluster a given coordinate will land.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#Group Trajectories by Hash Making them a full Journey
+</span>    <span class="n">hash_group</span><span class="o">=</span><span class="n">df_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'hash'</span><span class="p">])</span>
+    <span class="c1">#Taking all the coordinates to create clusters.
+</span>    <span class="n">polyline</span> <span class="o">=</span><span class="n">hash_group</span><span class="p">[[</span><span class="s">'x_entry'</span><span class="p">,</span><span class="s">'y_entry'</span><span class="p">]]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">create_polyline_x</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">feats</span> <span class="o">=</span> <span class="n">polyline</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'polyline'</span><span class="p">)</span>
+    <span class="n">latlong</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">feats</span><span class="p">[</span><span class="s">'polyline'</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#Retrieves the MeanShift Object which can now run predictions
+</span>    <span class="n">ms</span> <span class="o">=</span> <span class="n">get_clusters</span><span class="p">(</span><span class="n">latlong</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In the image below the clusters can be visualized on the roads of Atlanta, as the color of the clusters is Red-shifted it means that there is a high density of coordinates there, the opposite is true for Clusters that are shifting towards yellow. One can see that the City Center is densily populated.</p>
+
+<p><img src="../images/eynextwave/clusteringFeatures.png" alt="linearly separable data" /></p>
+
+<p>After the MeanShift Clustering model is created, it is used to predict the cluster numbers of the entry and exit coordinates. These cluster numbers are then stored in the data file as additional features as seen in the code below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#Set points to Clusters and add to dataframes
+</span>    <span class="n">df_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s">'pickup_cluster'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_train</span><span class="p">[[</span><span class="s">'y_entry'</span><span class="p">,</span> <span class="s">'x_entry'</span><span class="p">]])</span>
+    <span class="n">df_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s">'dropoff_cluster'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df_train</span><span class="p">[[</span><span class="s">'y_exit'</span><span class="p">,</span> <span class="s">'x_exit'</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<p>The raw data including the clusters is taken and features are crafted from them, to be able to train the model on. A list of features was then crafted to describe the data as best as possible.</p>
+
+<h2 id="model-used">Model Used</h2>
+
+<h3 id="extreme-gradient-boosting-xgboost">Extreme Gradient Boosting (XGBoost)</h3>
+<p>XGBoost is a supervised learning algorithm based on decision tree boosting. Supervised learning is when the training data X (containing multiple features)
+predicts the target variable Y. Decision trees are flowchart-like structures with decision points as nodes and branches as weighted answers, an example can be seen in the image below:</p>
+
+<p><img src="../images/eynextwave/decisiontree.png" alt="linearly separable data" /></p>
+
+<p>The image above showed a shallow decision tree which would be called a weak learner. Weak learner means individually that tree would be inaccurate but better than
+random guessing. Decision Tree Boosting is the process of taking many individual weak learners and combining them into one strong learner.</p>
+
+<p>Different models have been used for this problem. This problem was taken as both a Classification and a Regression problem. Since XGBoost doesn’t offer functionality for multi-label/multi-regression outputs two regression models needed to be trained, one for the X exit points and another for the Y exit points. The Regression model was trained on the X and Y Exit points while the Classification model had the X and Y points converted to a single binary label stating whether or not those points are in the city center or not. These models had been trained for 100 Epochs with a learning rate of 0.2 and a maximum tree depth of 14 using the XGboost python library.</p>
+
+<p>Training the data as a Classification problem:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">xgbRegClass</span> <span class="o">=</span><span class="n">xgb</span><span class="o">.</span><span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                            <span class="n">max_depth</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+                            <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                            <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                            <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">xgbRegClass</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">eval_metric</span><span class="o">=</span><span class="s">'error'</span><span class="p">,</span><span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)],</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Training the data as a Regression Problem for Latitude Coordinates.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#This is a Latitude Regressor, it should be used to predict the latitutde of the trajectories alone
+</span>    <span class="n">xgbRegY</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                            <span class="n">colsample_bytree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+    <span class="n">xgbRegY</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">eval_metric</span><span class="o">=</span><span class="s">'rmse'</span><span class="p">,</span><span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)],</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Training the data as a Regression Problem for Longitude Coordinates.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#This is a Longitude Regressor, it should be used to predict the longitude of the trajectories alone
+</span>    <span class="n">xgbRegX</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">XGBRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">subsample</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                            <span class="n">colsample_bytree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+    <span class="n">xgbRegX</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span><span class="n">eval_metric</span><span class="o">=</span><span class="s">'rmse'</span><span class="p">,</span><span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)],</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Running the predictions on the Engineered Features from the Test Data:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">predictionsClass</span> <span class="o">=</span> <span class="n">xgbRegClass</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Testing_X</span><span class="p">)</span>
+    <span class="n">predictionsY</span> <span class="o">=</span> <span class="n">xgbRegY</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Testing_X</span><span class="p">)</span>
+    <span class="n">predictionsx</span> <span class="o">=</span> <span class="n">xgbRegx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Testing_X</span><span class="p">)</span>
+</code></pre></div></div>
+<p>A custom F1-Score function was created to measure the accuracy of the models by comparing the training and testing. The code below shows the function to evaluate the Regression Model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#Function to evaluate the Regressor
+</span>    <span class="k">def</span> <span class="nf">evaluate_predictions_Reg</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">,</span> <span class="n">predictionsY</span><span class="p">,</span> <span class="n">ActualsY</span><span class="p">,</span> <span class="n">Label_X</span><span class="p">):</span>
+        <span class="n">TP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">FP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">FN</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">Label_X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="s">"nan"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="mf">3750901.5068</span> <span class="o">&lt;=</span> <span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">3770901.5068</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="o">-</span><span class="mf">19268905.6133</span> <span class="o">&lt;=</span> <span class="n">predictionsY</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">predictionsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">19208905.6133</span><span class="p">):</span>
+                    <span class="n">Answer</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Answer</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">Answer</span> <span class="o">==</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">TP</span> <span class="o">+=</span><span class="mi">1</span> 
+                <span class="k">elif</span> <span class="n">Answer</span> <span class="o">!=</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">FN</span> <span class="o">+=</span><span class="mi">1</span> 
+                <span class="k">elif</span> <span class="n">Answer</span> <span class="o">!=</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">Answer</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">FP</span> <span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="k">return</span> <span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span>
+    
+    <span class="c1">#Retrieve the True Positive, False Positive and False Negatives of the regressor
+</span>    <span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span> <span class="o">=</span> <span class="n">evaluate_predictions_Reg</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">,</span><span class="n">predictionsY</span><span class="p">,</span><span class="n">Output</span><span class="p">,</span><span class="n">Label_X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The same was done to evalutate the Classification model as can be seen below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Evaluate the predictions made by the Classifier
+</span>    <span class="k">def</span> <span class="nf">evaluate_predictions</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">,</span><span class="n">ActualsY</span><span class="p">,</span><span class="n">Label_X</span><span class="p">):</span>
+        <span class="n">TP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">FP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">FN</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">Label_X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="s">"nan"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+                    <span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">TP</span> <span class="o">+=</span><span class="mi">1</span> 
+                <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">FN</span> <span class="o">+=</span><span class="mi">1</span> 
+                <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="n">ActualsY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">predictionsX</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">FP</span> <span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="k">return</span> <span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span>
+        <span class="c1">#Retrieve the True Positive, False Positive and False Negatives of the Classifier
+</span>        <span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span> <span class="o">=</span> <span class="n">evaluate_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span><span class="n">Output_Y</span><span class="p">,</span><span class="n">Label_X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The retrieved True Positive, False Positive and False Negative values were then passed through the function below to get a score with regards to the models performance.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">#F1 Metric that is used by the competition.
+</span>    <span class="k">def</span> <span class="nf">F1_Metrics</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">TP</span><span class="o">+</span><span class="n">FP</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span><span class="o">/</span><span class="p">(</span><span class="n">TP</span><span class="o">+</span><span class="n">FP</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">TP</span><span class="o">+</span><span class="n">FN</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span><span class="o">/</span><span class="p">(</span><span class="n">TP</span><span class="o">+</span><span class="n">FN</span><span class="p">))</span>
+        <span class="n">F1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="n">p</span><span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">r</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">F1</span>
+    
+    <span class="c1"># Takes an input of True Positive, False Positive and False Negatives and returns the F1-Score.
+</span>    <span class="n">F1</span> <span class="o">=</span> <span class="n">F1_Metrics</span><span class="p">(</span><span class="n">TP</span><span class="p">,</span><span class="n">FP</span><span class="p">,</span><span class="n">FN</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The predicted answers were then written on a CSV file and submitted to the online portal for ranking.</p>
+
+<h2 id="results">Results</h2>
+<p>It was noticed during training that the algorithm had an extremely higher Root Mean Square Error for the Y Regressor than the X Regressor. This meant that it would be more inaccurate in predicting the Latitude compared to the Longitude.<br />
+The Classification model achieved a greater F1-Score compared to that of the Regression model. This meant that generalizing the output to a selected region would yield better prediction results.<br />
+Highest F1-Scores : Regression = 0.85458 , Classification = 0.88976<br />
+Even though the Classifier achieved better results the Regressor would be more useful in application</p>
+
+<h2 id="improvements">Improvements</h2>
+<p>More features can be explored such as the Haversine Formula to account for the curvature of the earth.<br />
+External data such as road directions, speed limits, public transportation routes, car parks, workplace and school locations could be used to further improve trajectory prediction.<br />
+The Regression model returns a cartesian coordinate, this coordinate could possibly land where there is a building. Using the exact known locations of roads that coordinate can be corrected to the closest road using map matching algorithms.</p>
+
+<p><img src="../images/eynextwave/mapmatching.png" alt="linearly separable data" /></p>
 </div>
                             
                             <ul class="list-inline item-details">
