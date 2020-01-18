@@ -4,7 +4,7 @@ modal-id: 5
 title: HoneyDex
 subtitle : Decentralized ETH escrow for ETH/BTC trading using HoneyCombs API.
 date: 2019-12-18
-img: HoneyDexF.jpg
+image: "img/HoneyDexF.jpg"
 coverimage : chainlink.png
 alt: image-alt
 project-date: December 2019

@@ -1,15 +1,15 @@
 ---
-layout: default
+layout: post
 modal-id: 3
 title: Trajectory Prediction
 subtitle : EY Nextwave Data Science Challenge 2019
 date: 2019-05-01
-img: trajectoryphoto.png
+image: "img/trajectoryphoto.png"
 alt: image-alt
 project-date: May 2019
 coverimage : eycover.jpg
-category: Artificial Intelligence 
 githublink : https://github.com/vvoluom/Ey_DataScience_Challenge
+tags: [DataScience, A.I]
 ---
 
 
@@ -71,7 +71,7 @@ For Example :
 
 Using the Python Pandas library the Training and Testing CSV files had been loaded as can be seen in the code snippet below:
 
-```friendly
+```python
     #Load the training and testing data
     df_train =pd.read_csv('data_train.csv')
     df_test =pd.read_csv('data_test.csv')

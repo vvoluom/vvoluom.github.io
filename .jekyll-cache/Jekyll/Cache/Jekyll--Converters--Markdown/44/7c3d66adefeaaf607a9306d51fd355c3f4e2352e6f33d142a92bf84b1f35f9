@@ -1,3 +1,0 @@
-I"!<h1 id="abstract">Abstract</h1>
-<p>This is my solution for the EY Nextwave Data Science Challenge 2019 where it was rewarded 1st Place in Malta and 67t Place Globally. This is a trajectory prediction problem with regards to cars in the densly populated city of Atlanta, Georgia US. Given a car journey containing multiple trajectories the objective is to predict the final exit point of that journey. A trajectory is defined as a route taken by a person, with an entry point (x , y) at a time entry and an exit point (x , y) at a time exit.</p>
-:ET

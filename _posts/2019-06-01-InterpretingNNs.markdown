@@ -4,7 +4,7 @@ modal-id: 2
 title: Interpreting Neural Networks via Activation Maximization
 subtitle : 
 date: 2019-06-01
-img: activationMaximization.png
+image: "img/activationMaximization.png"
 coverimage : amCoverPhoto.jpeg
 alt: image-alt
 project-date: June 2019

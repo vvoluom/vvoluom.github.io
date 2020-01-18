@@ -1,0 +1,153 @@
+<h2 id="abstract">Abstract</h2>
+<p>Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology HoneyDex was created with the purpose of trading ETH for Bitcoin and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the Bitcoin transaction verifications are done by Chainlink’s decentralised oracles. This concept is taken from LinkPal to cater for direct Crypto Currency transactions.</p>
+
+<h2 id="introduction">Introduction</h2>
+<p>This project was done as a hackathon submission for the <a href="https://honeycomb.devpost.com/">Honeycomb smart contract hackathon</a> where it was awarded a Judges Choice award. The problem that is solved by HoneyDex is the “Who goes first” problem while transacting digital goods online during Peer-to-Peer trading. It also removes having to trust a centralised authority to facilitate your data and payments. This solution uses HoneyComb’s API to parse Bitcoin transactions while trading ETH for Bitcoin.</p>
+
+<h2 id="background">Background</h2>
+<h1 id="ethereum">Ethereum</h1>
+<p><a href="https://ethereum.org/">Ethereum</a> is a decentralised platform for smart contracts built using blockchain technology. It is currently run using a Proof of Work (POW) consensus mechanism where transactions are confirmed by miners solving cryptographic hashes to gain rewards. ETH is a cryptocurrency which is used to deploy, trade and run functions on the platform.</p>
+
+<h1 id="smart-contracts">Smart Contracts</h1>
+<p>Smart Contracts provide the ability to execute tamper-proof digital agreements, which are considered highly secure and highly reliable. Smart contracts on the Ethereum Blockchain are coded using the programming language <a href="https://solidity.readthedocs.io/en/v0.6.1/">Solidity</a> which is high-level and object-oriented.</p>
+
+<h1 id="chainlink">Chainlink</h1>
+<p><a href="https://chain.link/">Chainlink</a> facilitates the retrieval of reliable and tamper-proof information from and to smart contracts. It does this in a decentralised way by sending and retrieving information from multiple nodes. The data that is received by the majority of the nodes is what the smart contract agrees on as the correct data. Chainlink uses LINK tokens as their cryptocurrency to execute data transactions on their nodes.</p>
+
+<h1 id="metamask">Metamask</h1>
+<p><a href="https://metamask.io/">Metamask</a> is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
+
+<h1 id="bitcoin">Bitcoin</h1>
+<p>Bitcoin is a digital currency created in January 2009. It follows the ideas set out in a <a href="https://bitcoin.org/bitcoin.pdf">whitepaper</a> by the mysterious and pseudonymous developer Satoshi Nakamoto, whose true identity has yet to be verified. Bitcoin offers the promise of lower transaction fees than traditional online payment mechanisms and is operated by a decentralized authority, unlike government-issued currencies.</p>
+
+<h1 id="honeycomb">Honeycomb</h1>
+<p><a href="https://honeycomb.market/">Honeycomb</a> is a venture of CLC Group - a network of professional services and technological solutions focused on facilitating the 4th industrial revolution powered by smart contracts.</p>
+
+<h2 id="methodology">Methodology</h2>
+<h1 id="smart-contract">Smart Contract</h1>
+<p>The design utilized was the Factory Method where the factory produces agreements containing all the necessary functions, details and funds to make the exchange happen. A Seller would need to enter the amount of ETH they are going to sell for the amount of BTC they want to receive, the Seller’s and Buyer’s Bitcoin Addresses,the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.</p>
+
+<p><img src="../images/HoneyDex/sellform.png" alt="linearly separable data" /></p>
+
+<p>Those parameters are what the seller needs to input themselves, Metamask handles the input of other unseen parameters such as seller’s Ethereum address(msg.sender) and the ETH the Seller is sending to the contract (msg.value). On creation the contract also takes note of the time it was created, this is needed for the clause that if a Buyer doesn’t pay the BTC address for a certain amount of time say one day the Seller can withdraw their ETH back after running verifications on payment.</p>
+
+<p>The ETH is automatically transfered to the deployed contract on creation. Once the contract is deployed it’s address is stored under two mapped arrays, one mapping to the Seller’s ETH address and the other maps onto the Buyer’s to make it easier for both parties to keep track of their agreements. The code below shows the deployment of the contract and the storage of it’s address.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//Creation of an Agreement</span>
+     <span class="n">address</span> <span class="nc">AgreementAddress</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="nc">Agreement</span><span class="o">).</span><span class="na">value</span><span class="o">(</span><span class="n">address</span><span class="o">(</span><span class="k">this</span><span class="o">).</span><span class="na">balance</span><span class="o">)(</span>
+        <span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span>
+        <span class="n">_buyerEthAddress</span><span class="o">,</span>
+        <span class="n">msg</span><span class="o">.</span><span class="na">value</span><span class="o">,</span>
+        <span class="n">_amountTarget</span><span class="o">,</span>
+        <span class="n">_sellerTargetCryptoAddress</span><span class="o">,</span>
+        <span class="n">_buyerTargetCryptoAddress</span><span class="o">,</span>
+        <span class="n">_jobIds</span><span class="o">,</span>
+        <span class="n">_oracles</span>
+    <span class="o">);</span>
+
+    <span class="nc">AgreementAddressesSeller</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">push</span><span class="o">(</span><span class="nc">AgreementAddress</span><span class="o">);</span>
+    <span class="nc">AgreementAddressesBuyer</span><span class="o">[</span><span class="n">_buyerEthAddress</span><span class="o">].</span><span class="na">push</span><span class="o">(</span><span class="nc">AgreementAddress</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Once the contract is deployed the buyer can now check the contract’s details to see if there is infact ETH deposited inside it and what the deadline for seller’s withdrawal is. If everything looks fine then they could pay the BTC address of the Buyer, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the transaction hash and retrieve the amount of Bitcoin transacted, that amount is then matched to the amount agreed upon which would be True or False depending if the amount was matched or not. If True then the funds are released from the smart contract and the buyer can withdraw them.</p>
+
+<p>These are the Buyer’s options:</p>
+
+<ul>
+  <li>Deposit Link  : Fund the contract with LINK tokens.</li>
+  <li>Query Oracles : Use the LINK tokens to retrieve data from the oracles.</li>
+  <li>Withdraw LINK : Withdraw any unused LINK the contract may have.</li>
+  <li>Withdraw ETH  : Withdraw the ETH that has just been sold to you on the condition that the invoice was paid and the oracles queried it.</li>
+</ul>
+
+<p>The code snippet below shows how requests can be built to confirm if the BTC address has been paid or not. The truecount/falsecount variables are used to keep track of the response from the oracles. The function then iterates through the array of Oracles and sends requests to them with the concatendated string built with a tx_hash and the Seller’s BTC address stored in the contract.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">function</span> <span class="nf">requestConfirmations</span><span class="o">(</span><span class="n">string</span> <span class="n">memory</span> <span class="n">tx_hash</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="n">buyerSellerContract</span>
+    <span class="o">{</span>
+        <span class="n">apiAddress</span> <span class="o">=</span> <span class="n">strConcat</span><span class="o">(</span><span class="s">"https://blockchain.info/q/txresult/"</span><span class="o">,</span> <span class="n">tx_hash</span><span class="o">,</span> <span class="s">"/"</span><span class="o">,</span> <span class="n">sellerTargetCryptoAddress</span><span class="o">,</span> <span class="s">"?confirmations=3"</span><span class="o">);</span>
+        <span class="c1">//Reset them to 0 to be able to safely re-run the oracles</span>
+        <span class="n">trueCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">falseCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+        <span class="c1">//Loop to iterate through all the responses from different nodes</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">oracles</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++){</span>
+            <span class="nc">Chainlink</span><span class="o">.</span><span class="na">Request</span> <span class="n">memory</span> <span class="n">req</span> <span class="o">=</span> <span class="n">buildChainlinkRequest</span><span class="o">(</span><span class="n">stringToBytes32</span><span class="o">(</span><span class="n">jobIds</span><span class="o">[</span><span class="n">i</span><span class="o">]),</span> <span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">fullfillNodeRequest</span><span class="o">.</span><span class="na">selector</span><span class="o">);</span>
+            <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"get"</span><span class="o">,</span><span class="n">apiAddress</span><span class="o">);</span>
+            <span class="n">sendChainlinkRequestTo</span><span class="o">(</span><span class="n">oracles</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">req</span><span class="o">,</span> <span class="no">ORACLE_PAYMENT</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The requestConfirmations(string memory tx_hash) function takes in the parameter of the transaction hash and adds it to the API that is going to be used together with the Seller’s BTC address to create a full link which will respond with a JSON file once pinged by the Oracle. The apiAddress created is a string concatenation of the API url “https://blockchain.info/q/txresult/”, the transaction hash (tx_hash) that is produced whenever transacting Bitcoin from one address to another, the sellerTargetCryptoAddress which is the Seller’s Bitcoin address and “?confirmations=3” which specifies that the transaction will only be shown after at least 3 blocks have confirmed it.</p>
+
+<p>The fullfillNodeRequest() function expects the requestId and a uint256 txid from each node that a request has been sent to. The uint256 received represents the BTC transfered in the transaction, this is matched to the agreed amount in the contract. If the amounts are equal then the true count is incremented, if not then the false count is incremented after each increment it decides if the Ethereum should be released or not. It might seem inefficient having to run the released if statement every time it receives information and that having it run once after the for loop in requestConfirmations() is better but the confirmations from the oracles are retrieved and increments are done after the function requestConfirmations() is run therefore the released boolean will not update.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">fullfillNodeRequest</span><span class="o">(</span><span class="n">bytes32</span> <span class="n">_requestId</span><span class="o">,</span> <span class="n">uint256</span> <span class="n">txid</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="nf">recordChainlinkFulfillment</span><span class="o">(</span><span class="n">_requestId</span><span class="o">){</span>
+        <span class="n">returnedtxid</span> <span class="o">=</span> <span class="n">txid</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">amountTarget</span> <span class="o">==</span> <span class="n">txid</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">trueCount</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">amountTarget</span> <span class="o">!=</span> <span class="n">txid</span><span class="o">){</span>
+            <span class="n">falseCount</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">trueCount</span> <span class="o">&gt;</span> <span class="n">falseCount</span><span class="o">){</span>
+            <span class="n">released</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+		  <span class="n">released</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="o">}</span>
+        <span class="n">emit</span> <span class="nf">successNodeResponse</span><span class="o">(</span><span class="n">released</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The contract includes extra functionality to retrieve the current price of a cryptocurrency, the function below requestMarketPrice(string coinnumber, address _oracle, string  _jobId) needs the Oracle address, Job Id specified from where the information should be retrieved from and the coinnumber is the specified cryptocurreny which’s price should be retrieved, for example BTC has a coinnumber of 1. When a request is to the Oracle a response is sent back in JSON format, it then needs to parsed to retrieve the specific key value pair, this is done by specifying the path “data.coin.price” to retrieve it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">requestMarketPrice</span><span class="o">(</span><span class="n">string</span> <span class="n">coinnumber</span><span class="o">,</span> <span class="n">address</span> <span class="n">_oracle</span><span class="o">,</span> <span class="n">string</span>  <span class="n">_jobId</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="o">{</span>
+        <span class="c1">//Loop to iterate through all the responses from different nodes</span>
+        <span class="nc">Chainlink</span><span class="o">.</span><span class="na">Request</span> <span class="n">memory</span> <span class="n">req</span> <span class="o">=</span> <span class="n">buildChainlinkRequest</span><span class="o">(</span><span class="n">stringToBytes32</span><span class="o">(</span><span class="n">_jobId</span><span class="o">),</span> <span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">fullfillCoinPrice</span><span class="o">.</span><span class="na">selector</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"coin_id"</span><span class="o">,</span> <span class="n">coinnumber</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"copyPath"</span><span class="o">,</span> <span class="s">"data.coin.price"</span><span class="o">);</span>
+        <span class="n">sendChainlinkRequestTo</span><span class="o">(</span><span class="n">_oracle</span><span class="o">,</span> <span class="n">req</span><span class="o">,</span> <span class="no">ORACLE_PAYMENT</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<p>The price of the coin is then stored in the contract once received from the Oracle.
+Once received an event is emitted which will update a website that is interacting with this contract, this price will also be stored inside the contract for retrieval at any time.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">fullfillCoinPrice</span><span class="o">(</span><span class="n">bytes32</span> <span class="n">_requestId</span><span class="o">,</span> <span class="n">int256</span> <span class="n">coinPrice</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="nf">recordChainlinkFulfillment</span><span class="o">(</span><span class="n">_requestId</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="n">marketPrice</span> <span class="o">=</span> <span class="n">coinPrice</span><span class="o">;</span>
+        <span class="n">emit</span> <span class="nf">NewPriceEmiited</span><span class="o">(</span><span class="n">coinPrice</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The withdrawETH() function allows a buyer or a seller to withdraw the Ethereum escrowed inside the contract. If a buyer doesn’t pay the invoice then after one day the seller can withdraw the ETH. Otherwise if a buyer does pay the invoice, then after running node confirmations the ETH will be released to the buyer. The contract sends the stored ETH to whoever is eligible to access this function under the mentioned conditions.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">withdrawETH</span><span class="o">()</span> <span class="kd">public</span> <span class="n">buyerSellerContract</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span> <span class="o">==</span> <span class="n">sellerAddress</span> <span class="o">&amp;&amp;</span> <span class="n">deploymentTime</span> <span class="o">&lt;=</span> <span class="n">block</span><span class="o">.</span><span class="na">timestamp</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">days</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">trueCount</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">falseCount</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)){</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">released</span> <span class="o">==</span> <span class="kc">false</span><span class="o">){</span>
+                <span class="n">address</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">).</span><span class="na">transfer</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+                <span class="n">amount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span><span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span> <span class="o">==</span> <span class="n">buyerAddress</span> <span class="o">&amp;&amp;</span> <span class="n">released</span> <span class="o">==</span> <span class="kc">true</span><span class="o">){</span>
+            <span class="n">address</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">).</span><span class="na">transfer</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The withdrawLink() function allows for users to withdraw the unused LINK token inside the contract.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">withdrawLink</span><span class="o">()</span> <span class="kd">public</span> <span class="n">buyerSellerContract</span><span class="o">{</span>
+        <span class="nc">LinkTokenInterface</span> <span class="n">link</span> <span class="o">=</span> <span class="nc">LinkTokenInterface</span><span class="o">(</span><span class="n">chainlinkTokenAddress</span><span class="o">());</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">link</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span> <span class="n">link</span><span class="o">.</span><span class="na">balanceOf</span><span class="o">(</span><span class="n">address</span><span class="o">(</span><span class="k">this</span><span class="o">))),</span> <span class="s">"Unable to transfer"</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.</p>

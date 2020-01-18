@@ -1,31 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<feed xmlns="http://www.w3.org/2005/Atom" >
-  <generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator>
-  <link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" />
-  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
-  <updated>2020-01-17T00:14:35+01:00</updated>
-  <id>http://localhost:4000/</id>
-
-  
-    <title type="html">Vitaly Volozhinov</title>
-  
-
-  
-    <subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle>
-  
-
-  
-
-  
-  
-    <entry>
-      <title type="html">HoneyDex</title>
-      <link href="http://localhost:4000/blockchain/2019/12/18/honeydex/" rel="alternate" type="text/html" title="HoneyDex" />
-      <published>2019-12-18T00:00:00+01:00</published>
-      <updated>2019-12-18T00:00:00+01:00</updated>
-      <id>http://localhost:4000/blockchain/2019/12/18/honeydex</id>
-      <content type="html" xml:base="http://localhost:4000/blockchain/2019/12/18/honeydex/">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Modern Blog</title>
+        <description>Modern-Blog A Elegant template for Jekyll</description>
+        <link>http://localhost:4000/</link>
+        <atom:link href="http://localhost:4000/feed.xml" rel="self"
+        type="application/rss+xml"/>
+        <pubDate>Sat, 18 Jan 2020 18:08:36 +0100</pubDate>
+        <lastBuildDate>Sat, 18 Jan 2020 18:08:36 +0100</lastBuildDate>
+        <generator>Jekyll v4.0.0</generator>
+        
+        <item>
+            <title>HoneyDex</title>
+            <description>&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology HoneyDex was created with the purpose of trading ETH for Bitcoin and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the Bitcoin transaction verifications are done by Chainlink’s decentralised oracles. This concept is taken from LinkPal to cater for direct Crypto Currency transactions.&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
@@ -177,41 +164,20 @@ Once received an event is emitted which will update a website that is interactin
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
+&lt;p&gt;HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.&lt;/p&gt;
+</description>
+            <pubDate>Wed, 18 Dec 2019 00:00:00 +0100</pubDate>
+            <link>http://localhost:4000#/blockchain/2019/12/18/honeydex.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/blockchain/2019/12/18/honeydex.html</guid>
+            
+            
+            <category>Blockchain</category>
+            
+        </item>
         
-        
-      </author>
-
-      
-        <category term="Blockchain" />
-      
-
-      
-
-      
-        <summary type="html">Abstract Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology HoneyDex was created with the purpose of trading ETH for Bitcoin and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the Bitcoin transaction verifications are done by Chainlink’s decentralised oracles. This concept is taken from LinkPal to cater for direct Crypto Currency transactions.</summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Interpreting Neural Networks via Activation Maximization</title>
-      <link href="http://localhost:4000/artificial%20intelligence/2019/06/01/InterpretingNNs/" rel="alternate" type="text/html" title="Interpreting Neural Networks via Activation Maximization" />
-      <published>2019-06-01T00:00:00+02:00</published>
-      <updated>2019-06-01T00:00:00+02:00</updated>
-      <id>http://localhost:4000/artificial%20intelligence/2019/06/01/InterpretingNNs</id>
-      <content type="html" xml:base="http://localhost:4000/artificial%20intelligence/2019/06/01/InterpretingNNs/">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+        <item>
+            <title>Interpreting Neural Networks via Activation Maximization</title>
+            <description>&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;Decision trees are models whose structure allows for tracing an explanation of how the final decision was taken. Neural networks known as ’black box’ model, do not readily and explicitly offer an explanation of how the decision was reached. However since Neural Networks are capable of learning knowledge representation it will be very useful to develop methods that interpret the model’s decisions.
 In this project Activation Maximisation will be used to search for prototypical inputs that maximise the model’s response for a quantity of interest. A pair-wise prototype comparison is then carried out under different learning conditions, such as number of classes the model deals with. The study is grounded in the area of object spatial relations recognition in images and will shed light on what models are learning about objects in 2D images which should give insight into how the system can be improved.
 The spatial relation problem is one where given a subject and an object the correct spatial preposition is predicted. This problem extends beyond just predicting one correct spatial preposition as there are mulitple possible relationships associated between two objects.&lt;/p&gt;
@@ -676,41 +642,20 @@ methods. CoRR, abs/1804.11191, 2018.&lt;br /&gt;
 [8] Mohammad Amin Sadeghi and Ali Farhadi. Recognition using visual phrases. 2011.&lt;br /&gt;
 [9] K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale
 image recognition. CoRR, abs/1409.1556, 2014.&lt;br /&gt;
-[10] M. Zhang and Z. Zhou. A review on multi-label learning algorithms. IEEE Transactions on Knowledge and Data Engineering, 26(8):1819–1837, Aug 2014.&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
+[10] M. Zhang and Z. Zhou. A review on multi-label learning algorithms. IEEE Transactions on Knowledge and Data Engineering, 26(8):1819–1837, Aug 2014.&lt;/p&gt;
+</description>
+            <pubDate>Sat, 01 Jun 2019 00:00:00 +0200</pubDate>
+            <link>http://localhost:4000#/artificial%20intelligence/2019/06/01/InterpretingNNs.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/artificial%20intelligence/2019/06/01/InterpretingNNs.html</guid>
+            
+            
+            <category>Artificial Intelligence</category>
+            
+        </item>
         
-        
-      </author>
-
-      
-        <category term="Artificial Intelligence" />
-      
-
-      
-
-      
-        <summary type="html">Abstract Decision trees are models whose structure allows for tracing an explanation of how the final decision was taken. Neural networks known as ’black box’ model, do not readily and explicitly offer an explanation of how the decision was reached. However since Neural Networks are capable of learning knowledge representation it will be very useful to develop methods that interpret the model’s decisions. In this project Activation Maximisation will be used to search for prototypical inputs that maximise the model’s response for a quantity of interest. A pair-wise prototype comparison is then carried out under different learning conditions, such as number of classes the model deals with. The study is grounded in the area of object spatial relations recognition in images and will shed light on what models are learning about objects in 2D images which should give insight into how the system can be improved. The spatial relation problem is one where given a subject and an object the correct spatial preposition is predicted. This problem extends beyond just predicting one correct spatial preposition as there are mulitple possible relationships associated between two objects.</summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Trajectory Prediction</title>
-      <link href="http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction/" rel="alternate" type="text/html" title="Trajectory Prediction" />
-      <published>2019-05-01T00:00:00+02:00</published>
-      <updated>2019-05-01T00:00:00+02:00</updated>
-      <id>http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction</id>
-      <content type="html" xml:base="http://localhost:4000/artificial%20intelligence/2019/05/01/trajectoryPrediction/">&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
+        <item>
+            <title>Trajectory Prediction</title>
+            <description>&lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
 &lt;p&gt;This is my solution for the EY Nextwave Data Science Challenge 2019 where it was rewarded 1st Place in Malta and 67t Place Globally. This is a trajectory prediction problem with regards to cars in the densly populated city of Atlanta, Georgia US. Given a car journey containing multiple trajectories the objective is to predict the final exit point of that journey. A trajectory is defined as a route taken by a person, with an entry point (x , y) at a time entry and an exit point (x , y) at a time exit.&lt;/p&gt;
 
 &lt;h1 id=&quot;context-of-the-challenge&quot;&gt;Context of The Challenge&lt;/h1&gt;
@@ -770,10 +715,10 @@ For Example :&lt;/p&gt;
 
 &lt;p&gt;Using the Python Pandas library the Training and Testing CSV files had been loaded as can be seen in the code snippet below:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-friendly&quot;&gt;    #Load the training and testing data
-    df_train =pd.read_csv('data_train.csv')
-    df_test =pd.read_csv('data_test.csv')
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;c1&quot;&gt;#Load the training and testing data
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;df_train&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data_train.csv'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;df_test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'data_test.csv'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The dataset had variables that contain time, the time_entry (When the device started recording gps movement) and the time_exit (When the device stopped recording gps movement). This time has been saved in the format HH:MM:SS (Hours:Miniutes:Seconds) which needed to be converted into an integer number. This was done by using the function to_timedelta() from the Pandas library as can be seen in the code below.&lt;/p&gt;
 
@@ -965,41 +910,162 @@ Even though the Classifier achieved better results the Regressor would be more u
 External data such as road directions, speed limits, public transportation routes, car parks, workplace and school locations could be used to further improve trajectory prediction.&lt;br /&gt;
 The Regression model returns a cartesian coordinate, this coordinate could possibly land where there is a building. Using the exact known locations of roads that coordinate can be corrected to the closest road using map matching algorithms.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../images/eynextwave/mapmatching.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
+&lt;p&gt;&lt;img src=&quot;../images/eynextwave/mapmatching.png&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
+</description>
+            <pubDate>Wed, 01 May 2019 00:00:00 +0200</pubDate>
+            <link>http://localhost:4000#/2019/05/01/trajectoryPrediction.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2019/05/01/trajectoryPrediction.html</guid>
+            
+            <category>DataScience</category>
+            
+            <category>A.I</category>
+            
+            
+        </item>
         
+        <item>
+            <title>A Craftsman Workshop</title>
+            <description>&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
+
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
+
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
+
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Sat, 25 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/25/workshop.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/25/workshop.html</guid>
+            
+            
+        </item>
         
-      </author>
+        <item>
+            <title>I scream</title>
+            <description>&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
 
-      
-        <category term="Artificial Intelligence" />
-      
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
 
-      
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
 
-      
-        <summary type="html">Abstract This is my solution for the EY Nextwave Data Science Challenge 2019 where it was rewarded 1st Place in Malta and 67t Place Globally. This is a trajectory prediction problem with regards to cars in the densly populated city of Atlanta, Georgia US. Given a car journey containing multiple trajectories the objective is to predict the final exit point of that journey. A trajectory is defined as a route taken by a person, with an entry point (x , y) at a time entry and an exit point (x , y) at a time exit.</summary>
-      
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
 
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">LinkPal</title>
-      <link href="http://localhost:4000/blockchain/2014/07/15/linkpal/" rel="alternate" type="text/html" title="LinkPal" />
-      <published>2014-07-15T00:00:00+02:00</published>
-      <updated>2014-07-15T00:00:00+02:00</updated>
-      <id>http://localhost:4000/blockchain/2014/07/15/linkpal</id>
-      <content type="html" xml:base="http://localhost:4000/blockchain/2014/07/15/linkpal/">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Fri, 24 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/24/i-scream.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/24/i-scream.html</guid>
+            
+            
+        </item>
+        
+        <item>
+            <title>Absense of light</title>
+            <description>&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
+
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
+
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
+
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Thu, 23 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/23/night-sky.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/23/night-sky.html</guid>
+            
+            
+        </item>
+        
+        <item>
+            <title>Watches</title>
+            <description>&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
+
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
+
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
+
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Wed, 22 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/22/what-time.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/22/what-time.html</guid>
+            
+            
+        </item>
+        
+        <item>
+            <title>Nobody else was around.</title>
+            <description>&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
+
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
+
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
+
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Tue, 21 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/21/city-nights.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/21/city-nights.html</guid>
+            
+            
+        </item>
+        
+        <item>
+            <title>Planes are cool!</title>
+            <description>&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;fuckyou&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;fuckyou&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib2&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib2&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib2&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;dolor-sit-amet&quot;&gt;Dolor sit amet?&lt;/h3&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vestibulum non mi non pulvinar. Donec tempus risus vel ex fringilla tempor. Vivamus pharetra non mauris quis fermentum. Vestibulum sed maximus elit, sit amet suscipit orci. Morbi at enim at libero dignissim egestas vel ac nisi. Etiam at lectus a arcu sodales consequat. Aliquam consequat ligula sed purus tincidunt, a ultrices nibh dapibus. Phasellus convallis ipsum nec semper ultricies. In facilisis lacus velit, sit amet lacinia velit blandit id. Nullam ut magna erat. Aliquam sit amet dapibus odio, aliquet tempus tortor. Donec in nisi massa.&lt;/p&gt;
+
+&lt;h3 id=&quot;aliquam-suscipit&quot;&gt;Aliquam suscipit.&lt;/h3&gt;
+&lt;p&gt;Cras eget nisl accumsan, porta nisl in, egestas sapien. Vestibulum gravida nulla sed facilisis tempor. Suspendisse maximus nisi sit amet velit sodales fringilla. Vivamus luctus risus eget dui consectetur porttitor. Maecenas ut ultrices orci. Maecenas mollis est eu sodales mollis. Nulla facilisi. Suspendisse eros arcu, elementum sed sem eu, pharetra rhoncus odio. Proin nec tincidunt velit. Cras nisl augue, faucibus sed mauris in, vestibulum mollis nisl. Nam id libero ultrices, consequat ex vitae, convallis nulla.&lt;/p&gt;
+
+&lt;p&gt;Suspendisse lorem odio, blandit at nisl quis, hendrerit tempus tellus. Donec eget leo quis nisi vulputate consectetur. Praesent dignissim enim elit, congue luctus nisl cursus at. Sed rutrum molestie risus. Donec vulputate gravida accumsan. Vivamus tempus ullamcorper eleifend. Sed sagittis mi ut dolor tincidunt, ac rutrum nisi commodo.&lt;/p&gt;
+
+&lt;p&gt;Fusce non elit in diam rutrum vestibulum. Donec vitae elementum erat. Praesent elementum eget justo at bibendum. Fusce interdum diam lorem, ut placerat elit pretium quis. Quisque eu urna at quam commodo sagittis. Etiam posuere convallis tincidunt. Phasellus vitae ligula neque. Vivamus a purus at dolor iaculis placerat. Curabitur convallis eu lacus congue sagittis.&lt;/p&gt;
+
+&lt;p&gt;Aliquam suscipit fermentum mauris a accumsan. In facilisis, mauris quis pulvinar tempus, turpis sapien sodales nibh, nec feugiat augue est quis nisi. Fusce eget odio feugiat, luctus quam et, dapibus nulla. Sed ornare lacus non libero lacinia pretium. In eu dui vitae purus euismod feugiat ac ac est. Morbi vitae pretium lorem, non eleifend felis. Nullam at massa feugiat, rutrum elit at, semper lacus. Etiam vel rutrum felis. Nullam quis auctor lorem, et tempor arcu.&lt;/p&gt;
+</description>
+            <pubDate>Mon, 20 Apr 2015 14:12:12 +0200</pubDate>
+            <link>http://localhost:4000#/2015/04/20/planes.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/2015/04/20/planes.html</guid>
+            
+            
+        </item>
+        
+        <item>
+            <title>LinkPal</title>
+            <description>&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal/Revolut verifications are done by Chainlink’s decentralised oracles.&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
@@ -1141,100 +1207,16 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
 &lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
 &lt;p&gt;Since it’s release LinkPal has been split into two, standard and secret trades. The standard trades are the normal trades as seen above but the secret trades uses BlockStack Authentication to encrypt the invoice ID’s in a decentralized manner and store the ciphertexts on the smart contracts.&lt;/p&gt;
 
-&lt;p&gt;The demo is live on &lt;a href=&quot;http://www.linkpal.io/&quot;&gt;linkpal.io&lt;/a&gt;.&lt;/p&gt;</content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
+&lt;p&gt;The demo is live on &lt;a href=&quot;http://www.linkpal.io/&quot;&gt;linkpal.io&lt;/a&gt;.&lt;/p&gt;
+</description>
+            <pubDate>Tue, 15 Jul 2014 00:00:00 +0200</pubDate>
+            <link>http://localhost:4000#/blockchain/2014/07/15/linkpal.html</link>
+            <guid isPermaLink="true">http://localhost:4000#/blockchain/2014/07/15/linkpal.html</guid>
+            
+            
+            <category>Blockchain</category>
+            
+        </item>
         
-        
-      </author>
-
-      
-        <category term="Blockchain" />
-      
-
-      
-
-      
-        <summary type="html">Abstract Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal/Revolut verifications are done by Chainlink’s decentralised oracles.</summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Project 4</title>
-      <link href="http://localhost:4000/web%20development/2014/07/15/project-4/" rel="alternate" type="text/html" title="Project 4" />
-      <published>2014-07-15T00:00:00+02:00</published>
-      <updated>2014-07-15T00:00:00+02:00</updated>
-      <id>http://localhost:4000/web%20development/2014/07/15/project-4</id>
-      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/15/project-4/"></content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
-        
-        
-      </author>
-
-      
-        <category term="Web Development" />
-      
-
-      
-
-      
-        <summary type="html"></summary>
-      
-
-      
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Project 5</title>
-      <link href="http://localhost:4000/web%20development/2014/07/14/project-5/" rel="alternate" type="text/html" title="Project 5" />
-      <published>2014-07-14T00:00:00+02:00</published>
-      <updated>2014-07-14T00:00:00+02:00</updated>
-      <id>http://localhost:4000/web%20development/2014/07/14/project-5</id>
-      <content type="html" xml:base="http://localhost:4000/web%20development/2014/07/14/project-5/"></content>
-
-      
-      
-      
-      
-      
-
-      <author>
-          <name></name>
-        
-        
-      </author>
-
-      
-        <category term="Web Development" />
-      
-
-      
-
-      
-        <summary type="html"></summary>
-      
-
-      
-      
-    </entry>
-  
-</feed>
+    </channel>
+</rss>
