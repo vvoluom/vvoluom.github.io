@@ -1,9 +1,7 @@
 ---
-layout: default
-modal-id: 6
 title: LinkPal
 subtitle : Decentralized ETH escrow for ETH/FIAT trading using PayPal and Revolut
-date: 2014-07-15
+date: 2019-11-15
 image: "img/linkpal.jpg"
 coverimage : chainlink.png
 alt: image-alt

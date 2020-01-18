@@ -211,7 +211,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;
-	overflow-y: hidden;
+	overflow-y: visible;
 }
 
 body.body--hidden {

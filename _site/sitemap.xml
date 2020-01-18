@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://localhost:4000/blockchain/2014/07/15/linkpal.html</loc>
-<lastmod>2014-07-15T00:00:00+02:00</lastmod>
-</url>
-<url>
 <loc>http://localhost:4000/2015/04/20/planes.html</loc>
 <lastmod>2015-04-20T14:12:12+02:00</lastmod>
 </url>
@@ -29,12 +25,36 @@
 <lastmod>2015-04-25T14:12:12+02:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/2018/12/20/cryptography.html</loc>
+<lastmod>2018-12-20T13:12:12+01:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/2018/12/20/memeverse.html</loc>
+<lastmod>2018-12-20T13:12:12+01:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/2019/05/01/trajectoryPrediction.html</loc>
 <lastmod>2019-05-01T00:00:00+02:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/artificial%20intelligence/2019/06/01/InterpretingNNs.html</loc>
 <lastmod>2019-06-01T00:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/2019/07/07/deflationary-token.html</loc>
+<lastmod>2019-07-07T14:12:12+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/2019/08/20/administration-automation.html</loc>
+<lastmod>2019-08-20T14:12:12+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/blockchain/2019/11/15/linkpal.html</loc>
+<lastmod>2019-11-15T00:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/2019/12/10/weather-wizard.html</loc>
+<lastmod>2019-12-10T13:12:12+01:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/blockchain/2019/12/18/honeydex.html</loc>
