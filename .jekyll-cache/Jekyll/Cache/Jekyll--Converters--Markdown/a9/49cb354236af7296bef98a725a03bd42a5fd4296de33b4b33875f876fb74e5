@@ -1,4 +1,4 @@
-<p><img src="../img/chainlink.png" /></p>
+I"LK<p><img src="../img/chainlink.png" /></p>
 
 <h2 id="abstract">Abstract</h2>
 <p>Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal/Revolut verifications are done by Chainlink’s decentralised oracles.</p>
@@ -143,3 +143,4 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
 <p>Since it’s release LinkPal has been split into two, standard and secret trades. The standard trades are the normal trades as seen above but the secret trades uses BlockStack Authentication to encrypt the invoice ID’s in a decentralized manner and store the ciphertexts on the smart contracts.</p>
 
 <p>The demo is live on <a href="http://www.linkpal.io/">linkpal.io</a>.</p>
+:ET

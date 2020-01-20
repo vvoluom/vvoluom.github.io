@@ -5,12 +5,12 @@ title: HoneyDex
 subtitle : Decentralized ETH escrow for ETH/BTC trading using HoneyCombs API.
 date: 2019-12-18
 image: "img/HoneyDexF.jpg"
-coverimage : chainlink.png
-alt: image-alt
 project-date: December 2019
 category: Blockchain
 githublink : https://github.com/vvoluom/HoneyDex
 ---
+
+<img src="../img/chainlink.png">
 
 ## Abstract
 Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology HoneyDex was created with the purpose of trading ETH for Bitcoin and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the Bitcoin transaction verifications are done by Chainlink's decentralised oracles. This concept is taken from LinkPal to cater for direct Crypto Currency transactions.
