@@ -12,6 +12,11 @@ githublink : https://github.com/vvoluom/Ey_DataScience_Challenge
 tags: [DataScience, A.I]
 ---
 
+<img src="../images/eynextwave/coverphoto.jpg" alt="linearly separable data">
+
+# Resources 
+The Github Repository can be found here : [EY Data Science Challenge](https://github.com/vvoluom/Ey_DataScience_Challenge)
+EY Link With Results : [NextWave](https://www.ey.com/en_in/careers/nextwave-data-science-challenge)
 
 # Abstract
 This is my solution for the EY Nextwave Data Science Challenge 2019 where it was rewarded 1st Place in Malta and 67t Place Globally. This is a trajectory prediction problem with regards to cars in the densly populated city of Atlanta, Georgia US. Given a car journey containing multiple trajectories the objective is to predict the final exit point of that journey. A trajectory is defined as a route taken by a person, with an entry point (x , y) at a time entry and an exit point (x , y) at a time exit.
@@ -29,13 +34,13 @@ Electric and autonomous vehicles, along with the explosion of the ride sharing e
 The data contains the anonymized geolocation data of multiple mobile devices in the City of Atlanta (US) for 11 working days in October 2018. The devices’ ID resets every 24 hours; therefore, you will not be able to trace the same device across different days. Therefore, every device ID represents a 1-day journey.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Each journey is formed by several trajectories. A trajectory is defined as the route of a moving person in a straight line with an entry and an exit point. See an example below of one trajectory from one of the devices:
 
-<img src="../images/eynextwave/trajectory.png" alt="linearly separable data">
+<img src="../images/eynextwave/trajectory.png" alt="linearly separable data" class="center">
 
 As you can see, trajectories are a simplification of the real path of a person.
 A trajectory ends when a person stops moving and stays in the same place for a while and when the device stops recording for some time.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  For each device you will get multiple trajectories. The set of all trajectories of a device represents a simplification of the journey of one person for 24 hours. The graphic below shows a full journey of a device. 
 
-<img src="../images/eynextwave/trajectories.png" alt="linearly separable data">
+<img src="../images/eynextwave/trajectories.png" alt="linearly separable data" class="center">
 
 Trajectories are separated. In the graph, this separation is shown as a dotted line between the exit point of a trajectory and the entry point of the next one. These dotted lines represent blind parts of the journey where the device did not record the location.
 
@@ -43,16 +48,16 @@ Trajectories are separated. In the graph, this separation is shown as a dotted l
 
 There are approximately 210,000 devices and 11 columns in the database. The dataset was provided in two files a training set (data_train.csv) and testing set (data_test.csv). The train dataset contains 80% of the records, while the test dataset contains 20%. The variables in the dataset are as follows:
 
-<img src="../images/eynextwave/datavariables.png" alt="linearly separable data">
+<img src="../images/eynextwave/datavariables.png" alt="linearly separable data" class="center">
 
 ## The Goal
 The Goal is to predict how many people are in the city center between 15:00 and 16:00. The test dataset contains a number of devices where the trajectories after 15:00 have been removed. All but one: After 15:00, you will find one last trajectory, with (1) entry location, (2) entry time and an exit time that is between 15:00 and 16:00. But the exit point has been removed. The task is to predict the location of this last exit point and whether this device is within the city center or not.
 
-<img src="../images/eynextwave/atlantaTraj.png" alt="linearly separable data">
+<img src="../images/eynextwave/atlantaTraj.png" alt="linearly separable data" class="center">
 
 After an estimation is made with regards to the position of each target those estimated coordinates will have to be classified whether they are located inside the city center or not. The city center is located within the coordinates below:
 
-<img src="../images/eynextwave/centerCoordinates.png" alt="linearly separable data">
+<img src="../images/eynextwave/centerCoordinates.png" alt="linearly separable data" class="center">
 
 If the coordinates land within the center they are marked as (1) and if they land outside they are marked as (0). The submission file is a 2 column file with trajectory_id as the first column and whether it ends in the city center (1) or not (0). Submissions were evaluated using the F1-score between the predicted and the observed target.
 
@@ -150,7 +155,7 @@ The raw data including the clusters is taken and features are crafted from them,
 XGBoost is a supervised learning algorithm based on decision tree boosting. Supervised learning is when the training data X (containing multiple features)
 predicts the target variable Y. Decision trees are flowchart-like structures with decision points as nodes and branches as weighted answers, an example can be seen in the image below:
 
-<img src="../images/eynextwave/decisiontree.png" alt="linearly separable data">
+<img src="../images/eynextwave/decisiontree.png" alt="linearly separable data" class="center">
 
 The image above showed a shallow decision tree which would be called a weak learner. Weak learner means individually that tree would be inaccurate but better than
 random guessing. Decision Tree Boosting is the process of taking many individual weak learners and combining them into one strong learner.  
@@ -279,4 +284,4 @@ More features can be explored such as the Haversine Formula to account for the c
 External data such as road directions, speed limits, public transportation routes, car parks, workplace and school locations could be used to further improve trajectory prediction.  
 The Regression model returns a cartesian coordinate, this coordinate could possibly land where there is a building. Using the exact known locations of roads that coordinate can be corrected to the closest road using map matching algorithms.
 
-<img src="../images/eynextwave/mapmatching.png" alt="linearly separable data">
+<img src="../images/eynextwave/mapmatching.png" alt="linearly separable data"  class="center">

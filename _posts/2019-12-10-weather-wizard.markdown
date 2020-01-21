@@ -5,7 +5,7 @@ image: "img/weatherwizard.jpg"
 date:   2019-12-10 12:12:12
 ---
 
-<img src="../images/weatherwizard/meteogram.png" alt="linearly separable data">
+<img src="../images/weatherwizard/meteogram.png" alt="linearly separable data"  class="center">
 
 # Resources
 The Github Repository can be found here : [Weather Wizard Repo](https://github.com/vvoluom/Weather-Wizard)  
@@ -32,7 +32,7 @@ Smart Contracts provide the ability to execute tamper-proof digital agreements, 
 
 # How it works
 
-<img src="../images/weatherwizard/coverphoto.png" alt="linearly separable data">
+<img src="../images/weatherwizard/coverphoto.png" alt="linearly separable data"  class="center">
 
 This is a prediction market where users can post a question about the future weather conditions of a city such as temperature, sunlight, snowfall etc. Once this question is posted other users can bet on the outcome of the prediction with regards to whether or not it will come true. For Example : "Will the average Degrees Celsius temperature in Malta on 12/12/19 be 14 Degrees Celsius or not?", once this question is posed users can now vote Yes/No on it by betting Ethereum thereby putting money where their mouths are. When the date passes 12/12/2019 the voting is stopped and then the answer can be calculated. The answer is calculated by retrieving data from the World Weather Online API through the use of Chainlinks decentralized oracle network and averaging all the retrieved results out. For example : 3 API's are pinged and the results are [13,14,15] -> the average of these will be 14 therefore the question is true. All the users who voted correctly can now withdraw their Ethereum plus winnings and the losers are left with nothing. This makes it an incentive for people to accurately predict the weather and improve the technology that does so, by creating a market to value such information.
 

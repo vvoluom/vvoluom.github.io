@@ -1,0 +1,283 @@
+I"K�<p><img src="../images/weatherwizard/meteogram.png" alt="linearly separable data" class="center" /></p>
+
+<h1 id="resources">Resources</h1>
+<p>The Github Repository can be found here : <a href="https://github.com/vvoluom/Weather-Wizard">Weather Wizard Repo</a></p>
+
+<h1 id="inspiration">Inspiration</h1>
+
+<p>Prediction markets are common nowadays even in the world of crypto-currencies but even in this world of decentralized applications there is some sort of authority that users have to rely on to validate the correct outcome of a Question. What Chainlink and honeycomb solve is that exact problem. There is no longer a need to trust one singular source of data with the truth, just by using Chainlink’s decentralized network of oracles and Honeycomb’s extensive service line of API’s. I’ve created a prototype to showcase the possibilities of what this technology is capable of and it’s main focus is on solving humanities longest prediction problem which has affected our day to day plans throughout the ages, the Weather.</p>
+
+<h1 id="background">Background</h1>
+<h2 id="ethereum">Ethereum</h2>
+<p><a href="https://ethereum.org/">Ethereum</a> is a decentralised platform for smart contracts built using blockchain technology. It is currently run using a Proof of Work (POW) consensus mechanism where transactions are confirmed by miners solving cryptographic hashes to gain rewards. ETH is a cryptocurrency which is used to deploy, trade and run functions on the platform.</p>
+
+<h2 id="smart-contracts">Smart Contracts</h2>
+<p>Smart Contracts provide the ability to execute tamper-proof digital agreements, which are considered highly secure and highly reliable. Smart contracts on the Ethereum Blockchain are coded using the programming language <a href="https://solidity.readthedocs.io/en/v0.6.1/">Solidity</a> which is high-level and object-oriented.</p>
+
+<h2 id="chainlink">Chainlink</h2>
+<p><a href="https://chain.link/">Chainlink</a> facilitates the retrieval of reliable and tamper-proof information from and to smart contracts. It does this in a decentralised way by sending and retrieving information from multiple nodes. The data that is received by the majority of the nodes is what the smart contract agrees on as the correct data. Chainlink uses LINK tokens as their cryptocurrency to execute data transactions on their nodes.</p>
+
+<h2 id="metamask">Metamask</h2>
+<p><a href="https://metamask.io/">Metamask</a> is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
+
+<h2 id="honeycomb">Honeycomb</h2>
+<p><a href="https://honeycomb.market/">Honeycomb</a> is a venture of CLC Group - a network of professional services and technological solutions focused on facilitating the 4th industrial revolution powered by smart contracts.</p>
+
+<h1 id="how-it-works">How it works</h1>
+
+<p><img src="../images/weatherwizard/coverphoto.png" alt="linearly separable data" class="center" /></p>
+
+<p>This is a prediction market where users can post a question about the future weather conditions of a city such as temperature, sunlight, snowfall etc. Once this question is posted other users can bet on the outcome of the prediction with regards to whether or not it will come true. For Example : “Will the average Degrees Celsius temperature in Malta on 12/12/19 be 14 Degrees Celsius or not?”, once this question is posed users can now vote Yes/No on it by betting Ethereum thereby putting money where their mouths are. When the date passes 12/12/2019 the voting is stopped and then the answer can be calculated. The answer is calculated by retrieving data from the World Weather Online API through the use of Chainlinks decentralized oracle network and averaging all the retrieved results out. For example : 3 API’s are pinged and the results are [13,14,15] -&gt; the average of these will be 14 therefore the question is true. All the users who voted correctly can now withdraw their Ethereum plus winnings and the losers are left with nothing. This makes it an incentive for people to accurately predict the weather and improve the technology that does so, by creating a market to value such information.</p>
+
+<h2 id="contract">Contract</h2>
+
+<p>The Weather Wizard is built using the Factory Design Pattern where the Weather Wizard Factory produces Weather Markets containing a future question about the weather. The function below is invoked inside a Factory contract to produces a new market. The market produced needs the parameters below to make a prediction on the weather.</p>
+
+<p>Details needed to determine the outcome of a Weather Market:</p>
+<ul>
+  <li>_forecast : Question being asked with regards to weather E.G  “Will the average Degrees Celsius temperature in Malta on 12/12/19 be 14 Degrees Celsius or not?”</li>
+  <li>_date : The Specific Date when the prediction is being asked for E.G “12/12/19”</li>
+  <li>_location : The Location where the weather is measured E.G “Malta”</li>
+  <li>_timePeriod : The period over which the weather is measured for E.G “A Day”</li>
+  <li>_infoType : The Measurement used to quantify weather depending on question E.G fahrenheit,celcius avg,max,min,uvindex,sunHour</li>
+  <li>_jobId : The Specified Job that will be run on the Oracle</li>
+  <li>_oracle : The Specific Oracle that will verify the data being requested.</li>
+  <li>_timeDays : Deadline till betting stops on the market and verification begins.</li>
+  <li>_apis : A list of different data sources that will verify the information.</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="c1">//Function used to create a new market and deploy the contract</span>
+    <span class="n">function</span> <span class="nf">createMarket</span><span class="o">(</span>
+        
+        <span class="n">string</span> <span class="n">_forecast</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_date</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_location</span><span class="o">,</span>
+        <span class="n">uint8</span> <span class="n">_timePeriod</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_infoType</span><span class="o">,</span> <span class="c1">//fahrenheit or celcius avg,max,min,uvindex,sunHour, </span>
+        <span class="n">string</span> <span class="n">_jobId</span><span class="o">,</span>
+        <span class="n">address</span> <span class="n">_oracle</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_timeDays</span><span class="o">,</span>
+        <span class="n">string</span><span class="o">[]</span> <span class="n">_apis</span>
+
+    <span class="o">)</span><span class="kd">public</span> <span class="nf">returns</span><span class="o">(</span><span class="n">uint256</span><span class="o">){</span>
+
+        <span class="c1">//Creates new market object here</span>
+        <span class="nc">WeatherMarket</span> <span class="n">newMarket</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WeatherMarket</span><span class="o">(</span>
+            <span class="n">_forecast</span><span class="o">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span>
+            <span class="n">_date</span><span class="o">,</span>
+            <span class="n">_location</span><span class="o">,</span>
+            <span class="n">_timePeriod</span><span class="o">,</span>
+            <span class="n">_infoType</span><span class="o">,</span> <span class="c1">//fahrenheit or celcius avg,max,min,uvindex,sunHour, </span>
+            <span class="n">_jobId</span><span class="o">,</span>
+            <span class="n">_oracle</span><span class="o">,</span>
+            <span class="n">_timeDays</span><span class="o">,</span> 
+            <span class="n">_apis</span>
+        <span class="o">);</span>
+        <span class="n">weathermarkets</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">newMarket</span><span class="o">);</span>
+        <span class="n">submissions</span><span class="o">[</span><span class="n">newMarket</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+		<span class="n">uint256</span> <span class="n">currentIndex</span> <span class="o">=</span> <span class="n">weathermarkets</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        
+        <span class="n">emit</span> <span class="nf">newSubmission</span><span class="o">(</span><span class="n">address</span><span class="o">(</span><span class="n">newMarket</span><span class="o">));</span>
+        <span class="k">return</span> <span class="n">currentIndex</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<p>Once created the address of the newely deployed contract is stored in an array containing all the markets and an event with the details of the market is emitted.
+The code below shows the constructor of the newely created market. The data specified in the Factory contract is stored in two Structures a Market Information Sturct and a RequestInformation Struct.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">constructor</span><span class="o">(</span>
+
+        <span class="n">string</span> <span class="n">_forecast</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_date</span><span class="o">,</span>
+        <span class="n">uint</span> <span class="n">_afterDays</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_location</span><span class="o">,</span>
+        <span class="n">uint8</span> <span class="n">_timePeriod</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_infoType</span><span class="o">,</span> <span class="c1">//fahrenheit or celcius avg,max,min,uvindex,sunHour, </span>
+        <span class="n">string</span> <span class="n">_jobId</span><span class="o">,</span>
+        <span class="n">address</span> <span class="n">_oracle</span><span class="o">,</span>
+        <span class="n">string</span> <span class="n">_timeDays</span><span class="o">,</span>
+        <span class="n">string</span><span class="o">[]</span> <span class="n">_apis</span>
+
+    <span class="o">)</span><span class="kd">public</span><span class="o">{</span>
+
+        <span class="n">mI</span><span class="o">.</span><span class="na">deploymentTime</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="na">timestamp</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">afterDays</span> <span class="o">=</span> <span class="n">_afterDays</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">Owner</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">remainder</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">yesBetTotal</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">noBetTotal</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">forecast</span> <span class="o">=</span> <span class="n">_forecast</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">location</span> <span class="o">=</span> <span class="n">_location</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">date</span> <span class="o">=</span> <span class="n">_date</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">infoType</span> <span class="o">=</span> <span class="n">_infoType</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">jobId</span> <span class="o">=</span> <span class="n">_jobId</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">oracle</span> <span class="o">=</span> <span class="n">_oracle</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">timeDays</span> <span class="o">=</span><span class="n">_timeDays</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">released</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">apis</span> <span class="o">=</span> <span class="n">_apis</span><span class="o">;</span>
+        <span class="n">bettingIsOpen</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="n">setPublicChainlinkToken</span><span class="o">();</span>
+
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The Market Information Struct seen in the code below specifies the information pretaining to the betting market.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">struct</span> <span class="n">MarketInformation</span><span class="p">{</span>
+        <span class="n">address</span> <span class="n">Owner</span><span class="p">;</span>
+        <span class="n">bool</span> <span class="n">actualOutcome</span><span class="p">;</span>
+        <span class="n">uint</span> <span class="n">afterDays</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">remainder</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">deploymentTime</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">yesBetTotal</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">noBetTotal</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">average</span><span class="p">;</span>
+        <span class="n">address</span><span class="p">[]</span> <span class="n">betters</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The Request Information Struct seen in the code below specifies the information with regards to the prediction being bet on.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">struct</span> <span class="n">RequestInformation</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">forecast</span><span class="p">;</span>
+        <span class="n">uint256</span> <span class="n">prediction</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">date</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">location</span><span class="p">;</span>
+        <span class="n">address</span> <span class="n">oracle</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">jobId</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">infoType</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">timeDays</span><span class="p">;</span>
+        <span class="n">string</span><span class="p">[]</span> <span class="n">apis</span><span class="p">;</span>
+        <span class="n">uint256</span><span class="p">[]</span> <span class="n">results</span><span class="p">;</span>
+        <span class="n">bool</span> <span class="n">released</span><span class="p">;</span>
+        <span class="n">uint8</span> <span class="n">trueCount</span><span class="p">;</span>
+        <span class="n">uint8</span> <span class="n">falseCount</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Once a market is created the bettingIsOpen boolean is set to true which allows for the running of the placeBet() function below. This function takes in a boolean prediction signifying it a user believes that the question will result to a True or False. Apart from the boolean parameter, Ethereum is sent with the invocation of the function which is the bet that is being placed on that outcome. Two counters are kept check off the Yes Bet total and the No Bet Total which are incremented by how much Ethereum is sent.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">function</span> <span class="nf">placeBet</span><span class="o">(</span><span class="n">bool</span> <span class="n">_prediction</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="n">payable</span>
+    <span class="n">assertBettingIsOpen</span>
+<span class="o">{</span>
+    <span class="n">require</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="n">require</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">value</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="n">ether</span><span class="o">);</span>
+    <span class="n">require</span><span class="o">(</span><span class="n">totalContributions</span><span class="o">()</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="na">value</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="n">ether</span><span class="o">);</span>
+    <span class="n">require</span><span class="o">(</span><span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">amount</span> <span class="o">==</span> <span class="mi">0</span><span class="o">);</span>
+
+    <span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">prediction</span> <span class="o">=</span> <span class="n">_prediction</span><span class="o">;</span>
+    <span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">amount</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="na">value</span><span class="o">;</span>
+    <span class="n">mI</span><span class="o">.</span><span class="na">betters</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">_prediction</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">SafeMath</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">mI</span><span class="o">.</span><span class="na">yesBetTotal</span><span class="o">,</span><span class="n">msg</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="nc">SafeMath</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">mI</span><span class="o">.</span><span class="na">noBetTotal</span><span class="o">,</span><span class="n">msg</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nc">LogBet</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span> <span class="n">_prediction</span><span class="o">,</span> <span class="n">msg</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Once the time limit is up no more bets are allowed to be processed. Therefore the contract can now retrieve information with regards to the actual real life outcome of the forecast question by using the requestConfirmations() function that can be seen below:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//Depending on how the API needs to work.</span>
+<span class="c1">//Information should be preset from before and uneditable</span>
+<span class="n">function</span> <span class="nf">requestConfirmations</span><span class="o">(</span><span class="n">string</span> <span class="n">memory</span> <span class="n">tx_hash</span><span class="o">)</span>
+<span class="kd">public</span>
+<span class="n">assertBettingIsOpen</span>
+<span class="o">{</span>
+    <span class="c1">//apiAddress = strConcat("https://blockchain.info/q/txresult/", tx_hash, "/", sellerTargetCryptoAddress, "?confirmations=3");</span>
+    <span class="c1">//Reset them to 0 to be able to safely re-run the oracles</span>
+    <span class="n">rI</span><span class="o">.</span><span class="na">trueCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">rI</span><span class="o">.</span><span class="na">falseCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+    <span class="c1">//Loop to iterate through all the responses from different nodes</span>
+    <span class="k">for</span><span class="o">(</span><span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rI</span><span class="o">.</span><span class="na">apis</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++){</span>
+        <span class="nc">Chainlink</span><span class="o">.</span><span class="na">Request</span> <span class="n">memory</span> <span class="n">req</span> <span class="o">=</span> <span class="n">buildChainlinkRequest</span><span class="o">(</span><span class="n">stringToBytes32</span><span class="o">(</span><span class="n">rI</span><span class="o">.</span><span class="na">jobId</span><span class="o">),</span> <span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">fulfillNodeRequest</span><span class="o">.</span><span class="na">selector</span><span class="o">);</span>
+        <span class="n">string</span> <span class="n">memory</span> <span class="n">path</span> <span class="o">=</span> <span class="n">strConcat</span><span class="o">(</span><span class="s">"data.weather."</span><span class="o">,</span> <span class="n">rI</span><span class="o">.</span><span class="na">apis</span><span class="o">[</span><span class="n">i</span><span class="o">],</span><span class="s">"."</span><span class="o">,</span> <span class="n">rI</span><span class="o">.</span><span class="na">infoType</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"q"</span><span class="o">,</span> <span class="n">rI</span><span class="o">.</span><span class="na">location</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"date"</span><span class="o">,</span> <span class="n">rI</span><span class="o">.</span><span class="na">date</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"tp"</span><span class="o">,</span> <span class="n">rI</span><span class="o">.</span><span class="na">timeDays</span><span class="o">);</span>
+        <span class="n">req</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"copyPath"</span><span class="o">,</span> <span class="n">path</span><span class="o">);</span>
+        <span class="n">sendChainlinkRequestTo</span><span class="o">(</span><span class="n">rI</span><span class="o">.</span><span class="na">oracle</span><span class="o">,</span> <span class="n">req</span><span class="o">,</span> <span class="no">ORACLE_PAYMENT</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This function builds a Chainlink Request with the specific details of the forecast which had been previously mentioned and sends those requests to the Oracle with a Specific Job and API. The response of the oracle is then received by the function fullfillnodeRequest() which accepts the result and stores it in the results array.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//This should fullfill the node request</span>
+    <span class="n">function</span> <span class="nf">fullfillnodeRequest</span><span class="o">(</span><span class="n">bytes32</span> <span class="n">_requestId</span><span class="o">,</span> <span class="n">uint256</span> <span class="n">result</span><span class="o">)</span>
+    <span class="kd">public</span>
+    <span class="nf">recordChainlinkFulfillment</span><span class="o">(</span><span class="n">_requestId</span><span class="o">){</span>
+        <span class="n">rI</span><span class="o">.</span><span class="na">results</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>After all the requests have been sent and results received the outcome can be calculated using the function settleOutcome which iterates through all the results and returns an average, so if the results received are [13,14,15] -&gt; the average of these will be 14 therefore the outcome of the forecast is True and the winners can withdraw their Ethereum.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//This will be replaced with the oracle confirmation</span>
+    <span class="n">function</span> <span class="nf">settleOutcome</span><span class="o">()</span>
+        <span class="kd">public</span>
+        <span class="n">assertBettingIsOpen</span>
+        <span class="nf">returns</span> <span class="o">(</span><span class="n">bool</span> <span class="n">success</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">block</span><span class="o">.</span><span class="na">timestamp</span> <span class="o">&gt;=</span> <span class="n">mI</span><span class="o">.</span><span class="na">deploymentTime</span> <span class="o">+</span> <span class="n">mI</span><span class="o">.</span><span class="na">afterDays</span><span class="o">);</span>
+        <span class="n">uint256</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rI</span><span class="o">.</span><span class="na">results</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++){</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">rI</span><span class="o">.</span><span class="na">results</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+        <span class="o">}</span>
+
+        <span class="n">mI</span><span class="o">.</span><span class="na">average</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">/</span> <span class="n">rI</span><span class="o">.</span><span class="na">results</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">mI</span><span class="o">.</span><span class="na">average</span> <span class="o">==</span> <span class="n">rI</span><span class="o">.</span><span class="na">prediction</span><span class="o">){</span>
+            <span class="n">mI</span><span class="o">.</span><span class="na">actualOutcome</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+            <span class="n">mI</span><span class="o">.</span><span class="na">actualOutcome</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">bettingIsOpen</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The function below allows the winners to withdraw their earnings on the correctly places bets. The Requirements of the function check if the invoker has any bets placed and if their bet was correct, their winnings are then calculated and sent to their address.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">withdrawWinnings</span><span class="o">()</span>
+        <span class="kd">public</span>
+        <span class="n">assertBettingIsClosed</span>
+        <span class="nf">returns</span> <span class="o">(</span><span class="n">bool</span> <span class="n">success</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="c1">// Require a bet was made</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">amount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="c1">// Require bet was correct</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">prediction</span> <span class="o">==</span> <span class="n">mI</span><span class="o">.</span><span class="na">actualOutcome</span><span class="o">);</span>
+
+        <span class="c1">// Calculate winnings</span>
+        <span class="n">uint256</span> <span class="n">contributions</span> <span class="o">=</span> <span class="n">totalContributions</span><span class="o">();</span>
+        <span class="n">uint256</span> <span class="n">numerator</span> <span class="o">=</span> <span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">amount</span> <span class="o">*</span> <span class="n">contributions</span><span class="o">;</span>
+        <span class="k">assert</span><span class="o">(</span><span class="n">numerator</span> <span class="o">/</span> <span class="n">contributions</span> <span class="o">==</span> <span class="n">bets</span><span class="o">[</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">].</span><span class="na">amount</span><span class="o">);</span>
+        <span class="n">uint256</span> <span class="n">denominator</span> <span class="o">=</span> <span class="n">mI</span><span class="o">.</span><span class="na">actualOutcome</span> <span class="o">?</span> <span class="n">mI</span><span class="o">.</span><span class="na">yesBetTotal</span> <span class="o">:</span> <span class="n">mI</span><span class="o">.</span><span class="na">noBetTotal</span><span class="o">;</span>
+        <span class="n">uint256</span> <span class="n">winnings</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span><span class="o">;</span>
+        <span class="c1">// Move funds</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">remainder</span> <span class="o">+=</span> <span class="n">numerator</span> <span class="o">%</span> <span class="n">denominator</span><span class="o">;</span>
+        <span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">winnings</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>There are special functions for the Owner of the contract to withdraw the remainder of the winnings if they weren’t exactly divisible between the Winners. This function can be seen below:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">function</span> <span class="nf">withdrawRemainder</span><span class="o">()</span> <span class="kd">public</span> <span class="n">assertBettingIsClosed</span> <span class="nf">returns</span> <span class="o">(</span><span class="n">bool</span> <span class="n">success</span><span class="o">){</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span> <span class="o">==</span> <span class="n">mI</span><span class="o">.</span><span class="na">Owner</span><span class="o">);</span>
+        <span class="n">require</span><span class="o">(</span><span class="n">mI</span><span class="o">.</span><span class="na">remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">uint256</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">mI</span><span class="o">.</span><span class="na">remainder</span><span class="o">;</span>
+        <span class="n">mI</span><span class="o">.</span><span class="na">remainder</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>This was a small smart contract experiment to show how full decentralized and tamper proof prediction markets could be built using Chainlink Oracles and Ethereum Smart Contracts.</p>
+:ET

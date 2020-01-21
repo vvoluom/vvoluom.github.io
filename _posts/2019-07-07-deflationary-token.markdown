@@ -5,7 +5,7 @@ image: "img/deflationaryToken.jpg"
 date:   2019-07-07 12:12:12
 ---
 
-<img src="../images/deflationary/deflationary.png" alt="linearly separable data">
+<img src="../images/deflationary/deflationary.png" alt="linearly separable data"  class="center">
 
 # Resources
 The Github Repository can be found here : [Deflationary Token](https://github.com/vvoluom/DeflationaryToken)

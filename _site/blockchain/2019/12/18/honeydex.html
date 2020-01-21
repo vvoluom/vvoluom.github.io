@@ -1,4 +1,4 @@
-<p><img src="../img/chainlink.png" /></p>
+<p><img src="../img/chainlink.png" class="center" /></p>
 
 <h1 id="resources">Resources</h1>
 <p>The Github Repository can be found here : <a href="https://github.com/vvoluom/Weather-Wizard">HoneyDex Repo</a><br />
@@ -34,7 +34,7 @@ The Devpost Article can be found here : <a href="https://honeycomb.devpost.com/u
 <h2 id="smart-contract">Smart Contract</h2>
 <p>The design utilized was the Factory Method where the factory produces agreements containing all the necessary functions, details and funds to make the exchange happen. A Seller would need to enter the amount of ETH they are going to sell for the amount of BTC they want to receive, the Seller’s and Buyer’s Bitcoin Addresses,the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.</p>
 
-<p><img src="../images/HoneyDex/sellform.png" alt="linearly separable data" /></p>
+<p><img src="../images/HoneyDex/sellform.png" alt="linearly separable data" class="center" /></p>
 
 <p>Those parameters are what the seller needs to input themselves, Metamask handles the input of other unseen parameters such as seller’s Ethereum address(msg.sender) and the ETH the Seller is sending to the contract (msg.value). On creation the contract also takes note of the time it was created, this is needed for the clause that if a Buyer doesn’t pay the BTC address for a certain amount of time say one day the Seller can withdraw their ETH back after running verifications on payment.</p>
 

@@ -1,13 +1,11 @@
 ---
 title: Interpreting Neural Networks
-subtitle : Using Activation Maximization
-date: 2019-06-01
+subtitle : via Activation Maximization
 image: "img/activationMaximization.png"
-coverimage : amCoverPhoto.jpeg
-project-date: June 2019
-category: Artificial Intelligence 
-githublink : https://github.com/vvoluom/Interpreting-Neural-Networks-via-Activation-Maximisation
+date: 2019-06-01 12:12:12
 ---
+
+<img src="../images/ActivationMaximization/coverphoto2.png" alt="linearly separable data"  class="center">
 
 # Resources
 The Github Repository can be found here : [Interpreting Neural Networks via Activation Maximisation](https://github.com/vvoluom/Interpreting-Neural-Networks-via-Activation-Maximisation)
@@ -113,7 +111,7 @@ size (3x3) with Stride = 1 and a padding of ’Same’ to preserve the spatial r
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The model was trained using mini-batch processing with a batch size of 256. The loss function used was stochastic gradient descent(SGD) with a momentum of 0.9, drop out ratio of 0.5 and was trained for 74 epochs. The initial learning rate was 0.1 and was decreased by a factor of 10 when accuracy stagnated. It was trained using four NVIDIA
 Titan Black GPUs for two to three weeks.
 
-<img src="../images/ActivationMaximization/Vgg16Arch.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/Vgg16Arch.png" alt="linearly separable data"  class="center">
 
 ## Visual Relationship Detection <a name = "visual-Relationship-Detection"></a>
 
@@ -163,13 +161,13 @@ This work focused on expanding Dai et als spatial masks method of preparing imag
 Muscat et al 2018 came out with a dataset SpatialVOC2k which is a multilingual dataset focused on a portion of the VRD problem mainly the spatial relations. It was adapted from the PASCAL VOC2008 dataset by extracting 2026 images. These images had been chosen as they had 2 or more objects with given bounding boxes making this datasets main focus be a multilabel dataset. This dataset also proposed 18 Geometric features (Table 1) which proved to be useful for classification together with multiple models for training and evaluating this data. This dataset doesnt only focus on the VRD problem but also on the Depth prediction problem of objects. This dataset contains 17 English prepositions and
 17 French ones, the process was done by translating the english prepositions into French and then eliminating those prepositions that had fewer than 3 examples. Figure 2 shows the occurance distribution of classes in the dataset.
 
-<img src="../images/ActivationMaximization/voc2kDist.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/voc2kDist.png" alt="linearly separable data"  class="center">
 
 ### Stanford VRD <a name = "stanford-VRD"></a>
 
 The Stanford VRD dataset was introduced by Lu et al(2016). This dataset contains 5000 images with 100 object categories and 70 predicates. In total this dataset has 78872 single labels, 4504 examples with 2 labels, 685 examples with 3 labels and 71 examples with 4 or more labels. This distribution makes it mostly a SLC problem. Figure 3 shows the occurance distribution of classes in the dataset.
 
-<img src="../images/ActivationMaximization/vrdDist.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/vrdDist.png" alt="linearly separable data"  class="center">
 
 ## A Review on Multi-Label Learning Algorithms <a name = "a-Review-on-Multi-Label-Learning-Algorithms"></a>
 
@@ -177,9 +175,9 @@ A Multilabel classification(MLC) problem comes in the form of a training example
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The main concepts taken from this paper for this dissertation are the evaluation metrics used for evaluating multi-label classifiers. The evaluation metrics can either be Example-based or Label-based. The example-based metrics work by evaluating the example instances separately and then returning the mean value across all of the test data. The label-based metrics are opposite to the one above as they evaluate the systems performance on each class label separately and then return the micro/macro-averaged values across all labels. Example-based Metrics include Subset Accuracy, Hamming Loss, One-error, Average Precision, Coverage, Ranking Loss, Accuracy, Precision, Recall, F B . The
 Label-based metrics focus on using the True Positive(TP), False Positive(FP), True Negative(TN) and False Negative(FN) for each label through out the test data. The number of examples is denoted as n, the ground truth label is Y i and h(x i ) is the predicted label output of the i th example.
 
-<img src="../images/ActivationMaximization/exampleBased.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/exampleBased.png" alt="linearly separable data"  class="center">
 
-<img src="../images/ActivationMaximization/labelBased.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/labelBased.png" alt="linearly separable data"  class="center">
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall is described as the intersection of the relevant labels and retrieved labels over the total number of relevant labels. Precision is described as the intersection of the relevant labels and retrieved labels over the total number of retrieved labels. F1-Score is the harmonic average between precision and recall. These metrics are important for the evaluation of MLC models in this dissertation as standard SLC metrics aren’t viable.
 
@@ -206,7 +204,7 @@ This dataset was easier to work with as it already had the image width and heigh
 
 From the previously created datasets more datasets have been created. These datasets contained the geometric features derived from the pair of bounding boxes given to the objects. To preserve the distribution of classes the training/testing/validation data had not been joined together but kept separately, this would enable for the results to be compared fairly. The object labels together with the directions are encoded using One Hot encoding. Note : Let distance from image edge of left and right edges be a1,b1 for first box and a2,b2 for second box the same thing was done for top and bottom edges for c1,d1 and c2,d2.
 
-<img src="../images/ActivationMaximization/geofeats.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/geofeats.png" alt="linearly separable data"  class="center">
 
 ### Single Label Datasets <a name = "single-Label-Datasets"></a>
 
@@ -216,11 +214,11 @@ The datasets that have been created thus far all had multiple relationships betw
 
 As it has been shown in A Study on the Detection of Visual Relationships (2018) that the best performing method for the VGG16 architecture is the Union-WB-B method. This is where the Union box of the bounding boxes of the pair of objects has been taken, with the background set to Black [0, 0, 0] ,Subject Bounding Box set to Green [0, 255, 0] and the Object Bounding Box set to Blue [0, 0, 255].
 
-<img src="../images/ActivationMaximization/figfour.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figfour.png" alt="linearly separable data"  class="center">
 
-<img src="../images/ActivationMaximization/figfive.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figfive.png" alt="linearly separable data"  class="center">
 
-<img src="../images/ActivationMaximization/figsix.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figsix.png" alt="linearly separable data"  class="center">
 
 Since this method doesnt use any of the actual objects but only their bounding boxes, there is no need for an actual image only its meta-data. Hence the datasets had been prepared in the form of [Labels, width, height, subject bounding box, object bounding box, subject label, object label]. From this data OpenCv was used create a black image of a certain width, height together with green, blue rectangles added to it in positions of the subject/object bounding boxes. This method was much faster as it didnt require any space, processing and loading time for images. The created images are then resized to 224x224 as that is what the VGG16 network had been initially trained using. It is important that during creation the bounding boxes do not overwrite each other in the image but instead if
 there is an overlap of objects, the overlapping pixel values will be set to [0, 255, 255]. This is so that the spatial masks are fed into separate colour channels maintaining their true form.
@@ -246,7 +244,7 @@ Due to having a large data set custom Image generators had been used to load the
 Once the model had been fully trained an Image Generator had been loaded in with the test data. The model used the predict functionality to predict probabilities on a given image. The predict function was used over the evaluation function as specific MLC evaluation metrics had to be implemented to evaluate the MLC models. On a given image prediction a set of probabilities had been returned corresponding to the probability of each class detected by the model. Since this is a MLC problem the Sigmoid activation function was used so each class had their own independent probability ranging from 0% to 100%. A threshold of 50% had been chosen as a probability cut off point. If a value was above 50%
 then it would be turned on (set to 1) and if it was below then it would have been turned off (set to 0). The predicted values had then been compared to the ground truth labels and documented per class. The True positive, False positive , True negative and False negative values for each class are decided with the use of the help of the contingency table in Figure.7.
 
-<img src="../images/ActivationMaximization/tpfp.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/tpfp.png" alt="linearly separable data"  class="center">
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Once predictions have been made on the testing data and values recorded, the evaluation metrics taken from ”A Review on Multi-Label Learning Algorithms” mentioned above were run and recorded. These metrics are used to evaluate MLC models. To evaluate SLC models Recall@1,Precision@1 and F1-Score@1 had been utelized. Since @1 is used it means that the highest probability value is used for the metric therefore the predictions were first ranked in descending order by probability and the highest predicted class is compared to the ground truth value. The results are recorded per class together with the Micro/Macro averages. All 10 models for each problem had been evaluated and their averages been tabulated.
 
@@ -266,37 +264,37 @@ In this section the results evaluated from all the models trained on the VRD dat
 ### VGG16 Evaluation Results <a name = "vGG16-Evaluation-Results"></a>
 This section shows the relevant results obtained by models for both MLC and SLC problems.The presented results are rounded to 2 decimal places.
 
-<img src="../images/ActivationMaximization/vgg16results.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/vgg16results.png" alt="linearly separable data"  class="center">
 
 ### Feed Forward Evaluation Results <a name = "feed-Forward-Evaluation-Results"></a>
 This section shows the relevant results obtained by the Feed Forward models for both MLC and SLC problems.The presented results are rounded to 2 decimal places.
 
-<img src="../images/ActivationMaximization/vg16ffresults.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/vg16ffresults.png" alt="linearly separable data" class="center"> 
 
 ### Activation Maximization Evaluation Results <a name = "activation-Maximization-Evaluation-Results"></a>
 
-<img src="../images/ActivationMaximization/amvgg16results.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/amvgg16results.png" alt="linearly separable data"  class="center">
 
-<img src="../images/ActivationMaximization/figurenine.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figurenine.png" alt="linearly separable data"  class="center">
 
 ## SpatialVoc2k Dataset Evaluation Results <a name = "spatialVoc2k-Dataset-Evaluation-Results"></a>
 In this section the results evaluated from all the models trained on the SpatialVoc2k dataset are presented.
 
 ### VGG16 Evaluation Results <a name = "vGG16-Evaluation-Results"></a>
 
-<img src="../images/ActivationMaximization/voc2kvgg16results.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/voc2kvgg16results.png" alt="linearly separable data"  class="center">
 
 ### Feed Forward Evaluation Results <a name = "feed-Forward-Evaluation-Results"></a>
 
 In this section the results for the Feed Forward Neural Networks are presented trained on the SpatialVoc2k dataset as MLC and SLC problems.
 
-<img src="../images/ActivationMaximization/ffspacialvoc2k.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/ffspacialvoc2k.png" alt="linearly separable data"  class="center">
 
 ### Activation Maximization Evaluation Results <a name = "activation-Maximization-Evaluation-Results"></a>
 
-<img src="../images/ActivationMaximization/figureten.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figureten.png" alt="linearly separable data"  class="center">
 
-<img src="../images/ActivationMaximization/figureeleven.png" alt="linearly separable data">
+<img src="../images/ActivationMaximization/figureeleven.png" alt="linearly separable data"  class="center">
 
 # Analysis of Results <a name = "analysis-of-Results"></a>
 ## Preamble

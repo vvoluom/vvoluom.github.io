@@ -1,4 +1,4 @@
-<p><img src="../img/chainlink.png" /></p>
+<p><img src="../img/chainlink.png" class="center" /></p>
 
 <h1 id="resources">Resources</h1>
 <p>The Github Repository can be found here : <a href="https://github.com/vvoluom/LinkPal/">LinkPal Repo</a><br />
@@ -46,7 +46,7 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
 <h2 id="smart-contract">Smart Contract</h2>
 <p>The design utilized was the Factory Method where the factory produces agreements containing all the necessary functions, details and funds to make the exchange happen. A seller would need to enter the amount of ETH they are going to sell for the price specified in the invoice, the Invoice ID, the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.</p>
 
-<p><img src="../images/LinkPal/sellerform.png" alt="linearly separable data" /></p>
+<p><img src="../images/LinkPal/sellerform.png" alt="linearly separable data" class="center" /></p>
 
 <p>Those parameters are what the seller needs to input themselves, Metamask handles the input of other unseen parameters such as seller’s Ethereum address(msg.sender) and the ETH the Seller is sending to the contract (msg.value). On creation the contract also takes note of the time it was created, this is needed for the clause that if a Buyer doesn’t pay the invoice for a certain amount of time say one day the Seller can withdraw their ETH back after running verifications on payment.</p>
 
@@ -69,11 +69,11 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
 
 <p>Once the contract is deployed the buyer can now check the contract’s details to see if there is infact ETH deposited inside it and what the deadline for seller’s withdrawal is. If everything looks fine then they could pay the invoice of the specified payment method, fund the contract with LINK tokens and request confirmations. The Chainlink nodes selected by the Seller will parse the Invoice ID and retrieve the key value pair {paid : bool} which would be True or False depending if the invoice was paid or not. If True then the funds are released from the smart contract and the buyer can withdraw them. The figure below shows how a deployed contract would look to a Seller. The amounts need to be changed to be more readable as the ETH amount is in Wei and the Created time is in block time seconds.</p>
 
-<p><img src="../images/LinkPal/deployedLinkPal.png" alt="linearly separable data" /></p>
+<p><img src="../images/LinkPal/deployedLinkPal.png" alt="linearly separable data" class="center" /></p>
 
 <p>This is the contract from the Seller/Buyer’s perspective.</p>
 
-<p><img src="../images/LinkPal/buyerDeployedLinkPal.png" alt="linearly separable data" /></p>
+<p><img src="../images/LinkPal/buyerDeployedLinkPal.png" alt="linearly separable data" class="center" /></p>
 
 <p>These are the Buyer’s options:</p>
 

@@ -3,6 +3,7 @@ ul{
 	text-align: left;
 }
 
+
 /*CARD */
 
 .card {
@@ -109,8 +110,16 @@ ul{
 pre{
 	text-align: left;
 }
+
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
 .card__copy {
-	text-align: center;
+	text-align: justify;
 	font-size: 1.25em;
 	max-width: 80%;
 	margin: 0 auto;
