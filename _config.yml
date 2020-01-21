@@ -3,8 +3,8 @@ title: Vitaly Volozhinov
 description: My Programming Portfolio
 keywords: Modern, Programming, Fun
 author: Vitaly Volozhinov
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "" # the base hostname & protocol for your site
+baseurl: "/" # the subpath of your site, e.g. /blog/
+url: "vvoluom.github.io" # the base hostname & protocol for your site
 
 markdown: kramdown
 plugins:
