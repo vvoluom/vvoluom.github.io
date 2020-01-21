@@ -15,7 +15,7 @@ tags: [DataScience, A.I]
 <img src="../images/eynextwave/coverphoto.jpg" alt="linearly separable data">
 
 # Resources 
-The Github Repository can be found here : [EY Data Science Challenge](https://github.com/vvoluom/Ey_DataScience_Challenge)
+The Github Repository can be found here : [EY Data Science Challenge](https://github.com/vvoluom/Ey_DataScience_Challenge)  
 EY Link With Results : [NextWave](https://www.ey.com/en_in/careers/nextwave-data-science-challenge)
 
 # Abstract

@@ -1,4 +1,4 @@
-<p><img src="../images/eynextwave/coverphoto.jpg" alt="linearly separable data" /></p>
+I"xü<p><img src="../images/eynextwave/coverphoto.jpg" alt="linearly separable data" /></p>
 
 <h1 id="resources">Resources</h1>
 <p>The Github Repository can be found here : <a href="https://github.com/vvoluom/Ey_DataScience_Challenge">EY Data Science Challenge</a><br />
@@ -260,3 +260,4 @@ External data such as road directions, speed limits, public transportation route
 The Regression model returns a cartesian coordinate, this coordinate could possibly land where there is a building. Using the exact known locations of roads that coordinate can be corrected to the closest road using map matching algorithms.</p>
 
 <p><img src="../images/eynextwave/mapmatching.png" alt="linearly separable data" class="center" /></p>
+:ET

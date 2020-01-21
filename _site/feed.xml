@@ -6,8 +6,8 @@
         <link>http://localhost:4000/</link>
         <atom:link href="http://localhost:4000/feed.xml" rel="self"
         type="application/rss+xml"/>
-        <pubDate>Wed, 22 Jan 2020 00:10:49 +0100</pubDate>
-        <lastBuildDate>Wed, 22 Jan 2020 00:10:49 +0100</lastBuildDate>
+        <pubDate>Wed, 22 Jan 2020 00:18:58 +0100</pubDate>
+        <lastBuildDate>Wed, 22 Jan 2020 00:18:58 +0100</lastBuildDate>
         <generator>Jekyll v4.0.0</generator>
         
         <item>
@@ -1171,7 +1171,7 @@ image recognition. CoRR, abs/1409.1556, 2014.&lt;br /&gt;
             <description>&lt;p&gt;&lt;img src=&quot;../images/eynextwave/coverphoto.jpg&quot; alt=&quot;linearly separable data&quot; /&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;resources&quot;&gt;Resources&lt;/h1&gt;
-&lt;p&gt;The Github Repository can be found here : &lt;a href=&quot;https://github.com/vvoluom/Ey_DataScience_Challenge&quot;&gt;EY Data Science Challenge&lt;/a&gt;
+&lt;p&gt;The Github Repository can be found here : &lt;a href=&quot;https://github.com/vvoluom/Ey_DataScience_Challenge&quot;&gt;EY Data Science Challenge&lt;/a&gt;&lt;br /&gt;
 EY Link With Results : &lt;a href=&quot;https://www.ey.com/en_in/careers/nextwave-data-science-challenge&quot;&gt;NextWave&lt;/a&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;abstract&quot;&gt;Abstract&lt;/h1&gt;
