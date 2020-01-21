@@ -9,72 +9,13 @@ category: Artificial Intelligence
 githublink : https://github.com/vvoluom/Interpreting-Neural-Networks-via-Activation-Maximisation
 ---
 
-## Abstract
+# Resources
+The Github Repository can be found here : [Interpreting Neural Networks via Activation Maximisation](https://github.com/vvoluom/Interpreting-Neural-Networks-via-Activation-Maximisation)
+
+# Abstract
 Decision trees are models whose structure allows for tracing an explanation of how the final decision was taken. Neural networks known as ’black box’ model, do not readily and explicitly offer an explanation of how the decision was reached. However since Neural Networks are capable of learning knowledge representation it will be very useful to develop methods that interpret the model’s decisions.
 In this project Activation Maximisation will be used to search for prototypical inputs that maximise the model’s response for a quantity of interest. A pair-wise prototype comparison is then carried out under different learning conditions, such as number of classes the model deals with. The study is grounded in the area of object spatial relations recognition in images and will shed light on what models are learning about objects in 2D images which should give insight into how the system can be improved.
 The spatial relation problem is one where given a subject and an object the correct spatial preposition is predicted. This problem extends beyond just predicting one correct spatial preposition as there are mulitple possible relationships associated between two objects.
-
-# Contents
-1. [Intro](#intro)
-2. [Background and Literature Review](#background-and-Literature-Review)
-    1. [Preamable](#preamable)
-    2. [Convolutional Neural Networks](#convolutional-Neural-Networks)
-        1. [Image Components](#image-Components)
-        2. [Convolutional Layer](#convolutional-Layer)
-        3. [ReLU Layer](#reLU-Layer)
-        4. [Pooling Layer](#pooling-Layer)
-        5. [Fully Connected Layer](#fully-Connected-Layer)
-        6. [Final Layer](#final-Layer)
-        7. [Dropout Layer](#dropout-Layer)
-        8. [Single vs Multi Label Classification](#single-vs-Multi-Label-Classification)
-        9. [Training and Terminology](#training-and-Terminology)
-        10. [Very Deep Convolutional Networks For Large-Scale Image Recognition](#very-Deep-Convolutional-Networks-For-Large-Scale-Image-Recognition)
-    3. [Visual Relationship Detection](#visual-Relationship-Detection)
-        1. [Recognition Using Visual Phrases](#recognition-Using-Visual-Phrases)
-        2. [Visual Relationship Detection with Language Priors](#visual-Relationship-Detection-with-Language-Priors)
-        3. [Detecting Visual Relationships with Deep Relational Networks](#detecting-Visual-Relationships-with-Deep-Relational-Networks)
-        4. [A Study on the Detection of Visual Relationships](#a-Study-on-the-Detection-of-Visual-Relationships)
-    4. [Datasets](#datasets)
-        1. [SpatialVOC2K: A Multilingual Dataset of Images with Annotations and Features for Spatial Relations between Objects](#spatialVOC2K:-A-Multilingual-Dataset-of-Images-with-Annotations-and-Features-for-Spatial-Relations-between-Objects)
-        2. [Stanford VRD](#stanford-VRD)
-    5. [A Review on Multi-Label Learning Algorithms](#a-Review-on-Multi-Label-Learning-Algorithms)
-    6. [Activation Maximization](#activation-Maximization)
-3. [Methodology](#methodology)
-    1. [Data Preparation](#data-Preparation)
-        1. [Stanford VRD Dataset](#stanford-VRD-Dataset)
-        2. [SpatialVoc2k Dataset](#spatialVoc2k-Dataset)
-        3. [Geometric Datasets](#geometric-Datasets)
-        4. [Single Label Datasets](#single-Label-Datasets)
-    2. [Image Preparation](#image-Preparation)
-    3. [Training](#training)
-        1. [VGG16](#vGG16)
-        2. [Feed Forward Neural Network](#feed-Forward-Neural-Network)
-        3. [Data Generators](#data-Generators)
-    4. [Evaluation and Metrics](#evaluation-and-Metrics)
-    5. [Interpreting the models](#interpreting-the-models)
-4. [Findings](#findings)
-    1. [Preamble](#preamble)
-    2. [VRD Dataset Evaluation Results](#vRD-Dataset-Evaluation-Results)
-        1. [VGG16 Evaluation Results](#vGG16-Evaluation-Results)
-        2. [Feed Forward Evaluation Results](fFeed-Forward-Evaluation-Results)
-        3. [Activation Maximization Evaluation Results](#activation-Maximization-Evaluation-Results)
-    3. [SpatialVoc2k Dataset Evaluation Results](#spatialVoc2k-Dataset-Evaluation-Results)
-        1. [VGG16 Evaluation Results](#vGG16-Evaluation-Results)
-        2. [Feed Forward Evaluation Results](#feed-Forward-Evaluation-Results)
-        3. [Activation Maximization Evaluation Results](#activation-Maximization-Evaluation-Results)
-5. [Analysis of Results](#analysis-of-Results)
-    1. [Preamble](#preamble)
-    2. [VRD Results](#vRD-Results)
-        1. [Multi-label vs Single-label Classification](#multi-label-vs-Single-label-Classification)
-        2. [VGG16 vs Feed Forward Neural Network](#vGG16-vs-Feed-Forward-Neural-Network)
-        3. [Activation Maximization](#activation-Maximization)
-        4. [Conclusions](#conclusions)
-    3. [SpatialVoc2k Results](#spatialVoc2k-Results)
-        1. [Multi-label vs Single-label Classification](#multi-label-vs-Single-label-Classification)
-        2. [VGG16 vs Feed Forward Neural Network](#vGG16-vs-Feed-Forward-Neural-Network)
-        3. [Activation Maximization](#activation-Maximization)
-        4. [Conclusions](#conclusions)
-6. [References](#references)
 
 # Intro
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Research in computer vision has excelled in recent years largely due to technological

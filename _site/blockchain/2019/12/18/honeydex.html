@@ -1,32 +1,37 @@
 <p><img src="../img/chainlink.png" /></p>
 
-<h2 id="abstract">Abstract</h2>
+<h1 id="resources">Resources</h1>
+<p>The Github Repository can be found here : <a href="https://github.com/vvoluom/Weather-Wizard">HoneyDex Repo</a><br />
+The Demo Website can be found here : <a href="http://honeydex.xyz/">HoneyDex Website</a> <br />
+The Devpost Article can be found here : <a href="https://honeycomb.devpost.com/updates/11648-and-the-winner-is">Devpost Article</a></p>
+
+<h1 id="abstract">Abstract</h1>
 <p>Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology HoneyDex was created with the purpose of trading ETH for Bitcoin and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the Bitcoin transaction verifications are done by Chainlink’s decentralised oracles. This concept is taken from LinkPal to cater for direct Crypto Currency transactions.</p>
 
-<h2 id="introduction">Introduction</h2>
+<h1 id="introduction">Introduction</h1>
 <p>This project was done as a hackathon submission for the <a href="https://honeycomb.devpost.com/">Honeycomb smart contract hackathon</a> where it was awarded a Judges Choice award. The problem that is solved by HoneyDex is the “Who goes first” problem while transacting digital goods online during Peer-to-Peer trading. It also removes having to trust a centralised authority to facilitate your data and payments. This solution uses HoneyComb’s API to parse Bitcoin transactions while trading ETH for Bitcoin.</p>
 
-<h2 id="background">Background</h2>
-<h1 id="ethereum">Ethereum</h1>
+<h1 id="background">Background</h1>
+<h2 id="ethereum">Ethereum</h2>
 <p><a href="https://ethereum.org/">Ethereum</a> is a decentralised platform for smart contracts built using blockchain technology. It is currently run using a Proof of Work (POW) consensus mechanism where transactions are confirmed by miners solving cryptographic hashes to gain rewards. ETH is a cryptocurrency which is used to deploy, trade and run functions on the platform.</p>
 
-<h1 id="smart-contracts">Smart Contracts</h1>
+<h2 id="smart-contracts">Smart Contracts</h2>
 <p>Smart Contracts provide the ability to execute tamper-proof digital agreements, which are considered highly secure and highly reliable. Smart contracts on the Ethereum Blockchain are coded using the programming language <a href="https://solidity.readthedocs.io/en/v0.6.1/">Solidity</a> which is high-level and object-oriented.</p>
 
-<h1 id="chainlink">Chainlink</h1>
+<h2 id="chainlink">Chainlink</h2>
 <p><a href="https://chain.link/">Chainlink</a> facilitates the retrieval of reliable and tamper-proof information from and to smart contracts. It does this in a decentralised way by sending and retrieving information from multiple nodes. The data that is received by the majority of the nodes is what the smart contract agrees on as the correct data. Chainlink uses LINK tokens as their cryptocurrency to execute data transactions on their nodes.</p>
 
-<h1 id="metamask">Metamask</h1>
+<h2 id="metamask">Metamask</h2>
 <p><a href="https://metamask.io/">Metamask</a> is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
 
-<h1 id="bitcoin">Bitcoin</h1>
+<h2 id="bitcoin">Bitcoin</h2>
 <p>Bitcoin is a digital currency created in January 2009. It follows the ideas set out in a <a href="https://bitcoin.org/bitcoin.pdf">whitepaper</a> by the mysterious and pseudonymous developer Satoshi Nakamoto, whose true identity has yet to be verified. Bitcoin offers the promise of lower transaction fees than traditional online payment mechanisms and is operated by a decentralized authority, unlike government-issued currencies.</p>
 
-<h1 id="honeycomb">Honeycomb</h1>
+<h2 id="honeycomb">Honeycomb</h2>
 <p><a href="https://honeycomb.market/">Honeycomb</a> is a venture of CLC Group - a network of professional services and technological solutions focused on facilitating the 4th industrial revolution powered by smart contracts.</p>
 
-<h2 id="methodology">Methodology</h2>
-<h1 id="smart-contract">Smart Contract</h1>
+<h1 id="methodology">Methodology</h1>
+<h2 id="smart-contract">Smart Contract</h2>
 <p>The design utilized was the Factory Method where the factory produces agreements containing all the necessary functions, details and funds to make the exchange happen. A Seller would need to enter the amount of ETH they are going to sell for the amount of BTC they want to receive, the Seller’s and Buyer’s Bitcoin Addresses,the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.</p>
 
 <p><img src="../images/HoneyDex/sellform.png" alt="linearly separable data" /></p>
@@ -151,5 +156,5 @@ Once received an event is emitted which will update a website that is interactin
         <span class="n">require</span><span class="o">(</span><span class="n">link</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span> <span class="n">link</span><span class="o">.</span><span class="na">balanceOf</span><span class="o">(</span><span class="n">address</span><span class="o">(</span><span class="k">this</span><span class="o">))),</span> <span class="s">"Unable to transfer"</span><span class="o">);</span>
     <span class="o">}</span>
 </code></pre></div></div>
-<h2 id="conclusion">Conclusion</h2>
+<h1 id="conclusion">Conclusion</h1>
 <p>HoneyDex successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for HoneyDex is to include more CryptoCurrencies, Ethereum based tokens and to eventually merge with Linkpal to become a fully decentralized exchange.</p>

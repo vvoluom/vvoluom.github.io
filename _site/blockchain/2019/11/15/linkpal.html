@@ -1,44 +1,49 @@
 <p><img src="../img/chainlink.png" /></p>
 
-<h2 id="abstract">Abstract</h2>
+<h1 id="resources">Resources</h1>
+<p>The Github Repository can be found here : <a href="https://github.com/vvoluom/LinkPal/">LinkPal Repo</a><br />
+The Demo Website can be found here : <a href="https://linkpal.io/">LinkPal Website</a><br />
+The Medium Article can be found here : <a href="https://blog.chain.link/winners-of-the-chainlink-virtual-hackathon/">Medium Article</a></p>
+
+<h1 id="abstract">Abstract</h1>
 <p>Ethereum based smart contracts have no way to communicate with outside data which makes them limited in the ability to verify the information that is being given to them. The Chainlink network provides a reliable tamper-proof way to input and retrieve data from these smart contracts. Using this new technology LinkPal was created with the purpose of trading ETH for Fiat and vice versa without having to trust either party or a centralised provider. All the transactions are done through the smart contract and the PayPal/Revolut verifications are done by Chainlink’s decentralised oracles.</p>
 
-<h2 id="introduction">Introduction</h2>
+<h1 id="introduction">Introduction</h1>
 <p>This project was done as a hackathon submission for the <a href="https://blog.chain.link/winners-of-the-chainlink-virtual-hackathon/">Coinlist Chainlink hackathon</a> where is won first place. The problem that is solved by LinkPal is the “Who goes first” problem while transacting digital goods online during Peer-to-Peer trading. It also removes having to trust a centralised authority to facilitate your data and payments. This solution uses PayPal and Revolut to trade ETH.</p>
 
-<h2 id="background">Background</h2>
-<h1 id="ethereum">Ethereum</h1>
+<h1 id="background">Background</h1>
+<h2 id="ethereum">Ethereum</h2>
 <p><a href="https://ethereum.org/">Ethereum</a> is a decentralised platform for smart contracts built using blockchain technology. It is currently run using a Proof of Work (POW) consensus mechanism where transactions are confirmed by miners solving cryptographic hashes to gain rewards. ETH is a cryptocurrency which is used to deploy, trade and run functions on the platform.</p>
 
-<h1 id="smart-contracts">Smart Contracts</h1>
+<h2 id="smart-contracts">Smart Contracts</h2>
 <p>Smart Contracts provide the ability to execute tamper-proof digital agreements, which are considered highly secure and highly reliable. Smart contracts on the Ethereum Blockchain are coded using the programming language <a href="https://solidity.readthedocs.io/en/v0.6.1/">Solidity</a> which is high-level and object-oriented.</p>
 
-<h1 id="chainlink">Chainlink</h1>
+<h2 id="chainlink">Chainlink</h2>
 <p><a href="https://chain.link/">Chainlink</a> facilitates the retrieval of reliable and tamper-proof information from and to smart contracts. It does this in a decentralised way by sending and retrieving information from multiple nodes. The data that is received by the majority of the nodes is what the smart contract agrees on as the correct data. Chainlink uses LINK tokens as their cryptocurrency to execute data transactions on their nodes.</p>
 
-<h1 id="metamask">Metamask</h1>
+<h2 id="metamask">Metamask</h2>
 <p><a href="https://metamask.io/">Metamask</a> is a bridge that allows you to visit the distributed web of tomorrow in your browser today. It allows you to run Ethereum dApps right in your browser without running a full Ethereum node.</p>
 
-<h1 id="paypal">PayPal</h1>
+<h2 id="paypal">PayPal</h2>
 <p><a href="https://www.paypal.me/">PayPal</a> is an e-commerce compnay that facilitates payments between parties through online funds transfers.</p>
 
-<h1 id="revolut">Revolut</h1>
+<h2 id="revolut">Revolut</h2>
 <p><a href="https://www.revolut.com/the-fastest-way-to-pay-and-get-paid">Revolut</a> is a digital banking alternative that includes a pre-paid debit card, currency exchange, and peer-to-peer payments.</p>
 
-<h2 id="methodology">Methodology</h2>
-<h1 id="paypal-invoice">PayPal Invoice</h1>
+<h1 id="methodology">Methodology</h1>
+<h2 id="paypal-invoice">PayPal Invoice</h2>
 <p>Step 1 : A seller must first go to <a href="https://www.paypal.com/invoice/create">PayPal - Create an Invoice</a> and create an invoice which would specify the asking price for the ETH that is to be sold.<br />
 Step 2 : Mouse over the Send button at the bottom of the Create Invoice page and select Share link myself.<br />
 Step 3 : Once the invoice is the created the ID should be taken from the link such as given this invoice https://www.paypal.com/invoice/p/#QLUP832ZATHFAZ3Q the ID that needs to be inputted into the smart contract is  <strong>QLUP832ZATHFAZ3Q</strong>.</p>
 
-<h1 id="revolut-invoice">Revolut Invoice</h1>
+<h2 id="revolut-invoice">Revolut Invoice</h2>
 <p>Step 1 : Open the Revolut app on Android and iOS.<br />
 Step 2 : Access the Request tab on the Payments page.<br />
 Step 3 : Select Payment Link to create a payment link of your desired FIAT amount.<br />
 Step 4 : Click Create Payment and obtain the rev.money/r/REQUEST-ID payment link shown.<br />
 Step 5 : Take note of the request ID, being a combination of letters and numbers.</p>
 
-<h1 id="smart-contract">Smart Contract</h1>
+<h2 id="smart-contract">Smart Contract</h2>
 <p>The design utilized was the Factory Method where the factory produces agreements containing all the necessary functions, details and funds to make the exchange happen. A seller would need to enter the amount of ETH they are going to sell for the price specified in the invoice, the Invoice ID, the Ethereum Address of the Buyer and finally the Chainlink Oracle Nodes and their Job Id’s. All of this can be seen in the picture of the form below.</p>
 
 <p><img src="../images/LinkPal/sellerform.png" alt="linearly separable data" /></p>
@@ -136,7 +141,7 @@ Step 5 : Take note of the request ID, being a combination of letters and numbers
         <span class="n">require</span><span class="o">(</span><span class="n">link</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">sender</span><span class="o">,</span> <span class="n">link</span><span class="o">.</span><span class="na">balanceOf</span><span class="o">(</span><span class="n">address</span><span class="o">(</span><span class="k">this</span><span class="o">))),</span> <span class="s">"Unable to transfer"</span><span class="o">);</span>
     <span class="o">}</span>
 </code></pre></div></div>
-<h2 id="conclusion">Conclusion</h2>
+<h1 id="conclusion">Conclusion</h1>
 <p>LinkPal successfully facilitates over the counter trades without a third party by leveraging the power of smart contracts and oracles. Next up for LinkPal is to include more payment methods and Ethereum based tokens.</p>
 
 <h2 id="updates">Updates</h2>
