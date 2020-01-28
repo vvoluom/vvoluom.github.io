@@ -13,7 +13,7 @@ githublink : https://github.com/vvoluom/HoneyDex
 <img src="../img/chainlink.png"  class="center">
 
 # Resources
-The Github Repository can be found here : [HoneyDex Repo](https://github.com/vvoluom/Weather-Wizard)  
+The Github Repository can be found here : [HoneyDex Repo](https://github.com/vvoluom/HoneyDex)  
 The Demo Website can be found here : [HoneyDex Website](http://honeydex.xyz/)   
 The Devpost Article can be found here : [Devpost Article](https://honeycomb.devpost.com/updates/11648-and-the-winner-is)
 
